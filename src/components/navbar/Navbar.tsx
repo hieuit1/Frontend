@@ -25,10 +25,7 @@ const Navbar: React.FC = () => {
           <HomeIcon fontSize="small" />
           <span>Trang chủ</span>
         </Link>
-        <Link to="/payment" className="navbar-link">
-          <CreditCardIcon fontSize="small" />
-          <span>Thanh toán</span>
-        </Link>
+
         {user ? (
           <div className="navbar-link" onClick={handleLogout}>
             <LockOpenIcon fontSize="small" />

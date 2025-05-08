@@ -2,7 +2,6 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "../pages/home/home";
 import BusTicket from "../pages/BusTicket/BusTicket";
-import Payment from "../pages/payment_page/payment";
 
 import PromotionDetail from "../pages/PromotionDetail/PromotionDetail";
 import FAQ from "../pages/FAQ/FAQ";
@@ -14,6 +13,8 @@ import { ForgotPassword } from "../pages/Auth/ForgotPassword";
 import { AuthContainer } from "../pages/Auth/AuthContainer";
 import { AdminSignInPage } from "../pages/Auth/adminSignIn";
 import { ResetPassword } from "../pages/Auth/ResetPassword";
+import SeatSelection from "../pages/SeatSelection/SeatSelection";
+import Payment from "../pages/Payment/Payment";
 
 const AppRouter: React.FC = () => {
   return (
@@ -24,6 +25,9 @@ const AppRouter: React.FC = () => {
 
         {/* Trang vé xe bus */}
         <Route path="/busTicket" element={<BusTicket />} />
+
+        <Route path="/seat-selection" element={<SeatSelection />} />
+        <Route path="/payment" element={<Payment />} />
 
         {/* Trang đăng nhập */}
         <Route
@@ -44,7 +48,7 @@ const AppRouter: React.FC = () => {
         <Route path="/terms-of-service" element={<TermsOfService />} />
 
         {/* Trang thanh toán */}
-        <Route path="/payment" element={<Payment />} />
+        {/* <Route path="/payment" element={<Payment />} /> */}
 
         <Route path="/forgot-password" element={<ForgotPassword />} />
 

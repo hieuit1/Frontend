@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom"; // Thêm import này
 import Navbar from "../../components/navbar/Navbar";
 import Footer from "../../components/common/footer/Footer";
 import "./bus_ticket_css/bus_ticket.css";
@@ -7,6 +7,7 @@ import { tripsData } from "../../data/tripsData";
 
 const BusTicket: React.FC = () => {
   const location = useLocation();
+  const navigate = useNavigate(); // Thêm hook này
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
   const [date, setDate] = useState("");
@@ -160,8 +161,15 @@ const BusTicket: React.FC = () => {
                       </span>
                     )}
                   </div>
-                  <span className="seats-left">Còn {trip.seatsLeft} chỗ</span>
-                  <button className="select-trip">Đặt Vé</button>
+                  {/* <span className="seats-left">Còn {trip.seatsLeft} chỗ</span> */}
+                  <button
+                    className="select-trip"
+                    onClick={() =>
+                      navigate("/seat-selection", { state: { trip } })
+                    }
+                  >
+                    Đặt Vé
+                  </button>
                 </div>
               </div>
             </div>
