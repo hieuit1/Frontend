@@ -1,0 +1,108 @@
+/* Bao bọc toàn bộ trang Payment */
+.payment-page {
+  background-color: #f9f9f9;
+  padding: 20px;
+}
+
+/* Form thông tin liên hệ */
+.payment-contact-info {
+  margin: 20px auto;
+  max-width: 400px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.payment-contact-info h3 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.payment-contact-info label {
+  display: block;
+  margin-bottom: 15px;
+  font-weight: bold;
+  color: #555;
+}
+
+.payment-contact-info input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.payment-contact-info input:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.payment-error {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.payment-note {
+  font-size: 12px;
+  color: #6c757d;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.payment-next-btn {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.payment-next-btn:hover {
+  background-color: #0056b3;
+}
+
+/* Phương thức thanh toán */
+.payment-method-section {
+  margin-top: 30px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.payment-method-options {
+  margin: 20px 0;
+}
+
+.payment-method-option {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.payment-confirm-btn {
+  width: 100%;
+  padding: 10px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.payment-confirm-btn:hover {
+  background-color: #218838;
+}

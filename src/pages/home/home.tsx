@@ -4,6 +4,7 @@ import Navbar from "../../components/navbar/Navbar";
 import Footer from "../../components/common/footer/Footer";
 import { tripsData } from "../../data/tripsData";
 import { promotionsData } from "../../data/promotionsData";
+import ChatBox from "../../components/ChatBox/ChatBox"; // Import ChatBox
 
 import "./home_css/home.css";
 
@@ -262,6 +263,9 @@ const Home: React.FC<{ setCurrentPage: (page: string) => void }> = ({
           />
         </div>
       </section>
+
+      {/* Thêm ChatBox */}
+      <ChatBox />
 
       <Footer year={2025} companyName="Ticket Car" />
     </div>
