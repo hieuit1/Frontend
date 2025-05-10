@@ -1,9 +1,33 @@
 import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import emailjs from "@emailjs/browser";
-import "./payment.css";
 import Footer from "../../components/common/footer/Footer";
 import Navbar from "../../components/navbar/Navbar";
+import "./payment.css";
+
+// Danh sách phương thức thanh toán nâng cấp
+const paymentMethods = [
+  {
+    id: "credit_card",
+    label: "Thẻ ngân hàng",
+    description: "Thanh toán bằng thẻ ATM, Visa, hoặc MasterCard.",
+    icon: require("../../images/payment/credit-card.jpg"),
+  },
+  {
+    id: "momo",
+    label: "MoMo",
+    description: "Quét mã QR bằng ứng dụng MoMo.",
+    icon: require("../../images/payment/momo.png"),
+    qrImage: require("../../images/payment/momo-qr.png"),
+  },
+  {
+    id: "zalopay",
+    label: "ZaloPay",
+    description: "Sử dụng ví ZaloPay để thanh toán.",
+    icon: require("../../images/payment/zalopay.png"),
+    qrImage: require("../../images/payment/zalopay-qr.png"),
+  },
+];
 
 const Payment: React.FC = () => {
   const location = useLocation();
@@ -19,11 +43,18 @@ const Payment: React.FC = () => {
     email: "",
   });
   const [paymentMethod, setPaymentMethod] = useState<string>("");
-  const [showPayment, setShowPayment] = useState(false); // Trạng thái để hiển thị phần thanh toán
+  const [showPayment, setShowPayment] = useState(false);
 
-  const validatePhone = (phone: string) => /^[0-9]{10,11}$/.test(phone); // Số điện thoại 10-11 chữ số
+  const [cardInfo, setCardInfo] = useState({
+    cardNumber: "",
+    cardHolder: "",
+    expiryDate: "",
+    cvv: "",
+  });
+
+  const validatePhone = (phone: string) => /^[0-9]{10,11}$/.test(phone);
   const validateEmail = (email: string) =>
-    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email); // Định dạng email
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
   const handleContactSubmit = () => {
     const newErrors = {
@@ -36,7 +67,6 @@ const Payment: React.FC = () => {
 
     setErrors(newErrors);
 
-    // Nếu không có lỗi, hiển thị phần thanh toán
     if (!newErrors.name && !newErrors.phone && !newErrors.email) {
       setShowPayment(true);
     }
@@ -48,21 +78,29 @@ const Payment: React.FC = () => {
       return;
     }
 
+    if (paymentMethod === "credit_card") {
+      const { cardNumber, cardHolder, expiryDate, cvv } = cardInfo;
+      if (!cardNumber || !cardHolder || !expiryDate || !cvv) {
+        alert("Vui lòng điền đầy đủ thông tin thẻ ngân hàng!");
+        return;
+      }
+    }
+
     const paymentData = {
       name: contactInfo.name,
       phone: contactInfo.phone,
       email: contactInfo.email,
       seats: selectedSeats?.join(", ") || "Không có",
       paymentMethod,
+      ...(paymentMethod === "credit_card" ? cardInfo : {}),
     };
 
-    // Gửi email qua EmailJS
     emailjs
       .send(
-        "your_service_id", // Thay bằng Service ID từ EmailJS
-        "your_template_id", // Thay bằng Template ID từ EmailJS
+        "your_service_id", // <-- thay bằng ID thật
+        "your_template_id", // <-- thay bằng ID thật
         paymentData,
-        "your_public_key" // Thay bằng Public Key từ EmailJS
+        "your_public_key" // <-- thay bằng public key thật
       )
       .then(
         (response) => {
@@ -79,6 +117,7 @@ const Payment: React.FC = () => {
   return (
     <div className="payment-page">
       <Navbar />
+
       <div className="payment-contact-info">
         <h3>Nhập thông tin liên hệ</h3>
         <label>
@@ -89,7 +128,6 @@ const Payment: React.FC = () => {
             onChange={(e) =>
               setContactInfo({ ...contactInfo, name: e.target.value })
             }
-            required
           />
           {errors.name && <p className="payment-error">{errors.name}</p>}
         </label>
@@ -101,7 +139,6 @@ const Payment: React.FC = () => {
             onChange={(e) =>
               setContactInfo({ ...contactInfo, phone: e.target.value })
             }
-            required
           />
           {errors.phone && <p className="payment-error">{errors.phone}</p>}
         </label>
@@ -113,7 +150,6 @@ const Payment: React.FC = () => {
             onChange={(e) =>
               setContactInfo({ ...contactInfo, email: e.target.value })
             }
-            required
           />
           {errors.email && <p className="payment-error">{errors.email}</p>}
         </label>
@@ -131,52 +167,113 @@ const Payment: React.FC = () => {
         <div className="payment-method-section">
           <h3>Phương thức thanh toán</h3>
           <div className="payment-method-options">
-            {["credit_card", "momo", "zalopay"].map((method) => (
-              <label key={method} className="payment-method-option">
+            {paymentMethods.map((method) => (
+              <label key={method.id} className="payment-method-option">
                 <input
                   type="radio"
                   name="payment"
-                  value={method}
-                  checked={paymentMethod === method}
+                  value={method.id}
+                  checked={paymentMethod === method.id}
                   onChange={(e) => setPaymentMethod(e.target.value)}
                 />
-                {method === "credit_card" && "Thẻ ngân hàng"}
-                {method === "momo" && "MoMo"}
-                {method === "zalopay" && "ZaloPay"}
+                <img
+                  src={method.icon}
+                  alt={method.label}
+                  style={{
+                    width: "40px",
+                    height: "40px",
+                    marginRight: "10px",
+                  }}
+                />
+                <div>
+                  <strong>{method.label}</strong>
+                  <p style={{ margin: 0, fontSize: "0.875rem", color: "#666" }}>
+                    {method.description}
+                  </p>
+                </div>
               </label>
             ))}
           </div>
+
+          {paymentMethod === "credit_card" && (
+            <div className="payment-card-form">
+              <label>
+                Số thẻ *
+                <input
+                  type="text"
+                  placeholder="1234 5678 9012 3456"
+                  value={cardInfo.cardNumber}
+                  onChange={(e) =>
+                    setCardInfo({ ...cardInfo, cardNumber: e.target.value })
+                  }
+                />
+              </label>
+              <label>
+                Tên chủ thẻ *
+                <input
+                  type="text"
+                  placeholder="Nguyen Van A"
+                  value={cardInfo.cardHolder}
+                  onChange={(e) =>
+                    setCardInfo({ ...cardInfo, cardHolder: e.target.value })
+                  }
+                />
+              </label>
+              <div className="flex-row">
+                <label>
+                  Ngày hết hạn *
+                  <input
+                    type="text"
+                    placeholder="MM/YY"
+                    value={cardInfo.expiryDate}
+                    onChange={(e) =>
+                      setCardInfo({ ...cardInfo, expiryDate: e.target.value })
+                    }
+                  />
+                </label>
+                <label>
+                  CVV *
+                  <input
+                    type="text"
+                    placeholder="123"
+                    value={cardInfo.cvv}
+                    onChange={(e) =>
+                      setCardInfo({ ...cardInfo, cvv: e.target.value })
+                    }
+                  />
+                </label>
+              </div>
+            </div>
+          )}
+
+          {["momo", "zalopay"].includes(paymentMethod) && (
+            <div
+              className="payment-qr-section"
+              style={{ marginTop: "20px", textAlign: "center" }}
+            >
+              <p>Vui lòng quét mã QR để hoàn tất thanh toán:</p>
+              <img
+                src={
+                  paymentMethods.find((m) => m.id === paymentMethod)?.qrImage ||
+                  ""
+                }
+                alt="QR Code"
+                style={{ width: "200px", height: "auto", marginTop: "10px" }}
+              />
+            </div>
+          )}
+
           <button
             onClick={handleConfirmPayment}
             className="payment-confirm-btn"
             disabled={!paymentMethod}
+            style={{ marginTop: "20px" }}
           >
             Xác nhận thanh toán
           </button>
-
-          {/* Hiển thị thông tin vé */}
-          <div className="ticket-info">
-            <h1>Thông tin vé</h1>
-            <p>
-              <strong>Tên:</strong> {contactInfo.name}
-            </p>
-            <p>
-              <strong>Số điện thoại:</strong> {contactInfo.phone}
-            </p>
-            <p>
-              <strong>Email:</strong> {contactInfo.email}
-            </p>
-            <p>
-              <strong>Ghế đã chọn:</strong>{" "}
-              {selectedSeats?.join(", ") || "Không có"}
-            </p>
-            <p>
-              <strong>Phương thức thanh toán:</strong> {paymentMethod}
-            </p>
-            <p>Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi!</p>
-          </div>
         </div>
       )}
+
       <Footer year={2025} companyName="Ticket Car" />
     </div>
   );
