@@ -3,6 +3,8 @@ import { useLocation } from "react-router-dom";
 import emailjs from "@emailjs/browser";
 import Footer from "../../components/common/footer/Footer";
 import Navbar from "../../components/navbar/Navbar";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./payment.css";
 
 // Danh sách phương thức thanh toán nâng cấp
@@ -74,14 +76,14 @@ const Payment: React.FC = () => {
 
   const handleConfirmPayment = () => {
     if (!paymentMethod) {
-      alert("Vui lòng chọn phương thức thanh toán!");
+      toast.error("Vui lòng chọn phương thức thanh toán!");
       return;
     }
 
     if (paymentMethod === "credit_card") {
       const { cardNumber, cardHolder, expiryDate, cvv } = cardInfo;
       if (!cardNumber || !cardHolder || !expiryDate || !cvv) {
-        alert("Vui lòng điền đầy đủ thông tin thẻ ngân hàng!");
+        toast.error("Vui lòng điền đầy đủ thông tin thẻ ngân hàng!");
         return;
       }
     }
@@ -105,11 +107,13 @@ const Payment: React.FC = () => {
       .then(
         (response) => {
           console.log("Email gửi thành công!", response.status, response.text);
-          alert("Thanh toán thành công! Thông tin vé đã được gửi qua email.");
+          toast.success(
+            "Thanh toán thành công! Thông tin vé đã được gửi qua email."
+          );
         },
         (error) => {
           console.error("Lỗi khi gửi email:", error);
-          alert("Đã xảy ra lỗi khi gửi email!");
+          toast.error("Đã xảy ra lỗi khi gửi email!");
         }
       );
   };
@@ -275,6 +279,7 @@ const Payment: React.FC = () => {
       )}
 
       <Footer year={2025} companyName="Ticket Car" />
+      <ToastContainer />
     </div>
   );
 };
