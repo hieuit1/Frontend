@@ -27,13 +27,13 @@ const ChatBox: React.FC = () => {
 
     setMessages(newMessages); // Cập nhật state ngay lập tức
 
-    console.log("key", process.env.REACT_APP_GEMINI_API_KEY);
+    console.log("Gemini API Key:", process.env.REACT_APP_GEMINI_API_KEY);
 
     try {
       const apiKey = process.env.REACT_APP_GEMINI_API_KEY;
 
       const response = await axios.post(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`,
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
         {
           contents: [
             {
@@ -48,16 +48,18 @@ const ChatBox: React.FC = () => {
         }
       );
 
+      console.log("Gemini API Response:", response.data);
+
       const botReply =
         response.data?.candidates?.[0]?.content?.parts?.[0]?.text ||
         "Xin lỗi, tôi không hiểu câu hỏi của bạn.";
 
       setMessages((prev) => [
         ...prev,
-        { role: "assistant", text: botReply }, // Thêm tin nhắn bot vào sau khi có phản hồi
+        { role: "assistant", text: botReply },
       ]);
-    } catch (error) {
-      console.error("Lỗi khi gọi Gemini API:", error);
+    } catch (error: any) {
+      console.error("Lỗi khi gọi Gemini API:", error.response || error.message);
       setMessages((prev) => [
         ...prev,
         {
