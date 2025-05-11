@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from "react";
 import { SignUp } from "./SignUp";
 import { SignIn } from "./SignIn";
+import { ToastContainer } from "react-toastify";
 
 interface AuthContainerProps {
   onAuthSuccess: () => void;
@@ -19,6 +20,18 @@ function AuthContainer({ onAuthSuccess }: AuthContainerProps) {
 
   return (
     <div className="auth-page">
+      <ToastContainer
+        position="top-center" // Đặt thông báo ở giữa phía trên
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        closeButton={false} // Loại bỏ dấu "X"
+      />
       <div className={`container ${isSignUp ? "active" : ""}`}>
         <div className="form-container sign-up" aria-hidden={!isSignUp}>
           <SignUp onAuthSuccess={handleAuthSuccess} />

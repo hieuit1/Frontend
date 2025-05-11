@@ -1,7 +1,9 @@
 import { useState } from "react";
 import "./auth_css/SignIn_SignUp.css";
-import { GoogleLogin } from "@react-oauth/google"; // Import GoogleLogin component
+import { GoogleLogin } from "@react-oauth/google";
 import { signUp } from "../../api/indexApi";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface SignUpProps {
   onAuthSuccess: () => void;
@@ -19,69 +21,109 @@ export function SignUp({ onAuthSuccess }: SignUpProps) {
     try {
       const data = await signUp(name, phone, email, password);
 
-      alert("Signup successfully!");
+      toast.success("Đăng ký thành công!", {
+        position: "top-right", // Di chuyển thông báo ra giữa phía trên
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        closeButton: false, // Loại bỏ dấu "X"
+      });
+
       onAuthSuccess();
       console.log("Signup successful:", data);
     } catch (error: any) {
-      console.error("Signup failed:", error.message);
-      alert(
-        `Signup failed: ${
-          error.message || "There was a problem with the signup request."
-        }`
+      toast.error(
+        `Đăng ký thất bại: ${
+          error.message || "Đã xảy ra lỗi trong quá trình đăng ký."
+        }`,
+        {
+          position: "top-right", // Di chuyển thông báo ra giữa phía trên
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          closeButton: false, // Loại bỏ dấu "X"
+        }
       );
     }
   };
 
   const handleGoogleSignupSuccess = (response: any) => {
     console.log("Google Signup Success:", response);
-    alert("Đăng ký bằng Google thành công!");
+
+    toast.success("Đăng ký bằng Google thành công!", {
+      position: "top-right", // Di chuyển thông báo ra giữa phía trên
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      closeButton: false, // Loại bỏ dấu "X"
+    });
+
     onAuthSuccess();
   };
 
   const handleGoogleSignupFailure = () => {
     console.error("Google Signup Failed");
-    alert("Đăng ký bằng Google thất bại!");
+
+    toast.error("Đăng ký bằng Google thất bại!", {
+      position: "top-right", // Di chuyển thông báo ra giữa phía trên
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      closeButton: false, // Loại bỏ dấu "X"
+    });
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h1>Create Account</h1>
-      <div className="social-icons">
-        <GoogleLogin
-          onSuccess={handleGoogleSignupSuccess}
-          onError={handleGoogleSignupFailure}
+    <>
+      <form onSubmit={handleSubmit}>
+        <h1>Sign Up</h1>
+
+        <input
+          type="text"
+          placeholder="Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
         />
-      </div>
-      <span>or use your email for registration</span>
-      <input
-        type="text"
-        placeholder="Name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        required
-      />
-      <input
-        type="text"
-        placeholder="Phone Number"
-        value={phone}
-        onChange={(e) => setPhone(e.target.value)}
-        required
-      />
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        required
-      />
-      <button type="submit">Sign Up</button>
-    </form>
+        <input
+          type="text"
+          placeholder="Phone Number"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
+          required
+        />
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+        <button type="submit">Sign Up</button>
+
+        <div className="social-icons-google">
+          <span className="google-signup-label">or sign up with Google</span>
+          <GoogleLogin
+            onSuccess={handleGoogleSignupSuccess}
+            onError={handleGoogleSignupFailure}
+          />
+        </div>
+      </form>
+    </>
   );
 }

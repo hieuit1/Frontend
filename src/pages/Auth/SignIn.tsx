@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { GoogleLogin } from "@react-oauth/google"; // Import GoogleLogin component
 import { signIn } from "../../api/indexApi";
 import { googleSignIn } from "../../api/signinApi"; // Import API mới
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface SignInProps {
   onAuthSuccess: () => void;
@@ -21,7 +23,15 @@ export function SignIn({ onAuthSuccess }: SignInProps) {
       const data = await signIn(email, password);
 
       if (!data) {
-        alert("Đăng nhập thất bại: Không nhận được dữ liệu.");
+        toast.error("Đăng nhập thất bại: Không nhận được dữ liệu.", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          closeButton: false,
+        });
         return;
       }
 
@@ -29,26 +39,56 @@ export function SignIn({ onAuthSuccess }: SignInProps) {
         localStorage.setItem("token", data.token);
       }
 
-      alert("Đăng nhập thành công!");
+      toast.success("Đăng nhập thành công!", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        closeButton: false,
+      });
+
       onAuthSuccess();
       navigate("/");
     } catch (error: any) {
-      alert(`Đăng nhập thất bại: ${error.message || "Lỗi không xác định"}`);
+      toast.error(
+        `Đăng nhập thất bại: ${error.message || "Lỗi không xác định"}`,
+        {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          closeButton: false,
+        }
+      );
     }
   };
 
   const handleGoogleLoginSuccess = async (response: any) => {
     try {
-      const googleToken = response.credential; // Lấy token từ Google
+      // Lấy token từ Google
+      const googleToken = response.credential;
       console.log("Google Token:", googleToken);
 
-      // Gửi token đến backend để xác thực
       const data = await googleSignIn(googleToken);
 
       if (data.token && data.user) {
-        localStorage.setItem("token", data.token); // Lưu token vào localStorage
-        localStorage.setItem("user", data.user.name || data.user.email); // Lưu tên hoặc email người dùng
-        alert("Đăng nhập bằng Google thành công!");
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", data.user.name || data.user.email);
+
+        toast.success("Đăng nhập bằng Google thành công!", {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          closeButton: false,
+        });
+
         onAuthSuccess();
         navigate("/");
       } else {
@@ -56,43 +96,63 @@ export function SignIn({ onAuthSuccess }: SignInProps) {
       }
     } catch (error) {
       console.error("Google Login Failed:", error);
-      alert("Đăng nhập bằng Google thất bại!");
+      toast.error("Đăng nhập bằng Google thất bại!", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        closeButton: false,
+      });
     }
   };
 
   const handleGoogleLoginFailure = () => {
     console.error("Google Login Failed");
-    alert("Đăng nhập bằng Google thất bại!");
+    toast.error("Đăng nhập bằng Google thất bại!", {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      closeButton: false,
+    });
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h1>Sign In</h1>
-      <div className="social-icons">
-        <GoogleLogin
-          onSuccess={handleGoogleLoginSuccess}
-          onError={handleGoogleLoginFailure}
+    <>
+      <form onSubmit={handleSubmit}>
+        <h1>Sign In</h1>
+
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
         />
-      </div>
-      <span>or use your email password</span>
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        required
-      />
-      <a href="#" onClick={() => navigate("/forgot-password")}>
-        Forget Your Password?
-      </a>
-      <button type="submit">Sign In</button>
-    </form>
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+        <a href="#" onClick={() => navigate("/forgot-password")}>
+          Forget Your Password?
+        </a>
+        <button type="submit">Sign In</button>
+
+        <div className="social-icons-google">
+          <span className="google-signin-label">or sign in with Google</span>
+          <GoogleLogin
+            onSuccess={handleGoogleLoginSuccess}
+            onError={handleGoogleLoginFailure}
+          />
+        </div>
+      </form>
+    </>
   );
 }

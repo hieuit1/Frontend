@@ -2,12 +2,10 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "../pages/home/home";
 import BusTicket from "../pages/BusTicket/BusTicket";
-
 import PromotionDetail from "../pages/PromotionDetail/PromotionDetail";
 import FAQ from "../pages/FAQ/FAQ";
 import PrivacyPolicy from "../pages/PrivacyPolicy/PrivacyPolicy";
 import TermsOfService from "../pages/TermsOfService/TermsOfService";
-
 import Dashboard from "../pages/admin/dashboard/indexDashboard";
 import { ForgotPassword } from "../pages/Auth/ForgotPassword";
 import { AuthContainer } from "../pages/Auth/AuthContainer";

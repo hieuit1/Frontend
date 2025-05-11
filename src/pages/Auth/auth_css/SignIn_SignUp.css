@@ -208,6 +208,44 @@ body {
     transform: translateX(200%);
 }
 
+.google-signup-label {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 10px;
+  text-align: center;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+.navbar-logo img {
+  height: 30px; /* Kích thước logo */
+  width: 80px;
+  cursor: pointer;
+}
+
+.social-icons-google {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.google-signin-label {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 10px;
+  text-align: center;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+
+/* Nếu GoogleLogin sinh ra một div hoặc button, bạn có thể thêm style như sau */
+.social-icons > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
 /* Responsive styles for mobile devices */
 @media (max-width: 768px) {
     .container {
