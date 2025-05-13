@@ -102,19 +102,25 @@ const Home: React.FC<{ setCurrentPage: (page: string) => void }> = ({
       <header className="header">
         <h1>Tìm & Đặt Vé Xe Khách Uy Tín</h1>
         <div className="search-bar">
+          <label htmlFor="from-input" style={{ display: "none" }}>Điểm khởi hành</label>{/* Thêm label cho input điểm khởi hành */}
           <input
+            id="from-input"
             type="text"
             placeholder="Điểm khởi hành"
             value={from}
             onChange={(e) => setFrom(e.target.value)}
           />
+          <label htmlFor="to-input" style={{ display: "none" }}>Điểm đến</label> {/* Thêm label cho input điểm đến */}
           <input
+            id="to-input"
             type="text"
             placeholder="Điểm đến"
             value={to}
             onChange={(e) => setTo(e.target.value)}
           />
+          <label htmlFor="date-input" style={{ display: "none" }}>Ngày đi</label>{/* Thêm label cho input ngày đi */}
           <input
+            id="date-input"
             type="date"
             value={date}
             onChange={(e) => setDate(e.target.value)}

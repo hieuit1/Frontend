@@ -1,5 +1,5 @@
 import React from "react";
-import { SidebarMenuItem } from "./sidebarMenus";
+import { SidebarMenuItem } from "./sidebar";
 
 interface SidebarMenuListProps {
   menus: SidebarMenuItem[];
@@ -22,7 +22,8 @@ const UserManagementSidebarMenuList: React.FC<SidebarMenuListProps> = ({
         <React.Fragment key={menu.label}>
           <li
             className={selectedMenu === menu.label ? "active" : ""}
-            onClick={() => setOpenUserMenu(!openUserMenu)}            style={{
+            onClick={() => setOpenUserMenu(!openUserMenu)}
+            style={{
               cursor: "pointer",
               display: "flex",
               alignItems: "center",
@@ -49,11 +50,14 @@ const UserManagementSidebarMenuList: React.FC<SidebarMenuListProps> = ({
           </li>
           {openUserMenu && (
             <ul style={{ paddingLeft: 32 }}>
-              {menu.children?.map((child) => (
+              {menu.children?.map((child: { label: string }) => (
                 <li
                   key={child.label}
                   className={selectedMenu === child.label ? "active" : ""}
-                  onClick={() => setSelectedMenu(child.label)}
+                  onClick={() => {
+                    setSelectedMenu(child.label); // Quan trọng: truyền label submenu lên Dashboard
+                    setOpenUserMenu(false);
+                  }}
                   style={{
                     cursor: "pointer",
                     display: "flex",

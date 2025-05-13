@@ -1,4 +1,5 @@
 import React from "react";
+import  Logo from "../../../../images/logo/Logo.jpg"; 
 
 const Header: React.FC = () => {
   return (
@@ -11,7 +12,8 @@ const Header: React.FC = () => {
         <a href="#">Bảng Thống Kê</a>
       </nav>
       <div className="header-avatar">
-        <img src="/logo192.png" alt="Avatar" />
+      <img src={Logo} alt="Avata" style={{ width: 40, height: 40 }} />
+
       </div>
     </header>
   );

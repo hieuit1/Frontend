@@ -5,7 +5,7 @@ const Footer: React.FC = () => {
     <footer className="dashboard-footer">
       <span>2025 © HUNG HIEU DUC</span>
       <span>
-        <a href="#">About</a> &nbsp; <a href="#">Contact</a> &nbsp; <a href="#">Purchase</a>
+        <a href="/admin/about">About</a> &nbsp; <a href="/admin/contact">Contact</a> &nbsp; <a href="#">Purchase</a>
       </span>
     </footer>
   );

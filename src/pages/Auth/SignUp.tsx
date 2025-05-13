@@ -2,7 +2,7 @@ import { useState } from "react";
 import "./auth_css/SignIn_SignUp.css";
 import { GoogleLogin } from "@react-oauth/google";
 import { signUp } from "../../api/indexApi";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 interface SignUpProps {
@@ -22,13 +22,13 @@ export function SignUp({ onAuthSuccess }: SignUpProps) {
       const data = await signUp(name, phone, email, password);
 
       toast.success("Đăng ký thành công!", {
-        position: "top-right", // Di chuyển thông báo ra giữa phía trên
+        position: "top-right", 
         autoClose: 3000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        closeButton: false, // Loại bỏ dấu "X"
+        closeButton: false, 
       });
 
       onAuthSuccess();
@@ -39,13 +39,13 @@ export function SignUp({ onAuthSuccess }: SignUpProps) {
           error.message || "Đã xảy ra lỗi trong quá trình đăng ký."
         }`,
         {
-          position: "top-right", // Di chuyển thông báo ra giữa phía trên
+          position: "top-right", 
           autoClose: 3000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
-          closeButton: false, // Loại bỏ dấu "X"
+          closeButton: false, 
         }
       );
     }
@@ -61,7 +61,7 @@ export function SignUp({ onAuthSuccess }: SignUpProps) {
       closeOnClick: true,
       pauseOnHover: true,
       draggable: true,
-      closeButton: false, // Loại bỏ dấu "X"
+      closeButton: false, 
     });
 
     onAuthSuccess();
@@ -71,13 +71,13 @@ export function SignUp({ onAuthSuccess }: SignUpProps) {
     console.error("Google Signup Failed");
 
     toast.error("Đăng ký bằng Google thất bại!", {
-      position: "top-right", // Di chuyển thông báo ra giữa phía trên
+      position: "top-right", 
       autoClose: 3000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
       draggable: true,
-      closeButton: false, // Loại bỏ dấu "X"
+      closeButton: false,
     });
   };
 

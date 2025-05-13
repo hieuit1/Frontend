@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Table, Button, Modal, message, Form, Input, Rate } from "antd";
-import UserSignUp from "./userSignUp";
+import { useNavigate } from "react-router-dom";
+import UserSignUp from "./userSignUps"; // Đúng tên file modal
 
 interface User {
   id: number;
@@ -11,13 +12,19 @@ interface User {
   rating?: number;
 }
 
-const UserManagement: React.FC = () => {
+interface UserManagementProps {
+  setSelectedMenu?: (menu: string) => void;
+  setSelectedUserId?: (id: number) => void;
+}
+
+const UserManagement: React.FC<UserManagementProps> = ({ setSelectedMenu, setSelectedUserId }) => {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [isRegisterModalVisible, setIsRegisterModalVisible] = useState(false);
   const [isLoginModalVisible, setIsLoginModalVisible] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setLoading(true);
@@ -136,6 +143,17 @@ const UserManagement: React.FC = () => {
           >
             Delete
           </Button>
+          <Button
+            type="link"
+            onClick={() => {
+              if (setSelectedMenu && setSelectedUserId) {
+                setSelectedUserId(record.id);
+                setSelectedMenu("Đánh giá người dùng");
+              }
+            }}
+          >
+            Xem đánh giá
+          </Button>
         </>
       ),
     },
@@ -191,11 +209,14 @@ const UserManagement: React.FC = () => {
           </div>
         )}
       </Modal>
+      {/* Xóa hoặc comment phần này nếu không có UserSignUp dạng modal */}
+      {/* 
       <UserSignUp
         visible={isRegisterModalVisible}
         onCancel={() => setIsRegisterModalVisible(false)}
         onRegister={handleRegister}
       />
+      */}
       <Modal
         title="Login"
         visible={isLoginModalVisible}

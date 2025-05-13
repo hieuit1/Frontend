@@ -1,8 +1,25 @@
 import React, { useState } from "react";
-import { userManagementMenu, SidebarMenuItem } from "./sidebarMenus";
 import UserManagementSidebarMenuList from "./userManagementSidebarMenuList";
 import TicketShopManagementSidebarMenuList from "./ticketShopManagementSidebarMenuList";
 import TicketSalesManagementSidebarMenuList from "./ticketSalesManagementSidebarMenuList";
+import  Logo from "../../../../images/logo/Logo.jpg"; // Đường dẫn đến logo
+// Định nghĩa interface và menu ở đây
+export interface SidebarMenuItem {
+  icon: string;
+  label: string;
+  children?: { label: string }[];
+}
+
+export const userManagementMenu: SidebarMenuItem = {
+  icon: "👩‍💻",
+  label: "Quản Lý Người Dùng",
+  children: [
+    { label: "Người Dùng Đăng Ký" },
+    { label: "Người Dùng Đánh Giá" },
+    { label: "Người Dùng Hủy Vé" },
+    { label: "Người Dùng Mua Vé" },
+  ],
+};
 
 interface SidebarProps {
   selectedMenu: string;
@@ -32,7 +49,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   return (
     <aside className="dashboard-sidebar">
       <div className="sidebar-logo">
-        <img src="/logo192.png" alt="Logo" />
+        <img src={Logo} alt="Logo" style={{ width: 100, height: 50 }} />
         <span>Vé Xe</span>
       </div>
       <nav>
@@ -67,4 +84,4 @@ const Sidebar: React.FC<SidebarProps> = ({
   );
 };
 
-export  { Sidebar };
+export { Sidebar };
