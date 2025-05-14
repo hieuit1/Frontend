@@ -47,7 +47,20 @@ const Sidebar: React.FC<SidebarProps> = ({
   const [openTicketSalesMenu, setOpenTicketSalesMenu] = useState(false);
 
   return (
-    <aside className="dashboard-sidebar">
+    <aside
+      className="dashboard-sidebar"
+      style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        height: "100vh",
+        zIndex: 100,
+        // background: "#fff", // giữ nguyên hoặc xóa nếu dùng class
+        boxShadow: "2px 0 8px rgba(0,0,0,0.05)",
+        overflowY: "auto",
+        width: 250,
+      }}
+    >
       <div className="sidebar-logo">
         <img src={Logo} alt="Logo" style={{ width: 100, height: 50 }} />
         <span>Vé Xe</span>

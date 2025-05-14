@@ -209,14 +209,6 @@ const UserManagement: React.FC<UserManagementProps> = ({ setSelectedMenu, setSel
           </div>
         )}
       </Modal>
-      {/* Xóa hoặc comment phần này nếu không có UserSignUp dạng modal */}
-      {/* 
-      <UserSignUp
-        visible={isRegisterModalVisible}
-        onCancel={() => setIsRegisterModalVisible(false)}
-        onRegister={handleRegister}
-      />
-      */}
       <Modal
         title="Login"
         visible={isLoginModalVisible}

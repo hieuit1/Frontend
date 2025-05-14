@@ -7,6 +7,15 @@ interface Props {
   setOpenTicketSalesMenu: (open: boolean) => void;
 }
 
+const subMenus = [
+  "Bán Vé Máy Bay",
+  "Bán Vé Xe Khách",
+  "Bán Vé Xe Ôm",
+  "Bán Vé Taxi",
+  "Bán Vé Tàu",
+  "Bán Vé Xe Du Lịch",
+];
+
 const TicketSalesManagementSidebarMenuList: React.FC<Props> = ({
   selectedMenu,
   setSelectedMenu,
@@ -44,126 +53,33 @@ const TicketSalesManagementSidebarMenuList: React.FC<Props> = ({
     </li>
     {openTicketSalesMenu && (
       <ul style={{ paddingLeft: 32 }}>
-        <li
-          className={selectedMenu === "Bán Vé Máy Bay" ? "active" : ""}
-          onClick={() => setSelectedMenu("Bán Vé Máy Bay")}
-          style={{
-            cursor: "pointer",
-            display: "flex",
-            alignItems: "center",
-            gap: 8,
-            userSelect: "none",
-            padding: "6px 0",
-          }}
-        >
-          <span
+        {subMenus.map((label) => (
+          <li
+            key={label}
+            className={selectedMenu === label ? "active" : ""}
+            onClick={() => setSelectedMenu(label)}
             style={{
-              display: "inline-block",
-              width: 6,
-              height: 6,
-              borderRadius: "50%",
-              background: "#00bcd4",
-              marginRight: 8,
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              gap: 8,
+              userSelect: "none",
+              padding: "6px 0",
             }}
-          ></span>
-          Bán Vé Máy Bay
-        </li>
-        <li
-          className={selectedMenu === "Bán Xe Ôm" ? "active" : ""}
-          onClick={() => setSelectedMenu("Bán Xe Ôm")}
-          style={{
-            cursor: "pointer",
-            display: "flex",
-            alignItems: "center",
-            gap: 8,
-            userSelect: "none",
-            padding: "6px 0",
-          }}
-        >
-          <span
-            style={{
-              display: "inline-block",
-              width: 6,
-              height: 6,
-              borderRadius: "50%",
-              background: "#00bcd4",
-              marginRight: 8,
-            }}
-          ></span>
-          Bán Xe Ôm
-        </li>
-        <li
-          className={selectedMenu === "Bán Vé Taxi" ? "active" : ""}
-          onClick={() => setSelectedMenu("Bán Vé Taxi")}
-          style={{
-            cursor: "pointer",
-            display: "flex",
-            alignItems: "center",
-            gap: 8,
-            userSelect: "none",
-            padding: "6px 0",
-          }}
-        >
-          <span
-            style={{
-              display: "inline-block",
-              width: 6,
-              height: 6,
-              borderRadius: "50%",
-              background: "#00bcd4",
-              marginRight: 8,
-            }}
-          ></span>
-          Bán Vé Taxi
-        </li>
-        <li
-          className={selectedMenu === "Bán Vé Tàu" ? "active" : ""}
-          onClick={() => setSelectedMenu("Bán Vé Tàu")}
-          style={{
-            cursor: "pointer",
-            display: "flex",
-            alignItems: "center",
-            gap: 8,
-            userSelect: "none",
-            padding: "6px 0",
-          }}
-        >
-          <span
-            style={{
-              display: "inline-block",
-              width: 6,
-              height: 6,
-              borderRadius: "50%",
-              background: "#00bcd4",
-              marginRight: 8,
-            }}
-          ></span>
-          Bán Vé Tàu
-        </li>
-        <li
-          className={selectedMenu === "Bán Vé Xe Du Lịch" ? "active" : ""}
-          onClick={() => setSelectedMenu("Bán Vé Xe Du Lịch")}
-          style={{
-            cursor: "pointer",
-            display: "flex",
-            alignItems: "center",
-            gap: 8,
-            userSelect: "none",
-            padding: "6px 0",
-          }}
-        >
-          <span
-            style={{
-              display: "inline-block",
-              width: 6,
-              height: 6,
-              borderRadius: "50%",
-              background: "#00bcd4",
-              marginRight: 8,
-            }}
-          ></span>
-          Bán Vé Xe Du Lịch
-        </li>
+          >
+            <span
+              style={{
+                display: "inline-block",
+                width: 6,
+                height: 6,
+                borderRadius: "50%",
+                background: "#00bcd4",
+                marginRight: 8,
+              }}
+            ></span>
+            {label}
+          </li>
+        ))}
       </ul>
     )}
   </>

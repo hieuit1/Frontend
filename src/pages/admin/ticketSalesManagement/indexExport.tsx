@@ -1,0 +1,1 @@
+export { IntercityBusTicketSalesPage } from "./intercityBusTicketSales/intercityBusTicketSalesPage";

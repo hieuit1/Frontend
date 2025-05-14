@@ -5,7 +5,18 @@ import UserSignUps from "../userManagement/userSignUps";
 import UserPurchasesTickets from "../userManagement/userPurchasesTickets";
 import UserCancelsTicket from "../userManagement/userCancelsTicket";
 import UserReviews from "../userManagement/userReviews";
+import TouristBusTicketSalesList from "../ticketSalesManagement/touristBusTicketSales/touristBusTicketSalesListPage";
+import TouristBusTicketSalesPage from "../ticketSalesManagement/touristBusTicketSales/touristBusTicketSalesPage";
+import IntercityBusTicketSalesListPage from "../ticketSalesManagement/intercityBusTicketSales/intercityBusTicketSalesListPage";
+import { IntercityBusTicketSalesPage } from "../ticketSalesManagement/intercityBusTicketSales/intercityBusTicketSalesPage";
+import TrainTicketSalesListPage from "../ticketSalesManagement/trainTicketSales/trainTicketSalesListPage";
+import { TrainTicketSalesPage } from "../ticketSalesManagement/trainTicketSales/trainTicketSalesPage";
+import AirlineTicketSalesListPage from "../ticketSalesManagement/airlineTicketSales/airlineTicketSalesListPage";
+import { AirlineTicketSalesPage } from "../ticketSalesManagement/airlineTicketSales/airlineTicketSalesPage";
+import MotorcycleTicketSalesListPage from "../ticketSalesManagement/motorcycleTicketSales/motorcycleTicketSalesListPage";
+import { MotorcycleTicketSalesPage } from "../ticketSalesManagement/motorcycleTicketSales/motorcycleTicketSalesPage";
 import "./dashboard.css";
+import { Button } from "antd";
 
 // Định nghĩa các submenu cho Quản Lý Người Dùng
 const userSubMenus = [
@@ -19,6 +30,11 @@ const Dashboard: React.FC = () => {
   const [selectedMenu, setSelectedMenu] = useState<string>("Trang chủ");
   const [openSubMenu, setOpenSubMenu] = useState<boolean>(false);
   const [selectedUserSubMenu, setSelectedUserSubMenu] = useState<string>(userSubMenus[0].label);
+  const [showTouristBusForm, setShowTouristBusForm] = useState(false);
+  const [showIntercityBusForm, setShowIntercityBusForm] = useState(false);
+  const [showTrainTicketForm, setShowTrainTicketForm] = useState(false);
+  const [showAirlineTicketForm, setShowAirlineTicketForm] = useState(false);
+  const [showMotorcycleTicketForm, setShowMotorcycleTicketForm] = useState(false);
 
   // Khi click menu/submenu, cập nhật state phù hợp
   const handleMenuSelect = (menu: string) => {
@@ -28,6 +44,12 @@ const Dashboard: React.FC = () => {
       setSelectedMenu("Quản Lý Người Dùng");
       setSelectedUserSubMenu(menu);
     }
+    // Reset form hiển thị khi chuyển menu
+    if (menu !== "Bán Vé Xe Du Lịch") setShowTouristBusForm(false);
+    if (menu !== "Bán Vé Xe Khách") setShowIntercityBusForm(false);
+    if (menu !== "Bán Vé Tàu") setShowTrainTicketForm(false);
+    if (menu !== "Bán Vé Máy Bay") setShowAirlineTicketForm(false);
+    if (menu !== "Bán Vé Xe Ôm") setShowMotorcycleTicketForm(false);
   };
 
   const renderContent = () => {
@@ -60,6 +82,98 @@ const Dashboard: React.FC = () => {
     }
     if (selectedMenu === "Danh Thu") {
       return <Widgets />;
+    }
+    if (selectedMenu === "Bán Vé Xe Du Lịch") {
+      if (showTouristBusForm) {
+        return (
+          <div>
+            <Button onClick={() => setShowTouristBusForm(false)} style={{ marginBottom: 16 }}>
+              Quay lại danh sách vé
+            </Button>
+            <TouristBusTicketSalesPage />
+          </div>
+        );
+      }
+      return (
+        <div>
+          <Button
+            type="primary"
+            style={{ marginBottom: 16 }}
+            onClick={() => setShowTouristBusForm(true)}
+          >
+            Đăng bán vé xe du lịch
+          </Button>
+          <TouristBusTicketSalesList />
+        </div>
+      );
+    }
+    if (selectedMenu === "Bán Vé Xe Khách") {
+      if (showIntercityBusForm) {
+        return (
+          <div>
+            <Button onClick={() => setShowIntercityBusForm(false)} style={{ marginBottom: 16 }}>
+              Quay lại danh sách vé
+            </Button>
+            <IntercityBusTicketSalesPage />
+          </div>
+        );
+      }
+      return (
+        <div>
+          <IntercityBusTicketSalesListPage onAddTicket={() => setShowIntercityBusForm(true)} />
+        </div>
+      );
+    }
+    if (selectedMenu === "Bán Vé Tàu") {
+      if (showTrainTicketForm) {
+        return (
+          <div>
+            <Button onClick={() => setShowTrainTicketForm(false)} style={{ marginBottom: 16 }}>
+              Quay lại danh sách vé
+            </Button>
+            <TrainTicketSalesPage />
+          </div>
+        );
+      }
+      return (
+        <div>
+          <TrainTicketSalesListPage onAddTicket={() => setShowTrainTicketForm(true)} />
+        </div>
+      );
+    }
+    if (selectedMenu === "Bán Vé Máy Bay") {
+      if (showAirlineTicketForm) {
+        return (
+          <div>
+            <Button onClick={() => setShowAirlineTicketForm(false)} style={{ marginBottom: 16 }}>
+              Quay lại danh sách vé
+            </Button>
+            <AirlineTicketSalesPage />
+          </div>
+        );
+      }
+      return (
+        <div>
+          <AirlineTicketSalesListPage onAddTicket={() => setShowAirlineTicketForm(true)} />
+        </div>
+      );
+    }
+    if (selectedMenu === "Bán Vé Xe Ôm") {
+      if (showMotorcycleTicketForm) {
+        return (
+          <div>
+            <Button onClick={() => setShowMotorcycleTicketForm(false)} style={{ marginBottom: 16 }}>
+              Quay lại danh sách vé
+            </Button>
+            <MotorcycleTicketSalesPage />
+          </div>
+        );
+      }
+      return (
+        <div>
+          <MotorcycleTicketSalesListPage onAddTicket={() => setShowMotorcycleTicketForm(true)} />
+        </div>
+      );
     }
     // Thêm các menu khác nếu cần
     return <Widgets />;
