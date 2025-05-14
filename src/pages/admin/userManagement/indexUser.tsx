@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Table, Button, Modal, message, Form, Input, Rate } from "antd";
 import { useNavigate } from "react-router-dom";
-import UserSignUp from "./userSignUps"; // Đúng tên file modal
+import { UserSignUps } from "./userManagementExport"; // Đúng tên file modal
 
 interface User {
   id: number;
@@ -234,4 +234,4 @@ const UserManagement: React.FC<UserManagementProps> = ({ setSelectedMenu, setSel
   );
 };
 
-export default UserManagement;
+export  {UserManagement};

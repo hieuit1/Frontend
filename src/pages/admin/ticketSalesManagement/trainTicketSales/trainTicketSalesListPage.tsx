@@ -82,4 +82,4 @@ const TrainTicketSalesListPage: React.FC<Props> = ({ onAddTicket }) => {
   );
 };
 
-export default TrainTicketSalesListPage;
+export { TrainTicketSalesListPage};

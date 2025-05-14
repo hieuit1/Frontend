@@ -89,4 +89,4 @@ const MotorcycleTicketSalesListPage: React.FC<Props> = ({ onAddTicket }) => {
   );
 };
 
-export default MotorcycleTicketSalesListPage;
+export { MotorcycleTicketSalesListPage};

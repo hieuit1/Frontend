@@ -30,6 +30,7 @@ interface SidebarProps {
 
 const sidebarMenus: SidebarMenuItem[] = [
   userManagementMenu,
+  { icon: "🚌", label: "Quản Lý Chuyến Đi" },
   { icon: "🏷️", label: "Khuyến mãi & giảm giá" },
   { icon: "📄", label: "Danh Thu" },
   { icon: "🔔", label: "Thông báo" },

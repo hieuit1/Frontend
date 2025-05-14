@@ -228,4 +228,4 @@ const UserSignUps: React.FC = () => {
   );
 }
 
-export default UserSignUps;
+export  {UserSignUps};

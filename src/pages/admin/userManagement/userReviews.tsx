@@ -45,4 +45,4 @@ const UserReviews: React.FC = () => (
   </div>
 );
 
-export default UserReviews;
+export  {UserReviews};

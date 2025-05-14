@@ -1,20 +1,14 @@
 import React, { useState } from "react";
 import { Sidebar, Header, Footer } from "./components/indexExport";
 import Widgets from "./components/widgets";
-import UserSignUps from "../userManagement/userSignUps";
+import { UserSignUps, UserReviews } from "../userManagement/userManagementExport";
 import UserPurchasesTickets from "../userManagement/userPurchasesTickets";
 import UserCancelsTicket from "../userManagement/userCancelsTicket";
-import UserReviews from "../userManagement/userReviews";
 import TouristBusTicketSalesList from "../ticketSalesManagement/touristBusTicketSales/touristBusTicketSalesListPage";
 import TouristBusTicketSalesPage from "../ticketSalesManagement/touristBusTicketSales/touristBusTicketSalesPage";
-import IntercityBusTicketSalesListPage from "../ticketSalesManagement/intercityBusTicketSales/intercityBusTicketSalesListPage";
-import { IntercityBusTicketSalesPage } from "../ticketSalesManagement/intercityBusTicketSales/intercityBusTicketSalesPage";
-import TrainTicketSalesListPage from "../ticketSalesManagement/trainTicketSales/trainTicketSalesListPage";
-import { TrainTicketSalesPage } from "../ticketSalesManagement/trainTicketSales/trainTicketSalesPage";
+import { IntercityBusTicketSalesPage, IntercityBusTicketSalesListPage, TrainTicketSalesListPage, TrainTicketSalesPage, MotorcycleTicketSalesListPage, MotorcycleTicketSalesPage } from "../ticketSalesManagement/indexExport";
 import AirlineTicketSalesListPage from "../ticketSalesManagement/airlineTicketSales/airlineTicketSalesListPage";
 import { AirlineTicketSalesPage } from "../ticketSalesManagement/airlineTicketSales/airlineTicketSalesPage";
-import MotorcycleTicketSalesListPage from "../ticketSalesManagement/motorcycleTicketSales/motorcycleTicketSalesListPage";
-import { MotorcycleTicketSalesPage } from "../ticketSalesManagement/motorcycleTicketSales/motorcycleTicketSalesPage";
 import "./dashboard.css";
 import { Button } from "antd";
 

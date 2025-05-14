@@ -2,30 +2,32 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { adminSignIn } from "../../api/adminsiginApi";
 import { useNavigate } from "react-router-dom";
-import "./auth_css/adminSignIn.css"; // Tạo file css này để custom giao diện
+import "./auth_css/adminSignIn.css"; 
 
 const AdminSignInPage: React.FC = () => {
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm();
   const [error, setError] = React.useState("");
   const navigate = useNavigate();
 
-  const onSubmit = async (data: any) => {
-    setError("");
-    try {
-      const res = await adminSignIn(data.email, data.password);
-      if (res.user && res.user.role === "admin") {
-        localStorage.setItem("token", res.token);
-        navigate("/admin/dashboard");
-      } else {
-        setError("Bạn không có quyền truy cập trang quản trị.");
-      }
-    } catch (err: any) {
-      setError(
-        err.message || "Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin."
-      );
+ // ...existing code...
+const onSubmit = async (data: any) => {
+  setError("");
+  try {
+    const res = await adminSignIn(data.email, data.password);
+    // Sửa đoạn này: kiểm tra trực tiếp res.role
+    if (res.role === "ADMIN") {
+      localStorage.setItem("token", res.token);
+      navigate("/admin/dashboard");
+    } else {
+      setError("Bạn không có quyền truy cập trang quản trị.");
     }
-  };
-
+  } catch (err: any) {
+    setError(
+      err.message || "Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin."
+    );
+  }
+};
+// ...existing code...
   return (
     <div className="signin-container-admin">
       <form className="signin-form-admin" onSubmit={handleSubmit(onSubmit)}>

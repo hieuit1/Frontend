@@ -9,13 +9,13 @@ import TermsOfService from "../pages/TermsOfService/TermsOfService";
 import Dashboard from "../pages/admin/dashboard/indexDashboard";
 import { ForgotPassword } from "../pages/Auth/ForgotPassword";
 import { AuthContainer } from "../pages/Auth/AuthContainer";
-import { AdminSignInPage } from "../pages/Auth/adminSignIn";
+import { AdminSignInPage } from "../pages/Auth/adminSignInPage";
 import { ResetPassword } from "../pages/Auth/ResetPassword";
 import SeatSelection from "../pages/SeatSelection/SeatSelection";
 import Payment from "../pages/Payment/Payment";
 import AdminAbout from "../pages/admin/aboutAdmin/about";
 import ContactAdmin from "../pages/admin/contactAdmin/contact";
-import UserManagement from "../pages/admin/userManagement/indexUser";
+import { UserManagement } from "../pages/admin/userManagement/userManagementExport";
 
 
 const AppRouter: React.FC = () => {

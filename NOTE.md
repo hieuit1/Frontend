@@ -21,3 +21,5 @@ src/api/
  - npm install react-hook-form
  - npm install antd --save
  - 
+process.env.REACT_APP_API_URL_ADMIN
+    `${process.env.REACT_APP_API_URL_ADMIN}/auth/admin`,
