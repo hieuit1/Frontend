@@ -9,7 +9,7 @@ import SectionFour from "./components/sectionFour";
 import SectionSeven from "./components/sectionSeven";
 import SectionFive from "./components/sectionFive";
 import SectionSix from "./components/sectionSix";
-
+import HomeHeader from "./components/header/header";
 import "./home_css/home.css";
 
 const Home: React.FC<{ setCurrentPage: (page: string) => void }> = ({
@@ -49,7 +49,7 @@ const Home: React.FC<{ setCurrentPage: (page: string) => void }> = ({
 
   
 
-  const promotions = promotionsData; // Sử dụng dữ liệu từ file promotionsData.ts
+  const promotions = promotionsData; 
 
 
   const scrollSlider = (direction: number) => {
@@ -65,35 +65,7 @@ const Home: React.FC<{ setCurrentPage: (page: string) => void }> = ({
       <Navbar />
 
       {/* Header */}
-      <header className="header">
-        <h1>Tìm & Đặt Vé Xe Khách Uy Tín</h1>
-        <div className="search-bar">
-          <label htmlFor="from-input" style={{ display: "none" }}>Điểm khởi hành</label>{/* Thêm label cho input điểm khởi hành */}
-          <input
-            id="from-input"
-            type="text"
-            placeholder="Điểm khởi hành"
-            value={from}
-            onChange={(e) => setFrom(e.target.value)}
-          />
-          <label htmlFor="to-input" style={{ display: "none" }}>Điểm đến</label> {/* Thêm label cho input điểm đến */}
-          <input
-            id="to-input"
-            type="text"
-            placeholder="Điểm đến"
-            value={to}
-            onChange={(e) => setTo(e.target.value)}
-          />
-          <label htmlFor="date-input" style={{ display: "none" }}>Ngày đi</label>{/* Thêm label cho input ngày đi */}
-          <input
-            id="date-input"
-            type="date"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-          />
-          <button onClick={handleSearch}>Tìm chuyến</button>
-        </div>
-      </header>
+      <HomeHeader/>
 
 
 {/* Chỗ mua vé - Các loại phương tiện */}
@@ -121,7 +93,7 @@ const Home: React.FC<{ setCurrentPage: (page: string) => void }> = ({
       { label: "Vé máy bay", path: "/airlineTicket" },
       { label: "Vé xe bus", path: "/busTicket" },
       { label: "Vé xe khách", path: "/intercityTicket" },
-      { label: "Vé xe du lịch", path: "/touristTicket" },
+      { label: "Vé xe du lịch", path: "/touristBusTicket" },
       { label: "Vé taxi", path: "/taxiTicket" },
       { label: "Vé xe ôm", path: "/motorcycleTicket" },
       { label: "Vé tàu", path: "/trainTicket" },
@@ -209,19 +181,15 @@ const Home: React.FC<{ setCurrentPage: (page: string) => void }> = ({
 
       {/* Vì Sao Chọn Chúng Tôi */}
       <SectionFour/>
-
       {/* Testimonials */}
       <SectionFive/>
-
       {/* Nền tảng kết nối */}
       <SectionSix/>
-
       {/* Thêm phần Được nhắc đến trên */}
       <SectionSeven/>
-
       {/* Thêm ChatBox */}
       <ChatBox />
-
+      {/* Thêm phần Footer */}
       <Footer year={2025} companyName="Ticket Car" />
     </div>
   );

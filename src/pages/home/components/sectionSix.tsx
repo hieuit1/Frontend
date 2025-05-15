@@ -61,7 +61,6 @@ const SectionSix: React.FC = () => {
     <section style={sectionStyle}>
       <h2 style={titleStyle}>
         Nền tảng kết nối người
-        <div style={underlineStyle}></div>
       </h2>
       <div style={gridStyle}>
         <div

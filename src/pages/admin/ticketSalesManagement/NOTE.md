@@ -4,4 +4,5 @@
 # AirlineTicketSalesPage => Trang Đăng Bán vé Máy Bay
 # MotorcycleTicketSalesListPage => Danh Sách Đăng Bán Vé Xe Ôm
 # MotorcycleTicketSalesPage => Trang Đăng Bán Vé Xe Ôm
-
+# TrainTicketSalesPage => Trang Đăng Bán Vé Tàu Hỏa
+# TrainTicketSalesListPage => Trang Danh Sách Đăng Bán Vé Tàu Hỏa

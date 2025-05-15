@@ -95,46 +95,7 @@ body {
 .home-page .home {
   text-align: center;
 }
-/* CSS cho phần lựa chọn phương tiện */
-.vehicle-selection {
-  margin: 20px 0;
-  text-align: center;
-}
 
-.vehicle-cards {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-
-.vehicle-card {
-  width: 150px;
-  text-align: center;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 10px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  background-color: white;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.vehicle-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.2);
-}
-
-.vehicle-card img {
-  width: 100%;
-  height: auto;
-  border-radius: 8px;
-}
-
-.vehicle-card h3 {
-  margin-top: 10px;
-  font-size: 16px;
-  color: #333;
-}
 
 /* Toàn trang */
 body, html {
@@ -152,53 +113,11 @@ body, html {
   padding-bottom: 60px;
 }
 
-/* Header */
-.header {
-  background: url("../../../images/home/header-bg.jpg") no-repeat center center / cover;
-  height: 450px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.4);
-}
 
-.header h1 {
-  font-size: 3rem;
-  font-weight: 700;
-  margin-bottom: 25px;
-}
 
-.search-bar {
-  display: flex;
-  gap: 10px;
-  background-color: rgba(255, 255, 255, 0.9);
-  padding: 15px;
-  border-radius: 10px;
-}
 
-.search-bar input {
-  padding: 10px 15px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  font-size: 1rem;
-}
 
-.search-bar button {
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.3s;
-}
 
-.search-bar button:hover {
-  background-color: #0056b3;
-}
 
 /* Section Titles */
 section h2 {
@@ -545,51 +464,6 @@ section h2::after {
 
 .slick-slide {
   padding: 0 10px;
-}
-
-/* Nền tảng kết nối */
-.platform-features {
-  margin: 40px 0;
-  text-align: center;
-}
-
-.platform-features h2 {
-  font-size: 24px;
-  margin-bottom: 20px;
-}
-
-.features-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 20px;
-}
-
-.feature-item {
-  max-width: 250px;
-  text-align: center;
-  background: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-.feature-item h3 {
-  font-size: 18px;
-  color: #007bff;
-  margin-bottom: 10px;
-}
-
-.feature-item p {
-  font-size: 14px;
-  color: #333;
-}
-
-.feature-item i {
-  font-size: 40px;
-  color: #007bff;
-  margin-bottom: 10px;
-  display: block;
 }
 
 
