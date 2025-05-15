@@ -89,4 +89,4 @@ const AirlineTicketSalesListPage: React.FC<Props> = ({ onAddTicket }) => {
   );
 };
 
-export default AirlineTicketSalesListPage;
+export { AirlineTicketSalesListPage};

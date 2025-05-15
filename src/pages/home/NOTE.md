@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import Navbar from "../../components/navbar/Navbar";
-import Footer from "./components/footer/Footer";
+import Footer from "../../components/common/footer/Footer";
 import { tripsData } from "../../data/tripsData";
 import { promotionsData } from "../../data/promotionsData";
 import ChatBox from "../../components/ChatBox/ChatBox"; 
 import SectionFour from "./components/sectionFour";
 import SectionSeven from "./components/sectionSeven";
 import SectionFive from "./components/sectionFive";
-import SectionSix from "./components/sectionSix";
 
 import "./home_css/home.css";
 
@@ -45,7 +44,7 @@ const Home: React.FC<{ setCurrentPage: (page: string) => void }> = ({
       to: trip.arrivePlace,
       date: trip.date,
     }))
-    .slice(0, 10); 
+    .slice(0, 10); // Giới hạn hiển thị 10 tuyến đường
 
   
 
@@ -214,7 +213,38 @@ const Home: React.FC<{ setCurrentPage: (page: string) => void }> = ({
       <SectionFive/>
 
       {/* Nền tảng kết nối */}
-      <SectionSix/>
+      <section className="platform-features">
+        <h2>Nền tảng kết nối người</h2>
+        <div className="features-grid">
+          <div className="feature-item">
+            <i className="fa fa-bus"></i>
+            <h3>2000+ nhà xe chất lượng cao</h3>
+            <p>
+              5000+ tuyến đường trên toàn quốc, chủ động và đa dạng lựa chọn.
+            </p>
+          </div>
+          <div className="feature-item">
+            <i className="fa fa-clock"></i>
+            <h3>Đặt vé dễ dàng</h3>
+            <p>
+              Đặt vé chỉ với 60s. Chọn xe yêu thích cực nhanh và thuận tiện.
+            </p>
+          </div>
+          <div className="feature-item">
+            <i className="fa fa-check-circle"></i>
+            <h3>Chắc chắn có chỗ</h3>
+            <p>
+              Hoàn ngay 150% nếu nhà xe không cung cấp dịch vụ vận chuyển, mang
+              đến hành trình trọn vẹn.
+            </p>
+          </div>
+          <div className="feature-item">
+            <i className="fa fa-gift"></i>
+            <h3>Nhiều ưu đãi</h3>
+            <p>Hàng ngàn ưu đãi cực chất độc quyền tại Ticket Car.</p>
+          </div>
+        </div>
+      </section>
 
       {/* Thêm phần Được nhắc đến trên */}
       <SectionSeven/>

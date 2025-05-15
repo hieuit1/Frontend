@@ -222,7 +222,6 @@ section h2::after {
 /* Destination Cards */
 .destinations,
 .deals,
-.features,
 .testimonial-list,
 .partner-logos,
 .featured-experiences,
@@ -298,16 +297,6 @@ section h2::after {
   background: #0056b3;
 }
 
-/* Testimonials */
-.testimonials {
-  margin: 40px 0;
-  text-align: center;
-}
-
-.testimonials h2 {
-  font-size: 24px;
-  margin-bottom: 20px;
-}
 
 .testimonial-list {
   display: flex;
@@ -603,28 +592,6 @@ section h2::after {
   display: block;
 }
 
-/* Media mentions */
-.media-mentions {
-  margin: 60px 0;
-  text-align: center;
-}
-
-.media-mentions h2 {
-  font-size: 28px;
-  color: #333;
-  margin-bottom: 30px;
-  position: relative;
-}
-
-.media-mentions h2::after {
-  content: '';
-  width: 100px;
-  height: 4px;
-  background-color: #007bff;
-  display: block;
-  margin: 10px auto 0;
-  border-radius: 4px;
-}
 
 .media-logos {
   display: flex;
@@ -646,20 +613,7 @@ section h2::after {
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
 
-/* Icon cho Vì Sao Chọn Chúng Tôi */
-.feature-card {
-  text-align: center;
-  padding: 20px;
-  background: #fff;
-  border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
-  cursor: default; /* Sử dụng con trỏ mặc định */
-}
 
-.feature-card:hover {
-  transform: translateY(-5px);
-}
 
 .feature-icon {
   font-size: 40px;

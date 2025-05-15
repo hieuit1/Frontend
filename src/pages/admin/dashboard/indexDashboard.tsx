@@ -1,16 +1,16 @@
+// F:\File\do-an-tot-nghiep\Frontend\src\pages\admin\dashboard\indexDashboard.tsx
 import React, { useState } from "react";
+import { Button } from "antd";
 import { Sidebar, Header, Footer } from "./components/indexExport";
 import Widgets from "./components/widgets";
 import { UserSignUps, UserReviews } from "../userManagement/userManagementExport";
 import UserPurchasesTickets from "../userManagement/userPurchasesTickets";
 import UserCancelsTicket from "../userManagement/userCancelsTicket";
-import TouristBusTicketSalesList from "../ticketSalesManagement/touristBusTicketSales/touristBusTicketSalesListPage";
-import TouristBusTicketSalesPage from "../ticketSalesManagement/touristBusTicketSales/touristBusTicketSalesPage";
-import { IntercityBusTicketSalesPage, IntercityBusTicketSalesListPage, TrainTicketSalesListPage, TrainTicketSalesPage, MotorcycleTicketSalesListPage, MotorcycleTicketSalesPage } from "../ticketSalesManagement/indexExport";
-import AirlineTicketSalesListPage from "../ticketSalesManagement/airlineTicketSales/airlineTicketSalesListPage";
-import { AirlineTicketSalesPage } from "../ticketSalesManagement/airlineTicketSales/airlineTicketSalesPage";
+import { IntercityBusTicketSalesPage, IntercityBusTicketSalesListPage, TrainTicketSalesListPage, TrainTicketSalesPage, MotorcycleTicketSalesListPage, MotorcycleTicketSalesPage, AirlineTicketSalesListPage, AirlineTicketSalesPage, TaxiTicketSalesListPage, TaxiTicketSalesPage, TouristBusTicketSalesListPage, TouristBusTicketSalesPage } from "../ticketSalesManagement/indexExport";
+
+
+
 import "./dashboard.css";
-import { Button } from "antd";
 
 // Định nghĩa các submenu cho Quản Lý Người Dùng
 const userSubMenus = [
@@ -29,21 +29,20 @@ const Dashboard: React.FC = () => {
   const [showTrainTicketForm, setShowTrainTicketForm] = useState(false);
   const [showAirlineTicketForm, setShowAirlineTicketForm] = useState(false);
   const [showMotorcycleTicketForm, setShowMotorcycleTicketForm] = useState(false);
+  const [showTaxiTicketForm, setShowTaxiTicketForm] = useState(false);
 
-  // Khi click menu/submenu, cập nhật state phù hợp
   const handleMenuSelect = (menu: string) => {
     setSelectedMenu(menu);
-    // Nếu là submenu của Quản Lý Người Dùng thì cập nhật selectedUserSubMenu
     if (userSubMenus.some((sub) => sub.label === menu)) {
       setSelectedMenu("Quản Lý Người Dùng");
       setSelectedUserSubMenu(menu);
     }
-    // Reset form hiển thị khi chuyển menu
     if (menu !== "Bán Vé Xe Du Lịch") setShowTouristBusForm(false);
     if (menu !== "Bán Vé Xe Khách") setShowIntercityBusForm(false);
     if (menu !== "Bán Vé Tàu") setShowTrainTicketForm(false);
     if (menu !== "Bán Vé Máy Bay") setShowAirlineTicketForm(false);
     if (menu !== "Bán Vé Xe Ôm") setShowMotorcycleTicketForm(false);
+    if (menu !== "Bán Vé Taxi") setShowTaxiTicketForm(false);
   };
 
   const renderContent = () => {
@@ -90,14 +89,7 @@ const Dashboard: React.FC = () => {
       }
       return (
         <div>
-          <Button
-            type="primary"
-            style={{ marginBottom: 16 }}
-            onClick={() => setShowTouristBusForm(true)}
-          >
-            Đăng bán vé xe du lịch
-          </Button>
-          <TouristBusTicketSalesList />
+          <TouristBusTicketSalesListPage onAddTicket={() => setShowTouristBusForm(true)} />
         </div>
       );
     }
@@ -115,6 +107,23 @@ const Dashboard: React.FC = () => {
       return (
         <div>
           <IntercityBusTicketSalesListPage onAddTicket={() => setShowIntercityBusForm(true)} />
+        </div>
+      );
+    }
+    if (selectedMenu === "Bán Vé Taxi") {
+      if (showTaxiTicketForm) {
+        return (
+          <div>
+            <Button onClick={() => setShowTaxiTicketForm(false)} style={{ marginBottom: 16 }}>
+              Quay lại danh sách vé
+            </Button>
+            <TaxiTicketSalesPage />
+          </div>
+        );
+      }
+      return (
+        <div>
+          <TaxiTicketSalesListPage onAddTicket={() => setShowTaxiTicketForm(true)} />
         </div>
       );
     }

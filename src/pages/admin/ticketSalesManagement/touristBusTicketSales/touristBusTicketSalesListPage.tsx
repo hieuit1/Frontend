@@ -45,18 +45,39 @@ const mockTickets: Ticket[] = [
   },
 ];
 
-const TouristBusTicketSalesList: React.FC<{ onAddTicket?: () => void }> = ({ onAddTicket }) => {
+interface Props {
+  onAddTicket?: () => void; // ✅ thay vì gọi trực tiếp setShowTouristBusForm
+}
+
+const TouristBusTicketSalesListPage: React.FC<Props> = ({ onAddTicket }) => {
   const [tickets] = useState<Ticket[]>(mockTickets);
 
   return (
-    <div style={{ maxWidth: 900, margin: "0 auto", background: "#fff", padding: 24, borderRadius: 8 }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+    <div
+      style={{
+        maxWidth: 900,
+        margin: "0 auto",
+        background: "#fff",
+        padding: 24,
+        borderRadius: 8,
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: 16,
+        }}
+      >
         <h2 style={{ margin: 0 }}>Danh Sách Vé Xe Du Lịch Đang Bán</h2>
-        {onAddTicket && (
-          <Button type="primary" onClick={onAddTicket}>
-            Đăng bán vé xe du lịch
-          </Button>
-        )}
+        <Button
+          type="primary"
+          style={{ marginBottom: 16 }}
+          onClick={onAddTicket}
+        >
+          Đăng bán vé xe du lịch
+        </Button>
       </div>
       <Table
         dataSource={tickets}
@@ -100,4 +121,4 @@ const TouristBusTicketSalesList: React.FC<{ onAddTicket?: () => void }> = ({ onA
   );
 };
 
-export default TouristBusTicketSalesList;
+export { TouristBusTicketSalesListPage };
