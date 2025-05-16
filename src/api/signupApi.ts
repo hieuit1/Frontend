@@ -4,19 +4,16 @@ export const signUp = async (
   email: string,
   password: string
 ) => {
-  const response = await fetch(
-    `${process.env.REACT_APP_API_URL}/auth/signup`,
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name: name,
-        numberphone: phone,
-        email: email,
-        password: password,
-      }),
-    }
-  );
+  const response = await fetch(`${process.env.REACT_APP_API_URL}/auth/signup`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      name: name,
+      numberphone: phone,
+      email: email,
+      password: password,
+    }),
+  });
   const data = await response.json();
   if (!response.ok) {
     throw new Error(data.message || "Đăng ký thất bại.");

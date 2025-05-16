@@ -21,7 +21,7 @@
     "@types/node": "^16.18.126",
     "antd": "^5.25.0",
     "axios": "^1.9.0",
-    "framer-motion": "^12.11.3",
+    "framer-motion": "^12.11.4",
     "openai": "^4.98.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

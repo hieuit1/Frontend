@@ -8,6 +8,7 @@ export const signIn = async (email: string, password: string) => {
   if (!response.ok) {
     throw new Error(data.message || "Đăng nhập thất bại.");
   }
+  // Không lưu localStorage ở đây!
   return data;
 };
 
