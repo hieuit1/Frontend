@@ -1,16 +1,16 @@
 export interface Promotion {
   id: number;
-  title: string; // Tiêu đề khuyến mãi
-  description: string; // Mô tả chi tiết
-  image: string; // Đường dẫn ảnh
-  code: string; // Mã giảm giá (coupon)
-  discountPercent?: number; // Phần trăm giảm giá
-  discountAmount?: number; // Số tiền giảm (nếu không giảm theo %)
-  validFrom: string; // Ngày bắt đầu áp dụng (ISO format)
-  validTo: string; // Ngày kết thúc
-  applicableRoutes?: string[]; // Tuyến đường áp dụng (nếu có)
-  terms: string; // Điều khoản sử dụng
-  isActive: boolean; // Trạng thái đang hoạt động
+  title: string;
+  description: string;
+  image: string;
+  code: string;
+  discountPercent?: number;
+  discountAmount?: number;
+  validFrom: string;
+  validTo: string;
+  applicableRoutes?: string[];
+  terms: string;
+  isActive: boolean;
 }
 
 export const promotionsData: Promotion[] = [

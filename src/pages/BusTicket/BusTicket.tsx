@@ -1,48 +1,55 @@
 import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom"; // Thêm import này
+import { useLocation, useNavigate } from "react-router-dom";
 import Navbar from "../../components/navbar/Navbar";
 import Footer from "../../components/common/footer/Footer";
 import "./bus_ticket_css/bus_ticket.css";
-import { tripsData } from "../../data/tripsData";
+import { getTripsData } from "../../api/tripsApi";
 
 const BusTicket: React.FC = () => {
   const location = useLocation();
-  const navigate = useNavigate(); // Thêm hook này
+  const navigate = useNavigate();
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
   const [date, setDate] = useState("");
   const [sortCriteria, setSortCriteria] = useState("default");
+  const [trips, setTrips] = useState<any[]>([]);
 
-  // Lấy dữ liệu từ query parameters
+  useEffect(() => {
+    getTripsData()
+      .then((data) => {
+        setTrips(Array.isArray(data) ? data : data.data);
+      })
+      .catch(() => setTrips([]));
+  }, []);
+
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     setFrom(params.get("from") || "");
     setTo(params.get("to") || "");
-    setDate(params.get("date") || ""); // Lấy giá trị date từ URL
+    setDate(params.get("date") || "");
   }, [location.search]);
 
   // Lọc dữ liệu chuyến đi dựa trên tìm kiếm
-  const filteredTrips = tripsData.filter(
+  const filteredTrips = trips.filter(
     (trip) =>
       (!from ||
-        trip.departPlace.toLowerCase().includes(from.trim().toLowerCase())) &&
-      (!to ||
-        trip.arrivePlace.toLowerCase().includes(to.trim().toLowerCase())) &&
-      (!date || trip.date === date) // Nếu có trường `date` trong dữ liệu
+        trip.pickupPoint?.toLowerCase().includes(from.trim().toLowerCase())) &&
+      (!to || trip.payPonit?.toLowerCase().includes(to.trim().toLowerCase())) &&
+      (!date || trip.departureDate === date)
   );
 
   const sortedTrips = [...filteredTrips].sort((a, b) => {
     switch (sortCriteria) {
       case "earliest":
-        return a.departTime.localeCompare(b.departTime);
+        return a.departureTime.localeCompare(b.departureTime);
       case "latest":
-        return b.departTime.localeCompare(a.departTime);
+        return b.departureTime.localeCompare(a.departureTime);
       case "priceLowToHigh":
-        return a.price - b.price;
+        return a.priceSeatNumber - b.priceSeatNumber;
       case "priceHighToLow":
-        return b.price - a.price;
+        return b.priceSeatNumber - a.priceSeatNumber;
       default:
-        return 0; // Mặc định không sắp xếp
+        return 0;
     }
   });
 
@@ -133,35 +140,33 @@ const BusTicket: React.FC = () => {
         <section className="results-area">
           <h2>Kết quả: {sortedTrips.length} chuyến</h2>
           {sortedTrips.map((trip) => (
-            <div className="trip-card" key={`${trip.id}-${trip.departTime}`}>
-              <img src={trip.image} alt="bus" className="trip-image" />
+            <div className="trip-card" key={trip.tripCarId}>
+              <img src={trip.url} alt="bus" className="trip-image" />
               <div className="trip-details">
                 <div className="trip-header">
-                  <strong>{trip.company}</strong>{" "}
-                  <span className="rating">★ {trip.rating}</span>
+                  <strong>{trip.tripName}</strong>
+                  <span className="rating">{trip.coachName}</span>
                 </div>
-                <div className="trip-route">{trip.route}</div>
+                <div className="trip-route">
+                  {trip.pickupPoint} → {trip.payPonit}
+                </div>
                 <div className="trip-time">
                   <span>
-                    {trip.departTime} - {trip.departPlace}
+                    {trip.departureTime} - {trip.pickupPoint}
                   </span>
                   <span>
-                    {trip.arriveTime} - {trip.arrivePlace}
+                    {trip.departureEndTime} - {trip.payPonit}
                   </span>
-                  <span>{trip.duration}</span>
+                  <span>
+                    Còn {trip.emptySeatNumber}/{trip.seatNumber} chỗ
+                  </span>
                 </div>
                 <div className="trip-footer">
                   <div className="price-box">
                     <span className="current-price">
-                      Từ {trip.price.toLocaleString()}đ
+                      {trip.priceSeatNumber.toLocaleString()}đ
                     </span>
-                    {trip.originalPrice && (
-                      <span className="old-price">
-                        {trip.originalPrice.toLocaleString()}đ
-                      </span>
-                    )}
                   </div>
-                  {/* <span className="seats-left">Còn {trip.seatsLeft} chỗ</span> */}
                   <button
                     className="select-trip"
                     onClick={() =>

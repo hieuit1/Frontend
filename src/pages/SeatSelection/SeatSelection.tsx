@@ -8,18 +8,21 @@ interface Seat {
   id: string;
   price: number;
   status: "available" | "selected" | "unavailable";
-  floor: number; // Thêm thuộc tính tầng
+  floor: number;
 }
 
 const SeatSelection: React.FC = () => {
   const location = useLocation();
   const { trip } = location.state || {};
   const [seats, setSeats] = useState<Seat[]>(
-    Array.from({ length: 32 }, (_, i) => ({
+    Array.from({ length: trip?.seatNumber || 32 }, (_, i) => ({
       id: `${i + 1}`,
-      price: 130000,
-      status: i === 5 || i === 10 ? "unavailable" : "available",
-      floor: i < 16 ? 1 : 2, // 10 ghế tầng 1, 10 ghế tầng 2
+      price: trip?.priceSeatNumber || 130000,
+      status:
+        i < trip?.seatNumber - trip?.emptySeatNumber
+          ? "unavailable"
+          : "available",
+      floor: i < (trip?.seatNumber || 32) / 2 ? 1 : 2,
     }))
   );
   const [selectedSeats, setSelectedSeats] = useState<Seat[]>([]);
@@ -27,7 +30,6 @@ const SeatSelection: React.FC = () => {
 
   const toggleSeatSelection = (seat: Seat) => {
     if (seat.status === "unavailable") return;
-
     if (selectedSeats.find((s) => s.id === seat.id)) {
       setSelectedSeats((prev) => prev.filter((s) => s.id !== seat.id));
     } else {
@@ -40,7 +42,6 @@ const SeatSelection: React.FC = () => {
       alert("Vui lòng chọn ít nhất một chỗ ngồi!");
       return;
     }
-
     navigate("/payment", { state: { selectedSeats, trip } });
   };
 
@@ -50,25 +51,31 @@ const SeatSelection: React.FC = () => {
     <div className="seat-selection-page">
       <Navbar />
       <div className="seat-selection-trip-info-and-seat-map">
-        {/* Phần thông tin chuyến đi */}
+        {/* Thông tin chuyến đi */}
         <div className="seat-selection-trip-info">
           <h2>🎫 Đặt vé xe</h2>
           <div className="seat-selection-trip-details">
             <img
-              src={trip?.image}
+              src={trip?.url}
               alt="Hình ảnh chuyến đi"
               className="seat-selection-trip-image"
             />
             <div className="seat-selection-trip-text">
               <p>
-                <strong>Nhà xe:</strong> {trip?.company}
+                <strong>Nhà xe:</strong> {trip?.coachName}
               </p>
               <p>
-                <strong>Tuyến đường:</strong> {trip?.route}
+                <strong>Tuyến đường:</strong> {trip?.tripName}
               </p>
               <p>
-                <strong>Thời gian:</strong> {trip?.departTime} -{" "}
-                {trip?.arriveTime}
+                <strong>Thời gian:</strong> {trip?.departureTime} -{" "}
+                {trip?.departureEndTime}
+              </p>
+              <p>
+                <strong>Ngày đi:</strong> {trip?.departureDate}
+              </p>
+              <p>
+                <strong>Biển số xe:</strong> {trip?.licensePlateNumberCoach}
               </p>
             </div>
           </div>
