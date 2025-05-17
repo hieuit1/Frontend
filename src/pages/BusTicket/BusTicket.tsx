@@ -1,9 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Navbar from "../../components/navbar/Navbar";
 import Footer from "../../components/common/footer/Footer";
 import "./bus_ticket_css/bus_ticket.css";
 import { getTripsData } from "../../api/tripsApi";
+
+const POPULAR_LOCATIONS = [
+  "Hà Nội", "Quảng Ninh", "Ninh Bình", "Đà Nẵng", "Sài Gòn", "Sa Pa", "Vũng Tàu"
+];
 
 const BusTicket: React.FC = () => {
   const location = useLocation();
@@ -13,6 +17,10 @@ const BusTicket: React.FC = () => {
   const [date, setDate] = useState("");
   const [sortCriteria, setSortCriteria] = useState("default");
   const [trips, setTrips] = useState<any[]>([]);
+  const [showFromDropdown, setShowFromDropdown] = useState(false);
+  const [showToDropdown, setShowToDropdown] = useState(false);
+  const fromInputRef = useRef<HTMLInputElement>(null);
+  const toInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     getTripsData()
@@ -56,27 +64,77 @@ const BusTicket: React.FC = () => {
   return (
     <div className="bus-ticket-page">
       <Navbar />
-      <div className="search-section">
-        <div className="search-box">
-          <input
-            type="text"
-            placeholder="Nơi xuất phát"
-            value={from}
-            onChange={(e) => setFrom(e.target.value)}
-          />
-          <span className="arrow-icon">→</span>
-          <input
-            type="text"
-            placeholder="Nơi đến"
-            value={to}
-            onChange={(e) => setTo(e.target.value)}
-          />
+      <div className="bus-search-section">
+        <div className="bus-search-box">
+          {/* Nơi xuất phát */}
+          <div className="bus-dropdown-wrapper">
+            <input
+              type="text"
+              placeholder="Nơi xuất phát"
+              value={from}
+              ref={fromInputRef}
+              onFocus={() => setShowFromDropdown(true)}
+              onBlur={() => setTimeout(() => setShowFromDropdown(false), 150)}
+              onChange={(e) => setFrom(e.target.value)}
+              autoComplete="off"
+            />
+            {showFromDropdown && (
+              <div className="bus-dropdown-list">
+                <div className="bus-dropdown-title">Địa điểm phổ biến</div>
+                {POPULAR_LOCATIONS.map((loc) => (
+                  <div
+                    key={loc}
+                    className="bus-dropdown-item"
+                    onMouseDown={() => {
+                      setFrom(loc);
+                      setShowFromDropdown(false);
+                      fromInputRef.current?.blur();
+                    }}
+                  >
+                    {loc}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+          <span className="bus-arrow-icon">→</span>
+          {/* Nơi đến */}
+          <div className="bus-dropdown-wrapper">
+            <input
+              type="text"
+              placeholder="Nơi đến"
+              value={to}
+              ref={toInputRef}
+              onFocus={() => setShowToDropdown(true)}
+              onBlur={() => setTimeout(() => setShowToDropdown(false), 150)}
+              onChange={(e) => setTo(e.target.value)}
+              autoComplete="off"
+            />
+            {showToDropdown && (
+              <div className="bus-dropdown-list">
+                <div className="bus-dropdown-title">Địa điểm phổ biến</div>
+                {POPULAR_LOCATIONS.map((loc) => (
+                  <div
+                    key={loc}
+                    className="bus-dropdown-item"
+                    onMouseDown={() => {
+                      setTo(loc);
+                      setShowToDropdown(false);
+                      toInputRef.current?.blur();
+                    }}
+                  >
+                    {loc}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
           <input
             type="date"
             value={date}
             onChange={(e) => setDate(e.target.value)}
           />
-          <button className="search-btn">Tìm kiếm</button>
+          <button className="bus-search-btn">Tìm kiếm</button>
         </div>
       </div>
 
