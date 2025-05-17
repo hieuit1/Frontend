@@ -62,6 +62,9 @@ const Navbar: React.FC = () => {
                 </div>
                 {showMenu && (
                   <div className="navbar-user-menu">
+                    <Link to="/account" className="navbar-user-link">
+                      Tài khoản của tôi
+                    </Link>
                     <button
                       onClick={handleLogout}
                       style={{
