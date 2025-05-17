@@ -63,19 +63,13 @@ const Navbar: React.FC = () => {
                 {showMenu && (
                   <div className="navbar-user-menu">
                     <Link to="/account" className="navbar-user-link">
-                      Tài khoản của tôi
+                      Vé của tôi
                     </Link>
                     <button
                       onClick={handleLogout}
-                      style={{
-                        padding: "8px 16px",
-                        width: "100%",
-                        background: "none",
-                        border: "none",
-                        cursor: "pointer",
-                      }}
+                      className="navbar-logout-btn"
                     >
-                      Đăng xuất
+                    <p style={{ color: "#d32f2f", fontWeight: "600" }}>Đăng xuất</p>
                     </button>
                   </div>
                 )}
@@ -86,8 +80,9 @@ const Navbar: React.FC = () => {
                       <button
                         onClick={confirmLogout}
                         style={{ marginRight: 16 }}
+                        className="navbar-confirm-btn"
                       >
-                        Đồng ý
+                       <h3 style={{ color: "#4caf50", fontWeight: "600" }}>Đồng ý</h3>
                       </button>
                       <button onClick={cancelLogout}>Hủy</button>
                     </div>

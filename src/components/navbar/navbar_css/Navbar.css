@@ -72,42 +72,47 @@
   color: #ffffff;
 }
 
-/* User info & dropdown */
+/* Dropdown tài khoản */
 .navbar-user {
   position: relative;
-  margin-left: 16px;
+  margin-left: 18px;
 }
 
 .navbar-user > div {
-  padding: 6px 14px;
-  border-radius: 20px;
-  background: rgba(255,255,255,0.15);
+  padding: 7px 18px;
+  border-radius: 22px;
+  background: rgba(255,255,255,0.13);
   color: #fff;
   font-weight: 500;
-  transition: background 0.2s;
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 9px;
+  transition: background 0.2s;
+  user-select: none;
 }
 
 .navbar-user > div:hover {
-  background: rgba(255,255,255,0.25);
+  background: rgba(255,255,255,0.22);
 }
 
 /* Dropdown menu */
 .navbar-user-menu {
-  min-width: 120px;
-  margin-top: 6px;
+  min-width: 170px;
+  margin-top: 8px;
   background: #fff;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+  border: 1.5px solid #e0e0e0;
+  border-radius: 10px;
+  box-shadow: 0 6px 24px rgba(60,60,120,0.13);
   z-index: 20;
   right: 0;
   top: 110%;
   position: absolute;
-  animation: fadeInMenu 0.2s;
+  animation: fadeInMenu 0.22s;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
 }
 
 @keyframes fadeInMenu {
@@ -115,28 +120,79 @@
   to { opacity: 1; transform: translateY(0);}
 }
 
+.navbar-user-link {
+  display: block;
+  padding: 14px 20px;
+  color: #3b3b98;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 15px;
+  transition: background 0.18s, color 0.18s;
+  border: none;
+  background: none;
+  text-align: left;
+}
+
+.navbar-user-link:hover {
+  background: #f2f2fa;
+  color: #5f6cff;
+}
+
 .navbar-user-menu button {
-  width: 100%;
-  padding: 10px 0;
+  padding: 14px 20px;
   background: none;
   border: none;
-  color: #007bff; /* Màu xanh dương nổi bật */
+  color: #d32f2f;
   font-weight: 600;
-  border-radius: 8px;
+  font-size: 15px;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.18s, color 0.18s;
+}
+
+.navbar-user-menu button:hover {
+  background: #fbe9e7;
+  color: #b71c1c;
+}
+
+.navbar-logout-btn {
+  color: #d32f2f;
+  background: none;
+  border: none;
+  font-weight: 600;
+  font-size: 15px;
+  padding: 14px 20px;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.18s, color 0.18s;
+}
+
+.navbar-logout-btn:hover {
+  background: #fbe9e7;
+  color: #b71c1c 
+}
+
+.navbar-confirm-btn {
+  color: #4caf50;
+  background: none;
+  border: none;
+  font-size: 16px;
+  padding: 9px 26px;
+  border-radius: 7px;
   cursor: pointer;
   transition: background 0.2s, color 0.2s;
 }
 
-.navbar-user-menu button:hover {
-  background: #f2f2f2;
-  color: #d32f2f; /* Đỏ khi hover */
+.navbar-confirm-btn:hover {
+  background: #e8f5e9;
+  color: #388e3c;
 }
 
 /* Modal overlay */
 .navbar-modal {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.25);
+  background: rgba(60,60,120,0.18);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -145,43 +201,43 @@
 
 /* Modal content */
 .navbar-modal > div {
-  background: #827bff;
-  padding: 32px 28px 24px 28px;
-  border-radius: 12px;
+  background: #fff;
+  padding: 36px 32px 28px 32px;
+  border-radius: 14px;
   min-width: 320px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  box-shadow: 0 8px 32px rgba(60,60,120,0.18);
   text-align: center;
 }
 
 .navbar-modal p {
-  font-size: 17px;
-  margin-bottom: 24px;
+  font-size: 18px;
+  margin-bottom: 28px;
   color: #222;
 }
 
 .navbar-modal button {
-  padding: 8px 22px;
-  margin: 0 8px;
-  border-radius: 6px;
+  padding: 9px 26px;
+  margin: 0 10px;
+  border-radius: 7px;
   border: none;
   font-weight: 600;
-  font-size: 15px;
+  font-size: 16px;
   cursor: pointer;
   transition: background 0.2s, color 0.2s;
 }
 
 .navbar-modal button:first-child {
-  background: #007bff;
-  color: #7690df;
+  background: #5f6cff;
+  color: #fff;
 }
 
 .navbar-modal button:first-child:hover {
-  background: #0056b3;
+  background: #3b3b98;
 }
 
 .navbar-modal button:last-child {
-  background: #f2f2f2;
-  color: #333;
+  background: #f2f2fa;
+  color: #3b3b98;
 }
 
 .navbar-modal button:last-child:hover {

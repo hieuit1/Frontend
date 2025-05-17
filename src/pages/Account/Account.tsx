@@ -1,19 +1,29 @@
 import React from "react";
 import Navbar from "../../components/navbar/Navbar";
 import Footer from "../../components/common/footer/Footer";
+import styles from "./AccountPage.module.css";
+
+function safeParse(json: string | null) {
+  try {
+    return json ? JSON.parse(json) : {};
+  } catch {
+    return {};
+  }
+}
 
 const Account: React.FC = () => {
-  const bookingHistory = JSON.parse(localStorage.getItem("bookingHistory") || "[]");
+  const bookingHistory = safeParse(localStorage.getItem("bookingHistory")) || [];
+  const user = safeParse(localStorage.getItem("user")) || {};
 
   return (
-    <div className="account-page">
+    <div className={styles["account-page"]}>
       <Navbar />
-      <div className="account-container">
+      <div className={styles["account-container"]}>
         <h2>Lịch sử đặt vé của bạn</h2>
         {bookingHistory.length === 0 ? (
           <p>Bạn chưa đặt vé nào.</p>
         ) : (
-          <table className="booking-history-table">
+          <table className={styles["booking-history-table"]}>
             <thead>
               <tr>
                 <th>Họ tên</th>
