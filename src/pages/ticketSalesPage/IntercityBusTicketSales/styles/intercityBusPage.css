@@ -1,3 +1,4 @@
+/*Frontend\src\pages\ticketSalesPage\IntercityBusTicketSales\styles\intercityBusPage.css*/
 .intercity-container {
   padding: 90px 30px 30px;
   background: #f5f6fa;
@@ -34,16 +35,17 @@
   gap: 20px;
 }
 
-.intercity-card {
+.intercity-card-size {
   background: #fff;
   padding: 20px;
-  width: 300px;
+  width: 286px;
+  height: 156px;
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
   transition: transform 0.3s ease;
 }
 
-.intercity-card:hover {
+.intercity-card-size:hover {
   transform: translateY(-5px);
 }
 

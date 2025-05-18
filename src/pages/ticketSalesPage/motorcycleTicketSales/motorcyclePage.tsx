@@ -68,7 +68,7 @@ const MotorcycleTicketSalesPage: React.FC = () => {
       <div className="motorcycle-card-grid">
         {filteredTickets.map((ticket) => (
           <div key={ticket.id} className="motorcycle-card" style={{backgroundImage: `url(${VE_DEN})`, backgroundSize: "cover"}}>
-            <h3 className="white">{ticket.from} → {ticket.to}</h3>
+            <h3 className="white text-between">{ticket.from} → {ticket.to}</h3>
             <p className="white">🛵 <strong>Xe:</strong> {ticket.vehicle}</p>
             <p className="white">👨‍✈️ <strong>Tài xế:</strong> {ticket.driver}</p>
             <p className="white">💸 <strong>Giá:</strong> {ticket.price.toLocaleString()} VND</p>
@@ -81,4 +81,4 @@ const MotorcycleTicketSalesPage: React.FC = () => {
   );
 };
 
-export default MotorcycleTicketSalesPage;
+export  {MotorcycleTicketSalesPage};

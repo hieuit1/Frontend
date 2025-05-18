@@ -16,12 +16,9 @@ import Payment from "../pages/Payment/Payment";
 import AdminAbout from "../pages/admin/aboutAdmin/about";
 import ContactAdmin from "../pages/admin/contactAdmin/contact";
 import { UserManagement } from "../pages/admin/userManagement/userManagementExport";
-import TaxiTicketSalesPage from "../pages/ticketSalesPage/taxiTicketSales/taxiPage";
-import TouristBusTicketSalesPage from "../pages/ticketSalesPage/touristBusTicketSalesPage/touristBusPage";
-import MotorcycleTicketSalesPage from "../pages/ticketSalesPage/motorcycleTicketSales/motorcyclePage";
-import TrainTicketSalesPage from "../pages/ticketSalesPage/trainTicketSales/trainPage";
-import IntercityBusTicketSalesPage from "../pages/ticketSalesPage/IntercityBusTicketSales/intercityBusPage";
-import AirlineTicketSalesPage from "../pages/ticketSalesPage/airlineTicketSales/airlinePage";
+import {TaxiTicketSalesPage, TouristBusTicketSalesPage, MotorcycleTicketSalesPage, TrainTicketSalesPage, IntercityBusTicketSalesPage, AirlineTicketSalesPage} from "../pages/ticketSalesPage/indexExport";
+
+
 const AppRouter: React.FC = () => {
   return (
     <Router>
@@ -52,7 +49,6 @@ const AppRouter: React.FC = () => {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         {/* Trang trả về mật khẩu */}
         <Route path="/reset-password" element={<ResetPassword />} />
-
         {/* Trang giới thiệu về quản trị viên */}
         <Route path="/admin/about" element={<AdminAbout />} />
 
@@ -68,7 +64,7 @@ const AppRouter: React.FC = () => {
 
         {/* Trang Ban vé taxi */}
         <Route path="/taxiTicket" element={<TaxiTicketSalesPage />} />
-        {/* */}
+        {/* Trang */}
         <Route path="/touristBusTicket" element={<TouristBusTicketSalesPage />} />
         {/* Trang Ban vé xe máy */}
         <Route path="/motorcycleTicket" element={<MotorcycleTicketSalesPage />} />

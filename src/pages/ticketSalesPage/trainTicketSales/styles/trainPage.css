@@ -34,32 +34,17 @@
   gap: 20px;
 }
 
-.train-card {
+.train-card-size {
   background: #fff;
   padding: 20px;
-  width: 300px;
+  width: 305px;
+  height: 180px;
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
   transition: transform 0.3s ease;
 }
 
-.train-card:hover {
+.train-card-size:hover {
   transform: translateY(-5px);
 }
 
-.train-button {
-  margin-top: 12px;
-  background-color: #007bff;
-  color: #fff;
-  padding: 10px;
-  width: 100%;
-  border: none;
-  border-radius: 6px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.train-button:hover {
-  background-color: #0056b3;
-}

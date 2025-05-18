@@ -1,6 +1,12 @@
-
 import React, { useState } from "react";
-import { Form, Input, Button, DatePicker, TimePicker, InputNumber, message, Row, Col } from "antd";
+import { Form, Input,
+  Button, DatePicker,
+  TimePicker,
+  InputNumber,
+  message,
+  Row,
+  Col,
+} from "antd";
 
 const TouristBusTicketSalesPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
@@ -10,23 +16,7 @@ const TouristBusTicketSalesPage: React.FC = () => {
     setTimeout(() => {
       setLoading(false);
       message.success("Đăng bán vé xe du lịch thành công!");
-
-      // Lấy danh sách vé hiện tại từ localStorage
-      const existingTickets = JSON.parse(localStorage.getItem("touristTickets") || "[]");
-
-      // Tạo vé mới với ID tự động
-      const newTicket = {
-        id: Date.now(),
-        from: values.from,
-        to: values.to,
-        guide: values.driver,
-        price: values.price,
-        busType: "Chưa xác định", // Bạn có thể thêm trường chọn loại xe nếu muốn
-        province: values.from,
-      };
-
-      // Lưu lại vào localStorage
-      localStorage.setItem("touristTickets", JSON.stringify([...existingTickets, newTicket]));
+      console.log("Form data:", values);
     }, 1000);
   };
 
@@ -42,6 +32,7 @@ const TouristBusTicketSalesPage: React.FC = () => {
     >
       <h2>Đăng bán vé xe du lịch</h2>
       <Form layout="horizontal" onFinish={onFinish}>
+
         {/* Tài xế */}
         <Form.Item
           label="Tài xế"
@@ -52,13 +43,15 @@ const TouristBusTicketSalesPage: React.FC = () => {
         </Form.Item>
 
         {/* Tài xế phụ */}
-        <Form.Item
-          label="Tài xế phụ"
-          name="assistantDriver"
-          rules={[{ required: true, message: "Vui lòng nhập tên tài xế phụ" }]}
-        >
-          <Input placeholder="VD: Trần Thị B" />
-        </Form.Item>
+<Form.Item
+  label="Tài xế phụ"
+  name="assistantDriver"
+  rules={[{ required: true, message: "Vui lòng nhập tên tài xế phụ" }]}
+>
+  <Input placeholder="VD: Trần Thị B" />
+</Form.Item>
+
+
 
         {/* Điểm đi và Điểm đến cùng hàng */}
         <Row gutter={16}>
@@ -138,41 +131,42 @@ const TouristBusTicketSalesPage: React.FC = () => {
 
         <Form.Item>
           <Button
-            type="primary"
-            htmlType="submit"
-            loading={loading}
-            block
-            style={{
-              height: 48,
-              fontSize: 16,
-              fontWeight: 600,
-              borderRadius: 8,
-              background: "#1677ff",
-              borderColor: "#1677ff",
-              transition: "all 0.3s ease",
-              boxShadow: "0 4px 10px rgba(22, 119, 255, 0.3)",
-            }}
-            onMouseEnter={(e) => {
-              (e.currentTarget as HTMLButtonElement).style.background = "#4096ff";
-              (e.currentTarget as HTMLButtonElement).style.borderColor = "#4096ff";
-              (e.currentTarget as HTMLButtonElement).style.boxShadow = "0 6px 16px rgba(64, 150, 255, 0.5)";
-              (e.currentTarget as HTMLButtonElement).style.transform = "translateY(-2px)";
-            }}
-            onMouseLeave={(e) => {
-              (e.currentTarget as HTMLButtonElement).style.background = "#1677ff";
-              (e.currentTarget as HTMLButtonElement).style.borderColor = "#1677ff";
-              (e.currentTarget as HTMLButtonElement).style.boxShadow = "0 4px 10px rgba(22, 119, 255, 0.3)";
-              (e.currentTarget as HTMLButtonElement).style.transform = "translateY(0)";
-            }}
-            onMouseDown={(e) => {
-              (e.currentTarget as HTMLButtonElement).style.transform = "scale(0.98)";
-            }}
-            onMouseUp={(e) => {
-              (e.currentTarget as HTMLButtonElement).style.transform = "translateY(-2px)";
-            }}
-          >
-            🚌 Đăng bán vé
-          </Button>
+  type="primary"
+  htmlType="submit"
+  loading={loading}
+  block
+  style={{
+    height: 48,
+    fontSize: 16,
+    fontWeight: 600,
+    borderRadius: 8,
+    background: "#1677ff",
+    borderColor: "#1677ff",
+    transition: "all 0.3s ease",
+    boxShadow: "0 4px 10px rgba(22, 119, 255, 0.3)",
+  }}
+  onMouseEnter={(e) => {
+    (e.currentTarget as HTMLButtonElement).style.background = "#4096ff";
+    (e.currentTarget as HTMLButtonElement).style.borderColor = "#4096ff";
+    (e.currentTarget as HTMLButtonElement).style.boxShadow = "0 6px 16px rgba(64, 150, 255, 0.5)";
+    (e.currentTarget as HTMLButtonElement).style.transform = "translateY(-2px)";
+  }}
+  onMouseLeave={(e) => {
+    (e.currentTarget as HTMLButtonElement).style.background = "#1677ff";
+    (e.currentTarget as HTMLButtonElement).style.borderColor = "#1677ff";
+    (e.currentTarget as HTMLButtonElement).style.boxShadow = "0 4px 10px rgba(22, 119, 255, 0.3)";
+    (e.currentTarget as HTMLButtonElement).style.transform = "translateY(0)";
+  }}
+  onMouseDown={(e) => {
+    (e.currentTarget as HTMLButtonElement).style.transform = "scale(0.98)";
+  }}
+  onMouseUp={(e) => {
+    (e.currentTarget as HTMLButtonElement).style.transform = "translateY(-2px)";
+  }}
+>
+  🚍 Đăng bán vé
+</Button>
+
         </Form.Item>
       </Form>
     </div>

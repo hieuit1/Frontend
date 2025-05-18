@@ -8,7 +8,7 @@ const airlineTickets = [
   {
     id: 1,
     from: "Hà Nội",
-    to: "TP. Hồ Chí Minh",
+    to: "Hồ Chí Minh",
     airline: "Vietnam Airlines",
     time: "07:00 - 09:00",
     price: 1200000,
@@ -23,8 +23,16 @@ const airlineTickets = [
   },
   {
     id: 3,
-    from: "TP. Hồ Chí Minh",
+    from: "Hồ Chí Minh",
     to: "Phú Quốc",
+    airline: "Bamboo Airways",
+    time: "10:00 - 11:30",
+    price: 950000,
+  },
+    {
+    id: 3,
+    from: "Hồ Chí Minh",
+    to: "Tuyên Quang",
     airline: "Bamboo Airways",
     time: "10:00 - 11:30",
     price: 950000,
@@ -60,14 +68,14 @@ const AirlineTicketSalesPage: React.FC = () => {
 
       <div className="airline-card-grid">
         {filteredTickets.map((ticket) => (
-          <div key={ticket.id} className="airline-card" style={{ backgroundImage: `url(${VE_TIM})`, backgroundSize: "cover" }}>
-            <h3>
+          <div key={ticket.id} className="airline-card-size" style={{ backgroundImage: `url(${VE_TIM})`, backgroundSize: "cover" }}>
+            <h3 className="text-between white box-plane-lower">
               {ticket.from} → {ticket.to}
             </h3>
-            <p>🛫 <strong>Hãng:</strong> {ticket.airline}</p>
-            <p>🕒 <strong>Giờ bay:</strong> {ticket.time}</p>
-            <p>💰 <strong>Giá vé:</strong> {ticket.price.toLocaleString()} VND</p>
-            <button className="airline-button">Đặt vé ngay</button>
+            <p className="white box-distance">🛫 <strong>{ticket.airline}</strong></p>
+            <p className="white box-distance">🕒 <strong>{ticket.time}</strong> </p>
+            <p className="white box-distance">💰 <strong>Giá vé:</strong> {ticket.price.toLocaleString()} VND</p>
+
           </div>
         ))}
       </div>
@@ -76,4 +84,4 @@ const AirlineTicketSalesPage: React.FC = () => {
   );
 };
 
-export default AirlineTicketSalesPage;
+export  {AirlineTicketSalesPage};

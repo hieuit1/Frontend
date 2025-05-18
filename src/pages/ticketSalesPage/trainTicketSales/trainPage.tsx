@@ -59,14 +59,13 @@ const TrainTicketSalesPage: React.FC = () => {
 
       <div className="train-card-grid">
         {filteredRoutes.map((route) => (
-          <div key={route.id} className="train-card" style={{backgroundImage: `url(${VE_HONG})`, backgroundSize: "cover"}}>
-            <h3>
+          <div key={route.id} className="train-card-size" style={{backgroundImage: `url(${VE_HONG})`, backgroundSize: "cover"}}>
+            <h3 className="text-between box-train-lower">
               {route.from} → {route.to}
             </h3>
-            <p>🕒 <strong>Giờ chạy:</strong> {route.time}</p>
-            <p>🚆 <strong>Tàu:</strong> {route.train}</p>
-            <p>💰 <strong>Giá:</strong> {route.price.toLocaleString()} VND</p>
-            <button className="train-button">Đặt vé ngay</button>
+            <p className="box-distance">🕒 <strong>Giờ chạy:</strong> {route.time}</p>
+            <p className="box-distance">🚆 <strong>Tàu:</strong> {route.train}</p>
+            <p className="box-distance">💰 <strong>Giá:</strong> {route.price.toLocaleString()} VND</p>
           </div>
         ))}
       </div>
@@ -75,4 +74,4 @@ const TrainTicketSalesPage: React.FC = () => {
   );
 };
 
-export default TrainTicketSalesPage;
+export  {TrainTicketSalesPage};

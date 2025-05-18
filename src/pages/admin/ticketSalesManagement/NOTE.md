@@ -6,3 +6,12 @@
 # MotorcycleTicketSalesPage => Trang Đăng Bán Vé Xe Ôm
 # TrainTicketSalesPage => Trang Đăng Bán Vé Tàu Hỏa
 # TrainTicketSalesListPage => Trang Danh Sách Đăng Bán Vé Tàu Hỏa
+# TouristBusTicketSalesListPage => Danh Sách Đăng Bán Vé Xe Du Lịch 
+# TouristBusTicketSalesPage => Trang Đăng Bán Vé Xe Du Lịch
+# TaxiTicketSalesPage => Trang Đăng Bán Vé Taxi
+# TaxiTicketSalesListPage => Danh Sách Bán Vé Taxi
+
+
+          parser={(value: string | undefined): any =>
+  parseInt(value?.replace(/,*/g, "") || "0")
+}

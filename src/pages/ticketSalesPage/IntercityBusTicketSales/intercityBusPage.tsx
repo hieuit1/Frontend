@@ -63,8 +63,8 @@ const IntercityBusTicketSalesPage: React.FC = () => {
 
       <div className="intercity-card-grid">
         {filteredBuses.map((bus) => (
-          <div key={bus.id} className="intercity-card" style={{backgroundImage: `url(${VE_LA})`, backgroundSize: "cover"}}>
-            <h3 className="white">{bus.from} → {bus.to}</h3>
+          <div key={bus.id} className="intercity-card-size" style={{backgroundImage: `url(${VE_LA})`, backgroundSize: "cover"}}>
+            <h3 className="white text-between">{bus.from} → {bus.to}</h3>
             <p className="white">🕒 <strong>Giờ chạy:</strong> {bus.time}</p>
             <p className="white">🚍 <strong>Xe:</strong> {bus.vehicle}</p>
             <p className="white">🏢 <strong>Hãng:</strong> {bus.company}</p>
@@ -78,4 +78,4 @@ const IntercityBusTicketSalesPage: React.FC = () => {
   );
 };
 
-export default IntercityBusTicketSalesPage;
+export { IntercityBusTicketSalesPage};

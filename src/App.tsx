@@ -1,6 +1,7 @@
 import React from "react";
 import AppRouter from "./routers/AppRouter";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import "./assets/styles/index.css"
 
 const App: React.FC = () => {
   return (
