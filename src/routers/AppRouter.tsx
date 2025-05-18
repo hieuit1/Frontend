@@ -16,12 +16,10 @@ import Payment from "../pages/Payment/Payment";
 import AdminAbout from "../pages/admin/aboutAdmin/about";
 import ContactAdmin from "../pages/admin/contactAdmin/contact";
 import { UserManagement } from "../pages/admin/userManagement/userManagementExport";
-import TaxiTicketSalesPage from "../pages/ticketSalesPage/taxiTicketSales/taxiPage";
-import TouristBusTicketSalesPage from "../pages/ticketSalesPage/touristBusTicketSalesPage/touristBusPage";
-import MotorcycleTicketSalesPage from "../pages/ticketSalesPage/motorcycleTicketSales/motorcyclePage";
-import TrainTicketSalesPage from "../pages/ticketSalesPage/trainTicketSales/trainPage";
-import IntercityBusTicketSalesPage from "../pages/ticketSalesPage/IntercityBusTicketSales/intercityBusPage";
-import AirlineTicketSalesPage from "../pages/ticketSalesPage/airlineTicketSales/airlinePage";
+
+
+import {AirlineTicketSalesPage, IntercityBusTicketSalesPage, TrainTicketSalesPage, MotorcycleTicketSalesPage,TaxiTicketSalesPage, TouristBusTicketSalesPage } from "../pages/ticketSalesPage/indexExport";
+import Account from "../pages/Account/Account";
 const AppRouter: React.FC = () => {
   return (
     <Router>
