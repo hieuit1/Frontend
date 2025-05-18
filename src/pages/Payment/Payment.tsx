@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { useLocation } from "react-router-dom";
-import emailjs from "@emailjs/browser";
+import { useLocation, useNavigate } from "react-router-dom";
 import Footer from "../../components/common/footer/Footer";
 import Navbar from "../../components/navbar/Navbar";
 import { toast, ToastContainer } from "react-toastify";
@@ -33,7 +32,15 @@ const paymentMethods = [
 
 const Payment: React.FC = () => {
   const location = useLocation();
-  const { selectedSeats } = location.state || {};
+  const navigate = useNavigate();
+  const { selectedSeats, trip } = location.state || {};
+
+  // TÍNH TỔNG TIỀN DỰA TRÊN selectedSeats và trip.priceSeatNumber
+  const totalPrice =
+    Array.isArray(selectedSeats) && trip?.priceSeatNumber
+      ? selectedSeats.length * trip.priceSeatNumber
+      : 0;
+
   const [contactInfo, setContactInfo] = useState({
     name: "",
     phone: "",
@@ -92,30 +99,53 @@ const Payment: React.FC = () => {
       name: contactInfo.name,
       phone: contactInfo.phone,
       email: contactInfo.email,
-      seats: selectedSeats?.join(", ") || "Không có",
+      seats: Array.isArray(selectedSeats)
+        ? selectedSeats.map((seat: any) => seat.id).join(", ")
+        : "Không có",
       paymentMethod,
-      ...(paymentMethod === "credit_card" ? cardInfo : {}),
+      tripName: trip?.tripName,
+      departureDate: trip?.departureDate,
+      departureTime: trip?.departureTime,
+      departureEndTime: trip?.departureEndTime,
+      pickupPoint: trip?.pickupPoint,
+      payPonit: trip?.payPonit,
+      priceSeatNumber: trip?.priceSeatNumber,
+      coachName: trip?.coachName,
+      licensePlateNumberCoach: trip?.licensePlateNumberCoach,
+      totalPrice: totalPrice.toLocaleString(), // hoặc giá trị tổng tiền đã tính
+      url: trip?.url,
     };
 
-    emailjs
-      .send(
-        "your_service_id", // <-- thay bằng ID thật
-        "your_template_id", // <-- thay bằng ID thật
-        paymentData,
-        "your_public_key" // <-- thay bằng public key thật
-      )
-      .then(
-        (response) => {
-          console.log("Email gửi thành công!", response.status, response.text);
-          toast.success(
-            "Thanh toán thành công! Thông tin vé đã được gửi qua email."
-          );
-        },
-        (error) => {
-          console.error("Lỗi khi gửi email:", error);
-          toast.error("Đã xảy ra lỗi khi gửi email!");
-        }
-      );
+    const token = localStorage.getItem("token");
+    fetch(`${process.env.REACT_APP_API_URL}/api-tripcar/payment`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token ? `Bearer ${token}` : "",
+      },
+      body: JSON.stringify(paymentData),
+    })
+      .then(async (res) => {
+        if (!res.ok) throw new Error(await res.text());
+        return res.text();
+      })
+      .then((msg) => {
+        // Lưu lịch sử đặt vé vào localStorage (nếu muốn)
+        const history = JSON.parse(localStorage.getItem("bookingHistory") || "[]");
+        history.push({
+          ...paymentData,
+          time: new Date().toISOString(),
+        });
+        localStorage.setItem("bookingHistory", JSON.stringify(history));
+
+        toast.success("Thanh toán thành công! Thông tin vé đã được gửi qua email.");
+        setTimeout(() => {
+          navigate("/account");
+        }, 1500);
+      })
+      .catch((err) => {
+        toast.error("Đã xảy ra lỗi khi gửi email: " + err.message);
+      });
   };
 
   return (

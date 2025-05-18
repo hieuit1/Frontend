@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import Navbar from "../../components/navbar/Navbar";
 import Footer from "./components/footer/Footer";
-import { tripsData } from "../../data/tripsData";
+import { getTripsData } from "../../api/tripsApi"; // Dùng API thật
 import { promotionsData } from "../../data/promotionsData";
-import ChatBox from "../../components/ChatBox/ChatBox"; 
+import ChatBox from "../../components/ChatBox/ChatBox";
 import SectionFour from "./components/sectionFour";
 import SectionSeven from "./components/sectionSeven";
 import SectionFive from "./components/sectionFive";
@@ -19,6 +19,18 @@ const Home: React.FC<{ setCurrentPage: (page: string) => void }> = ({
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
   const [date, setDate] = useState("");
+  const [trips, setTrips] = useState<any[]>([]);
+
+  // Lấy dữ liệu chuyến xe từ backend
+  useEffect(() => {
+    getTripsData()
+      .then((data) => {
+        const tripsArr = Array.isArray(data) ? data : data.data;
+        console.log("Trips data:", tripsArr);
+        setTrips(tripsArr);
+      })
+      .catch(() => setTrips([]));
+  }, []);
 
   const handleSearch = () => {
     navigate(
@@ -36,26 +48,22 @@ const Home: React.FC<{ setCurrentPage: (page: string) => void }> = ({
     );
   };
 
-  const destinations = tripsData
-    .map((trip) => ({
-      route: trip.company,
-      image: trip.image,
-      price: `${trip.price.toLocaleString()} – ${trip.originalPrice.toLocaleString()} VND`,
-      from: trip.departPlace,
-      to: trip.arrivePlace,
-      date: trip.date,
-    }))
-    .slice(0, 10); 
+  // Lấy 10 tuyến phổ biến từ dữ liệu thật
+  const destinations = trips.slice(0, 10).map((trip) => ({
+    route: trip.tripName,
+    image: trip.url,
+    price: `${trip.priceSeatNumber?.toLocaleString()} VND`,
+    from: trip.pickupPoint,
+    to: trip.payPonit,
+    date: trip.departureDate,
+  }));
 
-  
-
-  const promotions = promotionsData; 
-
+  const promotions = promotionsData;
 
   const scrollSlider = (direction: number) => {
     const slider = document.querySelector(".promotion-slider") as HTMLElement;
     if (slider) {
-      const scrollAmount = slider.offsetWidth / 2; // Cuộn nửa chiều rộng slider
+      const scrollAmount = slider.offsetWidth / 2;
       slider.scrollBy({ left: direction * scrollAmount, behavior: "smooth" });
     }
   };
@@ -65,69 +73,66 @@ const Home: React.FC<{ setCurrentPage: (page: string) => void }> = ({
       <Navbar />
 
       {/* Header */}
-      <HomeHeader/>
+      <HomeHeader />
 
-
-{/* Chỗ mua vé - Các loại phương tiện */}
-<section
-  style={{
-    padding: "40px 20px",
-    background: "#f7faff",
-    textAlign: "center",
-    marginTop: 40,
-    borderRadius: 12,
-  }}
->
-  <h2 style={{ fontSize: 24, marginBottom: 24 }}>
-    Chọn loại vé cần mua
-  </h2>
-  <div
-    style={{
-      display: "flex",
-      flexWrap: "wrap",
-      justifyContent: "center",
-      gap: 16,
-    }}
-  >
-    {[
-      { label: "Vé máy bay", path: "/airlineTicket" },
-      { label: "Vé xe bus", path: "/busTicket" },
-      { label: "Vé xe khách", path: "/intercityTicket" },
-      { label: "Vé xe du lịch", path: "/touristBusTicket" },
-      { label: "Vé taxi", path: "/taxiTicket" },
-      { label: "Vé xe ôm", path: "/motorcycleTicket" },
-      { label: "Vé tàu", path: "/trainTicket" },
-    ].map((item, index) => (
-      <Link
-        key={index}
-        to={item.path}
+      {/* Chỗ mua vé - Các loại phương tiện */}
+      <section
         style={{
-          background: "#ffffff",
-          padding: "14px 24px",
-          border: "1px solid #d6e4ff",
-          borderRadius: 8,
-          fontWeight: 500,
-          color: "#1d39c4",
-          textDecoration: "none",
-          transition: "all 0.3s ease",
-        }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.background = "#1d39c4";
-          e.currentTarget.style.color = "#fff";
-          e.currentTarget.style.boxShadow = "0 6px 12px rgba(29, 57, 196, 0.2)";
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.background = "#fff";
-          e.currentTarget.style.color = "#1d39c4";
-          e.currentTarget.style.boxShadow = "none";
+          padding: "40px 20px",
+          background: "#f7faff",
+          textAlign: "center",
+          marginTop: 40,
+          borderRadius: 12,
         }}
       >
-        {item.label}
-      </Link>
-    ))}
-  </div>
-</section>
-
+        <h2 style={{ fontSize: 24, marginBottom: 24 }}>Chọn loại vé cần mua</h2>
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "center",
+            gap: 16,
+          }}
+        >
+          {[
+            { label: "Vé máy bay", path: "/airlineTicket" },
+            { label: "Vé xe bus", path: "/busTicket" },
+            { label: "Vé xe khách", path: "/intercityTicket" },
+            { label: "Vé xe du lịch", path: "/touristBusTicket" },
+            { label: "Vé taxi", path: "/taxiTicket" },
+            { label: "Vé xe ôm", path: "/motorcycleTicket" },
+            { label: "Vé tàu", path: "/trainTicket" },
+          ].map((item, index) => (
+            <Link
+              key={index}
+              to={item.path}
+              style={{
+                background: "#ffffff",
+                padding: "14px 24px",
+                border: "1px solid #d6e4ff",
+                borderRadius: 8,
+                fontWeight: 500,
+                color: "#1d39c4",
+                textDecoration: "none",
+                transition: "all 0.3s ease",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = "#1d39c4";
+                e.currentTarget.style.color = "#fff";
+                e.currentTarget.style.boxShadow =
+                  "0 6px 12px rgba(29, 57, 196, 0.2)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = "#fff";
+                e.currentTarget.style.color = "#1d39c4";
+                e.currentTarget.style.boxShadow = "none";
+              }}
+            >
+              {item.label}
+            </Link>
+          ))}
+        </div>
+      </section>
 
       {/* Popular Destinations */}
       <section className="popular-destinations">
@@ -180,13 +185,13 @@ const Home: React.FC<{ setCurrentPage: (page: string) => void }> = ({
       </section>
 
       {/* Vì Sao Chọn Chúng Tôi */}
-      <SectionFour/>
+      <SectionFour />
       {/* Testimonials */}
-      <SectionFive/>
+      <SectionFive />
       {/* Nền tảng kết nối */}
-      <SectionSix/>
+      <SectionSix />
       {/* Thêm phần Được nhắc đến trên */}
-      <SectionSeven/>
+      <SectionSeven />
       {/* Thêm ChatBox */}
       <ChatBox />
       {/* Thêm phần Footer */}

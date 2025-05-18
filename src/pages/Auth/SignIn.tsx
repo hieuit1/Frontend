@@ -21,9 +21,15 @@ export function SignIn({ onAuthSuccess }: SignInProps) {
     e.preventDefault();
     try {
       const data = await signIn(email, password);
+      console.log("API response:", data);
 
-      if (!data) {
-        toast.error("Đăng nhập thất bại: Không nhận được dữ liệu.", {
+      // Sửa lại điều kiện kiểm tra
+      if (data.token && data.email) {
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", data.name);
+        localStorage.setItem("name", data.name);
+
+        toast.success("Đăng nhập thành công!", {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
@@ -32,25 +38,13 @@ export function SignIn({ onAuthSuccess }: SignInProps) {
           draggable: true,
           closeButton: false,
         });
-        return;
+
+        onAuthSuccess();
+        navigate("/");
+        window.location.reload();
+      } else {
+        throw new Error("Email hoặc mật khẩu không đúng.");
       }
-
-      if (data.token) {
-        localStorage.setItem("token", data.token);
-      }
-
-      toast.success("Đăng nhập thành công!", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        closeButton: false,
-      });
-
-      onAuthSuccess();
-      navigate("/");
     } catch (error: any) {
       toast.error(
         `Đăng nhập thất bại: ${error.message || "Lỗi không xác định"}`,
@@ -77,7 +71,7 @@ export function SignIn({ onAuthSuccess }: SignInProps) {
 
       if (data.token && data.user) {
         localStorage.setItem("token", data.token);
-        localStorage.setItem("user", data.user.name || data.user.email);
+        localStorage.setItem("user", data.user.name);
 
         toast.success("Đăng nhập bằng Google thành công!", {
           position: "top-center",
@@ -91,6 +85,7 @@ export function SignIn({ onAuthSuccess }: SignInProps) {
 
         onAuthSuccess();
         navigate("/");
+        window.location.reload(); // Thêm dòng này sau navigate
       } else {
         throw new Error("Xác thực Google thất bại.");
       }

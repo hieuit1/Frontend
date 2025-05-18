@@ -16,9 +16,12 @@ import Payment from "../pages/Payment/Payment";
 import AdminAbout from "../pages/admin/aboutAdmin/about";
 import ContactAdmin from "../pages/admin/contactAdmin/contact";
 import { UserManagement } from "../pages/admin/userManagement/userManagementExport";
-import {TaxiTicketSalesPage, TouristBusTicketSalesPage, MotorcycleTicketSalesPage, TrainTicketSalesPage, IntercityBusTicketSalesPage, AirlineTicketSalesPage} from "../pages/ticketSalesPage/indexExport";
-
-
+import TaxiTicketSalesPage from "../pages/ticketSalesPage/taxiTicketSales/taxiPage";
+import TouristBusTicketSalesPage from "../pages/ticketSalesPage/touristBusTicketSalesPage/touristBusPage";
+import MotorcycleTicketSalesPage from "../pages/ticketSalesPage/motorcycleTicketSales/motorcyclePage";
+import TrainTicketSalesPage from "../pages/ticketSalesPage/trainTicketSales/trainPage";
+import IntercityBusTicketSalesPage from "../pages/ticketSalesPage/IntercityBusTicketSales/intercityBusPage";
+import AirlineTicketSalesPage from "../pages/ticketSalesPage/airlineTicketSales/airlinePage";
 const AppRouter: React.FC = () => {
   return (
     <Router>
@@ -33,7 +36,8 @@ const AppRouter: React.FC = () => {
 
         <Route path="/payment" element={<Payment />} />
 
-        {/* Trang đăng nhập */}
+        <Route path="/account" element={<Account />} />
+
         <Route
           path="/auth"
           element={<AuthContainer onAuthSuccess={() => {}} />}
@@ -49,11 +53,12 @@ const AppRouter: React.FC = () => {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         {/* Trang trả về mật khẩu */}
         <Route path="/reset-password" element={<ResetPassword />} />
+
         {/* Trang giới thiệu về quản trị viên */}
         <Route path="/admin/about" element={<AdminAbout />} />
 
         {/* Trang liên hệ */}
-        <Route path="/admin/contact" element={<ContactAdmin/>} />
+        <Route path="/admin/contact" element={<ContactAdmin />} />
 
         {/* Trang admin */}
         <Route path="/admin/signin" element={<AdminSignInPage />} />
@@ -64,17 +69,22 @@ const AppRouter: React.FC = () => {
 
         {/* Trang Ban vé taxi */}
         <Route path="/taxiTicket" element={<TaxiTicketSalesPage />} />
-        {/* Trang */}
+        {/* */}
         <Route path="/touristBusTicket" element={<TouristBusTicketSalesPage />} />
         {/* Trang Ban vé xe máy */}
-        <Route path="/motorcycleTicket" element={<MotorcycleTicketSalesPage />} />
+        <Route
+          path="/motorcycleTicket"
+          element={<MotorcycleTicketSalesPage />}
+        />
         {/* Trang Ban vé tàu */}
         <Route path="/trainTicket" element={<TrainTicketSalesPage />} />
         {/* Trang Ban vé xe khách liên tỉnh */}
-        <Route path="/intercityTicket" element={<IntercityBusTicketSalesPage />} />
+        <Route
+          path="/intercityTicket"
+          element={<IntercityBusTicketSalesPage />}
+        />
         {/* Trang Ban vé máy bay */}
         <Route path="/airlineTicket" element={<AirlineTicketSalesPage />} />
-
       </Routes>
     </Router>
   );
