@@ -30,13 +30,12 @@ const POPULAR_LOCATIONS = [
   "Vũng Tàu",
 ];
 
-// Địa danh phổ biến và toạ độ (bạn có thể bổ sung thêm)
 const LOCATION_COORDS: Record<string, [number, number]> = {
   "Hà Nội": [21.028511, 105.804817],
   "Quảng Ninh": [21.006382, 107.292514],
   "Ninh Bình": [20.250614, 105.974453],
   "Đà Nẵng": [16.047079, 108.20623],
-  "Sài Gòn": [10.776889, 106.700806], // hoặc đổi thành "TP. Hồ Chí Minh" nếu bạn muốn đồng bộ với key LOCATION_COORDS
+  "Sài Gòn": [10.776889, 106.700806],
   "Sa Pa": [22.340168, 103.844813],
   "Vũng Tàu": [10.411379, 107.136227],
 };
@@ -45,10 +44,9 @@ function Routing({ from, to }: { from: string; to: string }) {
   const routingRef = React.useRef<any>(null);
 
   React.useEffect(() => {
-    // Xóa control cũ nếu có
     if (routingRef.current && routingRef.current._map) {
       try {
-        routingRef.current.off(); // Hủy toàn bộ sự kiện trước khi remove
+        routingRef.current.off();
         routingRef.current.remove();
       } catch (e) {
         // ignore nếu đã bị huỷ
@@ -89,7 +87,7 @@ function Routing({ from, to }: { from: string; to: string }) {
     return () => {
       if (routingRef.current && routingRef.current._map) {
         try {
-          routingRef.current.off(); // Hủy toàn bộ sự kiện trước khi remove
+          routingRef.current.off();
           routingRef.current.remove();
         } catch (e) {
           // ignore nếu đã bị huỷ
@@ -159,7 +157,6 @@ const BusTicket: React.FC = () => {
       <Navbar />
       <div className="bus-search-section">
         <div className="bus-search-box">
-          {/* Nơi xuất phát */}
           <div className="bus-dropdown-wrapper">
             <input
               type="text"
@@ -191,7 +188,7 @@ const BusTicket: React.FC = () => {
             )}
           </div>
           <span className="bus-arrow-icon">→</span>
-          {/* Nơi đến */}
+
           <div className="bus-dropdown-wrapper">
             <input
               type="text"
@@ -231,7 +228,6 @@ const BusTicket: React.FC = () => {
         </div>
       </div>
 
-      {/* Thêm bản đồ ngay dưới phần tìm kiếm */}
       {from && to && LOCATION_COORDS[from] && LOCATION_COORDS[to] && (
         <div className="bus-map-container">
           <MapContainer
