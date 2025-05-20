@@ -16,10 +16,12 @@ import Payment from "../pages/Payment/Payment";
 import AdminAbout from "../pages/admin/aboutAdmin/about";
 import ContactAdmin from "../pages/admin/contactAdmin/contact";
 import { UserManagement } from "../pages/admin/userManagement/userManagementExport";
-
-
 import {AirlineTicketSalesPage, IntercityBusTicketSalesPage, TrainTicketSalesPage, MotorcycleTicketSalesPage,TaxiTicketSalesPage, TouristBusTicketSalesPage } from "../pages/ticketSalesPage/indexExport";
 import Account from "../pages/Account/Account";
+
+import TicketAnalytics from "../pages/admin/bookingManagement/ticketsSold/sellTickets";
+
+
 const AppRouter: React.FC = () => {
   return (
     <Router>
@@ -83,6 +85,10 @@ const AppRouter: React.FC = () => {
         />
         {/* Trang Ban vé máy bay */}
         <Route path="/airlineTicket" element={<AirlineTicketSalesPage />} />
+
+        {/* Trang quản lý vé đã bán Test*/}
+        <Route path="/admin/tickets-sold" element={<TicketAnalytics />} />
+
       </Routes>
     </Router>
   );

@@ -147,4 +147,4 @@ const UserCancelsTicket: React.FC = () => {
   );
 };
 
-export default UserCancelsTicket;
+export  {UserCancelsTicket};

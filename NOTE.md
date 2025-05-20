@@ -22,5 +22,10 @@ src/api/
  - npm install antd --save
  - npm install framer-motion
  - npm install @ant-design/icons
+ - npm i recharts
+ - npm i dayjs
 process.env.REACT_APP_API_URL_ADMIN
     `${process.env.REACT_APP_API_URL_ADMIN}/auth/admin`,
+
+    Tránh “God Component” (component quá dài và cồng kềnh)
+

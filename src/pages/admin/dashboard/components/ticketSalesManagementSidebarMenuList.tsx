@@ -14,6 +14,7 @@ const subMenus = [
   "Bán Vé Taxi",
   "Bán Vé Tàu",
   "Bán Vé Xe Du Lịch",
+  "Bán Vé Xe Bus"
 ];
 
 const TicketSalesManagementSidebarMenuList: React.FC<Props> = ({

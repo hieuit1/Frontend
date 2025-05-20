@@ -1,204 +1,193 @@
+// F:\File\do-an-tot-nghiep\Frontend\src\pages\admin\dashboard\indexDashboard.tsx
 import React, { useState } from "react";
+import { Button } from "antd";
+import { Sidebar, Header, Footer } from "./components/indexExport";
+import Widgets from "./components/widgets";
+import { UserSignUps, UserReviews, UserCancelsTicket, UserPurchasesTickets } from "../userManagement/userManagementExport";
+import { IntercityBusTicketSalesPage, IntercityBusTicketSalesListPage, TrainTicketSalesListPage, TrainTicketSalesPage, MotorcycleTicketSalesListPage, MotorcycleTicketSalesPage, AirlineTicketSalesListPage, AirlineTicketSalesPage, TaxiTicketSalesListPage, TaxiTicketSalesPage, TouristBusTicketSalesListPage, TouristBusTicketSalesPage } from "../ticketSalesManagement/indexExport";
+import { userSubMenus } from "../../../data/userSubMenus"; // Import danh sách submenu từ file riêng
+
+
 import "./dashboard.css";
-import Revenue from "../revenueManagement/revenue";
+
 
 const Dashboard: React.FC = () => {
   const [selectedMenu, setSelectedMenu] = useState<string>("Trang chủ");
   const [openSubMenu, setOpenSubMenu] = useState<boolean>(false);
+  const [selectedUserSubMenu, setSelectedUserSubMenu] = useState<string>(userSubMenus[0].label);
+  const [showTouristBusForm, setShowTouristBusForm] = useState(false);
+  const [showIntercityBusForm, setShowIntercityBusForm] = useState(false);
+  const [showTrainTicketForm, setShowTrainTicketForm] = useState(false);
+  const [showAirlineTicketForm, setShowAirlineTicketForm] = useState(false);
+  const [showMotorcycleTicketForm, setShowMotorcycleTicketForm] = useState(false);
+  const [showTaxiTicketForm, setShowTaxiTicketForm] = useState(false);
+
+  const handleMenuSelect = (menu: string) => {
+    setSelectedMenu(menu);
+    if (userSubMenus.some((sub) => sub.label === menu)) {
+      setSelectedMenu("Quản Lý Người Dùng");
+      setSelectedUserSubMenu(menu);
+    }
+    if (menu !== "Bán Vé Xe Du Lịch") setShowTouristBusForm(false);
+    if (menu !== "Bán Vé Xe Khách") setShowIntercityBusForm(false);
+    if (menu !== "Bán Vé Tàu") setShowTrainTicketForm(false);
+    if (menu !== "Bán Vé Máy Bay") setShowAirlineTicketForm(false);
+    if (menu !== "Bán Vé Xe Ôm") setShowMotorcycleTicketForm(false);
+    if (menu !== "Bán Vé Taxi") setShowTaxiTicketForm(false);
+  };
 
   const renderContent = () => {
-    if (selectedMenu === "Danh Thu") {
-      return <Revenue />;
-    }
-    // Trang chủ mặc định
-    return (
-      <>
-        <div className="dashboard-widgets">
-          <div className="dashboard-card wide">
-            <h3>Top 5 sản phẩm được đặt nhiều nhất</h3>
-            <table>
-              <thead>
-                <tr>
-                  <th>Sản phẩm</th>
-                  <th>Số lượng</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td colSpan={2} style={{ textAlign: "center", color: "#bbb" }}>
-                    (Chưa có dữ liệu)
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+    if (selectedMenu === "Quản Lý Người Dùng") {
+      return (
+        <div>
+          <div style={{ marginBottom: 16, display: "flex", gap: 8 }}>
+            {userSubMenus.map((sub) => (
+              <button
+                key={sub.label}
+                style={{
+                  padding: "6px 16px",
+                  borderRadius: 4,
+                  border: selectedUserSubMenu === sub.label ? "2px solid #1890ff" : "1px solid #ccc",
+                  background: selectedUserSubMenu === sub.label ? "#e6f7ff" : "#fff",
+                  fontWeight: selectedUserSubMenu === sub.label ? 600 : 400,
+                  cursor: "pointer",
+                }}
+                onClick={() => setSelectedUserSubMenu(sub.label)}
+              >
+                {sub.label}
+              </button>
+            ))}
           </div>
-          <div className="dashboard-card">
-            <div className="dashboard-value" style={{ fontSize: 48, fontWeight: 700 }}>VNĐ</div>
-            <div className="dashboard-label">Doanh thu</div>
+          <div>
+            {userSubMenus.find((sub) => sub.label === selectedUserSubMenu)?.component}
           </div>
         </div>
-      </>
-    );
+      );
+    }
+    if (selectedMenu === "Danh Thu") {
+      return <Widgets />;
+    }
+    if (selectedMenu === "Bán Vé Xe Du Lịch") {
+      if (showTouristBusForm) {
+        return (
+          <div>
+            <Button onClick={() => setShowTouristBusForm(false)} style={{ marginBottom: 16 }}>
+              Quay lại danh sách vé
+            </Button>
+            <TouristBusTicketSalesPage />
+          </div>
+        );
+      }
+      return (
+        <div>
+          <TouristBusTicketSalesListPage onAddTicket={() => setShowTouristBusForm(true)} />
+        </div>
+      );
+    }
+    if (selectedMenu === "Bán Vé Xe Khách") {
+      if (showIntercityBusForm) {
+        return (
+          <div>
+            <Button onClick={() => setShowIntercityBusForm(false)} style={{ marginBottom: 16 }}>
+              Quay lại danh sách vé
+            </Button>
+            <IntercityBusTicketSalesPage />
+          </div>
+        );
+      }
+      return (
+        <div>
+          <IntercityBusTicketSalesListPage onAddTicket={() => setShowIntercityBusForm(true)} />
+        </div>
+      );
+    }
+    if (selectedMenu === "Bán Vé Taxi") {
+      if (showTaxiTicketForm) {
+        return (
+          <div>
+            <Button onClick={() => setShowTaxiTicketForm(false)} style={{ marginBottom: 16 }}>
+              Quay lại danh sách vé
+            </Button>
+            <TaxiTicketSalesPage />
+          </div>
+        );
+      }
+      return (
+        <div>
+          <TaxiTicketSalesListPage onAddTicket={() => setShowTaxiTicketForm(true)} />
+        </div>
+      );
+    }
+    if (selectedMenu === "Bán Vé Tàu") {
+      if (showTrainTicketForm) {
+        return (
+          <div>
+            <Button onClick={() => setShowTrainTicketForm(false)} style={{ marginBottom: 16 }}>
+              Quay lại danh sách vé
+            </Button>
+            <TrainTicketSalesPage />
+          </div>
+        );
+      }
+      return (
+        <div>
+          <TrainTicketSalesListPage onAddTicket={() => setShowTrainTicketForm(true)} />
+        </div>
+      );
+    }
+    if (selectedMenu === "Bán Vé Máy Bay") {
+      if (showAirlineTicketForm) {
+        return (
+          <div>
+            <Button onClick={() => setShowAirlineTicketForm(false)} style={{ marginBottom: 16 }}>
+              Quay lại danh sách vé
+            </Button>
+            <AirlineTicketSalesPage />
+          </div>
+        );
+      }
+      return (
+        <div>
+          <AirlineTicketSalesListPage onAddTicket={() => setShowAirlineTicketForm(true)} />
+        </div>
+      );
+    }
+    if (selectedMenu === "Bán Vé Xe Ôm") {
+      if (showMotorcycleTicketForm) {
+        return (
+          <div>
+            <Button onClick={() => setShowMotorcycleTicketForm(false)} style={{ marginBottom: 16 }}>
+              Quay lại danh sách vé
+            </Button>
+            <MotorcycleTicketSalesPage />
+          </div>
+        );
+      }
+      return (
+        <div>
+          <MotorcycleTicketSalesListPage onAddTicket={() => setShowMotorcycleTicketForm(true)} />
+        </div>
+      );
+    }
+    // Thêm các menu khác nếu cần
+    return <Widgets />;
   };
 
   return (
     <div className="dashboard-root">
-      <aside className="dashboard-sidebar">
-        <div className="sidebar-logo">
-          <img src="/logo192.png" alt="Logo" />
-          <span>Vé Xe</span>
-        </div>
-        <nav>
-          <ul>
-            <li
-              className={selectedMenu === "Quản Lý Cửa Hàng Vé Xe" ? "active" : ""}
-              onClick={() => setOpenSubMenu(!openSubMenu)}
-              style={{
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                userSelect: "none"
-              }}
-            >
-              <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <span className="sidebar-icon">💻</span>
-                <span>Quản Lý Cửa Hàng Vé Xe</span>
-              </span>
-              <span
-                className={`chevron ${openSubMenu ? "open" : ""}`}
-                style={{
-                  transition: "transform 0.2s",
-                  display: "inline-block",
-                  marginLeft: 8,
-                  fontSize: 16,
-                }}
-              >
-                ▶
-              </span>
-            </li>
-            {openSubMenu && (
-  <ul style={{ paddingLeft: 32 }}>
-    <li
-      className={selectedMenu === "Vé Đã Bán" ? "active" : ""}
-      onClick={() => setSelectedMenu("Vé Đã Bán")}
-      style={{
-        cursor: "pointer",
-        display: "flex",
-        alignItems: "center",
-        gap: 8,
-        userSelect: "none"
-      }}
-    >
-      <span
-        style={{
-          display: "inline-block",
-          width: 6,
-          height: 6,
-          borderRadius: "50%",
-          background: "#00bcd4"
-        }}
-      ></span>
-      Vé Đã Bán
-    </li>
-    <li
-      className={selectedMenu === "Vé Đã Hủy" ? "active" : ""}
-      onClick={() => setSelectedMenu("Vé Đã Hủy")}
-      style={{
-        cursor: "pointer",
-        display: "flex",
-        alignItems: "center",
-        gap: 8,
-        userSelect: "none"
-      }}
-    >
-      <span
-        style={{
-          display: "inline-block",
-          width: 6,
-          height: 6,
-          borderRadius: "50%",
-          background: "#00bcd4"
-        }}
-      ></span>
-      Vé Đã Hủy
-    </li>
-    <li
-      className={selectedMenu === "Vé Đã Đặt" ? "active" : ""}
-      onClick={() => setSelectedMenu("Vé Đã Đặt")}
-      style={{
-        cursor: "pointer",
-        display: "flex",
-        alignItems: "center",
-        gap: 8,
-        userSelect: "none"
-      }}
-    >
-      <span
-        style={{
-          display: "inline-block",
-          width: 6,
-          height: 6,
-          borderRadius: "50%",
-          background: "#00bcd4"
-        }}
-      ></span>
-      Vé Đã Đặt
-    </li>
-  </ul>
-)}
-            {sidebarMenus.slice(1).map((item, idx) => (
-              <li
-                key={idx}
-                className={selectedMenu === item.label ? "active" : ""}
-                onClick={() => setSelectedMenu(item.label)}
-                style={{ cursor: "pointer", userSelect: "none" }}
-              >
-                <span className="sidebar-icon">{item.icon}</span>
-                <span>{item.label}</span>
-              </li>
-            ))}
-          </ul>
-        </nav>
-        <div className="sidebar-footer">{COPYRIGHT}</div>
-      </aside>
+      <Sidebar
+        selectedMenu={selectedMenu}
+        setSelectedMenu={handleMenuSelect}
+        openSubMenu={openSubMenu}
+        setOpenSubMenu={setOpenSubMenu}
+      />
       <main className="dashboard-main">
-        <header className="dashboard-header">
-          <nav>
-            <a href="#">Quản Lý Vé Xe</a>
-            <a href="#">Bán Vé</a>
-            <a href="#">Thời Gian Xe Chạy</a>
-            <a href="#">Khuyến mãi & giảm giá</a>
-            <a href="#">Bảng Thống Kê</a>
-          </nav>
-          <div className="header-avatar">
-            <img src="/logo192.png" alt="Avatar" />
-          </div>
-        </header>
-        <section className="dashboard-content">
-          {renderContent()}
-        </section>
-        <footer className="dashboard-footer">
-          <span>{COPYRIGHT}</span>
-          <span>
-            <a href="#">About</a> &nbsp; <a href="#">Contact</a> &nbsp; <a href="#">Purchase</a>
-          </span>
-        </footer>
+        <Header />
+        <section className="dashboard-content">{renderContent()}</section>
+        <Footer />
       </main>
     </div>
   );
 };
 
 export default Dashboard;
-
-const COPYRIGHT = "2025 © HUNG HIEU DUC";
-
-const sidebarMenus = [
-  { icon: "💰", label: "Bán Vé" },
-  { icon: "👩‍💻", label: "Quản Lý Người Dùng" },
-  { icon: "🏷️", label: "Khuyến mãi & giảm giá" },
-  { icon: "📄", label: "Danh Thu" },
-  { icon: "🔔", label: "Thông báo" },
-  { icon: "🔑", label: "Riêng Tư" },
-  { icon: "⚙️", label: "Cài Đặt" },
-];

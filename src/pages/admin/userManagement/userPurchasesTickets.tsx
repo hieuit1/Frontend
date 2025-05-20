@@ -154,4 +154,4 @@ const UserPurchasesTickets: React.FC = () => {
   );
 };
 
-export default UserPurchasesTickets;
+export  {UserPurchasesTickets};
