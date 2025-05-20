@@ -18,9 +18,7 @@ const HomeHeader: React.FC = () => {
 
   const handleSearch = () => {
     navigate(
-      `/busTicket?from=${encodeURIComponent(
-        from.trim()
-      )}&to=${encodeURIComponent(to.trim())}&date=${encodeURIComponent(date)}`
+      `/busTicket?from=${encodeURIComponent(from.trim())}&to=${encodeURIComponent(to.trim())}&date=${encodeURIComponent(date)}`
     );
   };
 
