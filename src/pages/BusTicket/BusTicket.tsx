@@ -4,10 +4,103 @@ import Navbar from "../../components/navbar/Navbar";
 import Footer from "../../components/common/footer/Footer";
 import "./bus_ticket_css/bus_ticket.css";
 import { getTripsData } from "../../api/tripsApi";
+import { MapContainer, TileLayer, useMap } from "react-leaflet";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
+import "leaflet-routing-machine";
+import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
+
+// Khai báo mở rộng cho leaflet-routing-machine
+declare module "leaflet" {
+  namespace Routing {
+    function control(options: any): any;
+  }
+  interface Map {
+    removeControl(control: any): this;
+  }
+}
 
 const POPULAR_LOCATIONS = [
-  "Hà Nội", "Quảng Ninh", "Ninh Bình", "Đà Nẵng", "Sài Gòn", "Sa Pa", "Vũng Tàu"
+  "Hà Nội",
+  "Quảng Ninh",
+  "Ninh Bình",
+  "Đà Nẵng",
+  "Sài Gòn",
+  "Sa Pa",
+  "Vũng Tàu",
 ];
+
+// Địa danh phổ biến và toạ độ (bạn có thể bổ sung thêm)
+const LOCATION_COORDS: Record<string, [number, number]> = {
+  "Hà Nội": [21.028511, 105.804817],
+  "Quảng Ninh": [21.006382, 107.292514],
+  "Ninh Bình": [20.250614, 105.974453],
+  "Đà Nẵng": [16.047079, 108.20623],
+  "Sài Gòn": [10.776889, 106.700806], // hoặc đổi thành "TP. Hồ Chí Minh" nếu bạn muốn đồng bộ với key LOCATION_COORDS
+  "Sa Pa": [22.340168, 103.844813],
+  "Vũng Tàu": [10.411379, 107.136227],
+};
+function Routing({ from, to }: { from: string; to: string }) {
+  const map = useMap();
+  const routingRef = React.useRef<any>(null);
+
+  React.useEffect(() => {
+    // Xóa control cũ nếu có
+    if (routingRef.current && routingRef.current._map) {
+      try {
+        routingRef.current.off(); // Hủy toàn bộ sự kiện trước khi remove
+        routingRef.current.remove();
+      } catch (e) {
+        // ignore nếu đã bị huỷ
+      }
+      routingRef.current = null;
+    }
+
+    if (!from || !to || !LOCATION_COORDS[from] || !LOCATION_COORDS[to]) return;
+
+    const customLocationIcon = L.icon({
+      iconUrl: "https://cdn-icons-png.flaticon.com/512/684/684908.png",
+      iconSize: [32, 32],
+      iconAnchor: [16, 32],
+    });
+
+    // @ts-ignore
+    const routingControl = L.Routing.control({
+      waypoints: [
+        L.latLng(...LOCATION_COORDS[from]),
+        L.latLng(...LOCATION_COORDS[to]),
+      ],
+      routeWhileDragging: false,
+      draggableWaypoints: false,
+      addWaypoints: false,
+      show: false,
+      createMarker: function (i: number, wp: any) {
+        return L.marker(wp.latLng, { icon: customLocationIcon });
+      },
+      // @ts-ignore
+      router: L.Routing.osrmv1({
+        serviceUrl: "https://router.project-osrm.org/route/v1",
+        profile: "car",
+      }),
+    }).addTo(map);
+
+    routingRef.current = routingControl;
+
+    return () => {
+      if (routingRef.current && routingRef.current._map) {
+        try {
+          routingRef.current.off(); // Hủy toàn bộ sự kiện trước khi remove
+          routingRef.current.remove();
+        } catch (e) {
+          // ignore nếu đã bị huỷ
+        }
+        routingRef.current = null;
+      }
+    };
+  }, [from, to, map]);
+
+  return null;
+}
 
 const BusTicket: React.FC = () => {
   const location = useLocation();
@@ -137,6 +230,24 @@ const BusTicket: React.FC = () => {
           <button className="bus-search-btn">Tìm kiếm</button>
         </div>
       </div>
+
+      {/* Thêm bản đồ ngay dưới phần tìm kiếm */}
+      {from && to && LOCATION_COORDS[from] && LOCATION_COORDS[to] && (
+        <div className="bus-map-container">
+          <MapContainer
+            center={LOCATION_COORDS[from] as [number, number]}
+            zoom={6}
+            style={{ width: "100%", height: "100%" } as React.CSSProperties}
+          >
+            {/* @ts-ignore */}
+            <TileLayer
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              attribution='&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
+            />
+            <Routing from={from} to={to} />
+          </MapContainer>
+        </div>
+      )}
 
       <div className="main-section">
         <aside className="filter-sidebar">
