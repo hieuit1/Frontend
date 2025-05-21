@@ -25,6 +25,8 @@ const Account: React.FC = () => {
     [key: number]: boolean;
   }>(() => safeParse(localStorage.getItem("cancelRequests")) || {});
 
+  const [confirmCancelIdx, setConfirmCancelIdx] = useState<number | null>(null);
+
   const handleDelete = (idx: number) => {
     const newHistory = bookingHistory.filter((_, i) => i !== idx);
     setBookingHistory(newHistory);
@@ -35,6 +37,13 @@ const Account: React.FC = () => {
     const updated = { ...cancelRequests, [idx]: true };
     setCancelRequests(updated);
     localStorage.setItem("cancelRequests", JSON.stringify(updated));
+  };
+
+  const handleConfirmCancel = () => {
+    if (confirmCancelIdx !== null) {
+      handleCancelRequest(confirmCancelIdx);
+      setConfirmCancelIdx(null);
+    }
   };
 
   const sortedHistory = [...bookingHistory].sort(
@@ -72,10 +81,10 @@ const Account: React.FC = () => {
             <thead>
               <tr>
                 <th>Họ tên</th>
+                <th>Giá vé</th>
                 <th>Ghế</th>
                 <th>Thời gian đặt</th>
                 <th>Trạng thái</th>
-                <th>Tổng tiền</th>
                 <th>Chi tiết</th>
                 <th>Yêu cầu hủy</th>
                 <th>Xóa</th>
@@ -92,6 +101,11 @@ const Account: React.FC = () => {
                 return (
                   <tr key={idx}>
                     <td>{item.name}</td>
+                    <td>
+                      {item.priceSeatNumber
+                        ? item.priceSeatNumber.toLocaleString() + "đ"
+                        : "0đ"}
+                    </td>
                     <td>{item.seats}</td>
                     <td>{new Date(item.time).toLocaleString()}</td>
                     <td>
@@ -110,11 +124,6 @@ const Account: React.FC = () => {
                       )}
                     </td>
                     <td>
-                      {item.totalPrice
-                        ? item.totalPrice.toLocaleString() + "đ"
-                        : "0đ"}
-                    </td>
-                    <td>
                       <button
                         className={styles["action-btn"]}
                         onClick={() => setSelectedTicket(item)}
@@ -130,7 +139,7 @@ const Account: React.FC = () => {
                       ) : (
                         <button
                           className={styles["warning-btn"]}
-                          onClick={() => handleCancelRequest(realIdx)}
+                          onClick={() => setConfirmCancelIdx(realIdx)}
                           disabled={item.status === "completed"}
                           title={
                             item.status === "completed"
@@ -239,6 +248,12 @@ const Account: React.FC = () => {
                 <b>Ghế:</b> {selectedTicket.seats}
               </p>
               <p>
+                <b>Giá vé:</b>{" "}
+                {selectedTicket.priceSeatNumber
+                  ? selectedTicket.priceSeatNumber.toLocaleString() + "đ"
+                  : "0đ"}
+              </p>
+              <p>
                 <b>Tổng tiền:</b>{" "}
                 {selectedTicket.totalPrice?.toLocaleString() || "0"}đ
               </p>
@@ -256,6 +271,54 @@ const Account: React.FC = () => {
               >
                 Đóng
               </button>
+            </div>
+          </div>
+        )}
+
+        {confirmCancelIdx !== null && (
+          <div
+            style={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              width: "100vw",
+              height: "100vh",
+              background: "rgba(0,0,0,0.3)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              zIndex: 2000,
+            }}
+            onClick={() => setConfirmCancelIdx(null)}
+          >
+            <div
+              className={styles["ticket-modal"]}
+              onClick={(e) => e.stopPropagation()}
+              style={{ maxWidth: 340, textAlign: "center" }}
+            >
+              <h3>Xác nhận hủy vé</h3>
+              <p>Bạn có chắc chắn muốn yêu cầu hủy vé này không?</p>
+              <div
+                style={{
+                  display: "flex",
+                  gap: 16,
+                  justifyContent: "center",
+                  marginTop: 18,
+                }}
+              >
+                <button
+                  className={styles["danger-btn"]}
+                  onClick={handleConfirmCancel}
+                >
+                  Hủy vé
+                </button>
+                <button
+                  className={styles["action-btn"]}
+                  onClick={() => setConfirmCancelIdx(null)}
+                >
+                  Đóng
+                </button>
+              </div>
             </div>
           </div>
         )}
