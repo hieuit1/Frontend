@@ -112,6 +112,8 @@ const BusTicket: React.FC = () => {
   const [showToDropdown, setShowToDropdown] = useState(false);
   const fromInputRef = useRef<HTMLInputElement>(null);
   const toInputRef = useRef<HTMLInputElement>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const resultsPerPage = 15;
 
   useEffect(() => {
     getTripsData()
@@ -127,6 +129,10 @@ const BusTicket: React.FC = () => {
     setTo(params.get("to") || "");
     setDate(params.get("date") || "");
   }, [location.search]);
+
+  useEffect(() => {
+    setCurrentPage(1); // Reset về trang 1 khi bộ lọc thay đổi
+  }, [from, to, date, sortCriteria]);
 
   // Lọc dữ liệu chuyến đi dựa trên tìm kiếm
   const filteredTrips = trips.filter(
@@ -151,6 +157,12 @@ const BusTicket: React.FC = () => {
         return 0;
     }
   });
+
+  const totalPages = Math.ceil(sortedTrips.length / resultsPerPage);
+  const paginatedTrips = sortedTrips.slice(
+    (currentPage - 1) * resultsPerPage,
+    currentPage * resultsPerPage
+  );
 
   return (
     <div className="bus-ticket-page">
@@ -304,7 +316,7 @@ const BusTicket: React.FC = () => {
 
         <section className="results-area">
           <h2>Kết quả: {sortedTrips.length} chuyến</h2>
-          {sortedTrips.map((trip) => (
+          {paginatedTrips.map((trip) => (
             <div className="trip-card" key={trip.tripCarId}>
               <img src={trip.url} alt="bus" className="trip-image" />
               <div className="trip-details">
@@ -344,6 +356,33 @@ const BusTicket: React.FC = () => {
               </div>
             </div>
           ))}
+          {totalPages > 1 && (
+            <div className="pagination">
+              <button
+                onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                disabled={currentPage === 1}
+              >
+                &lt;
+              </button>
+              {Array.from({ length: totalPages }, (_, i) => (
+                <button
+                  key={i + 1}
+                  className={currentPage === i + 1 ? "active" : ""}
+                  onClick={() => setCurrentPage(i + 1)}
+                >
+                  {i + 1}
+                </button>
+              ))}
+              <button
+                onClick={() =>
+                  setCurrentPage((p) => Math.min(totalPages, p + 1))
+                }
+                disabled={currentPage === totalPages}
+              >
+                &gt;
+              </button>
+            </div>
+          )}
         </section>
       </div>
       <Footer year={2025} companyName="Ticket Car" />

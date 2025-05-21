@@ -289,6 +289,37 @@ bus_ticket.css
   opacity: 0.9;
 }
 
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: flex-end; /* Đổi từ center sang flex-end để căn phải */
+  align-items: center;
+  gap: 6px;
+  margin: 18px 0 0 0;
+}
+
+.pagination button {
+  background: #fff;
+  border: 1px solid #007bff;
+  color: #007bff;
+  padding: 5px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.15s, color 0.15s;
+}
+
+.pagination button.active,
+.pagination button:hover {
+  background: #007bff;
+  color: #fff;
+}
+
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 /* Responsive cho màn hình nhỏ */
 @media (max-width: 768px) {
   .filter-sidebar {

@@ -2,28 +2,28 @@ import React from "react";
 
 const testimonials = [
   {
-    name: "Chị Tú Ngô",
-    title: "YOLA Co-Founder",
+    name: "Anh Minh Trí",
+    title: "Giám đốc điều hành",
     text: "ticket car là ứng dụng đầu tiên tôi nghĩ tới khi cần đi lại bằng xe khách.",
     img: require("../../../images/home/customer1.jpg"),
   },
   {
-    name: "Bửu Vi Vu",
-    title: "Travel TikToker",
+    name: "Anh Đức Huy",
+    title: "Giám đốc kinh doanh",
     text: "Tôi thường chọn đặt vé tại ticket car mỗi khi có lịch trình đi tỉnh.",
     img: require("../../../images/home/customer2.jpg"),
   },
   {
-    name: "Nguyễn Thanh Hà",
-    title: "Nhân viên văn phòng",
+    name: "Chị Nguyễn Thanh Hà",
+    title: "Giám đốc kinh doanh",
     text: "Dễ dùng, đặt vé nhanh, giá rẻ hơn so với đặt trực tiếp.",
-    img: require("../../../images/home/customer2.jpg"),
+    img: require("../../../images/home/customer3.jpg"),
   },
-    {
-    name: "Nguyễn Thanh Hà",
-    title: "Nhân viên văn phòng",
+  {
+    name: "Anh Quốc Bảo",
+    title: "Chuyên viên IT",
     text: "Dễ dùng, đặt vé nhanh, giá rẻ hơn so với đặt trực tiếp.",
-    img: require("../../../images/home/customer2.jpg"),
+    img: require("../../../images/home/customer4.jpg"),
   },
 ];
 
@@ -84,10 +84,23 @@ const SectionFive: React.FC = () => {
                 marginBottom: "15px",
               }}
             />
-            <h4 style={{ fontSize: "18px", color: "#007bff", marginBottom: "5px" }}>
+            <h4
+              style={{
+                fontSize: "18px",
+                color: "#007bff",
+                marginBottom: "5px",
+              }}
+            >
               {t.name}
             </h4>
-            <small style={{ fontSize: "14px", color: "#666", display: "block", marginBottom: "10px" }}>
+            <small
+              style={{
+                fontSize: "14px",
+                color: "#666",
+                display: "block",
+                marginBottom: "10px",
+              }}
+            >
               {t.title}
             </small>
             <p style={{ fontSize: "14px", color: "#333" }}>"{t.text}"</p>

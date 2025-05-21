@@ -17,7 +17,6 @@ const Account: React.FC = () => {
   );
   const user = safeParse(localStorage.getItem("user")) || {};
 
-  // Thêm state cho tìm kiếm, lọc và chi tiết vé
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("all");
   const [selectedTicket, setSelectedTicket] = useState<any | null>(null);
@@ -38,12 +37,10 @@ const Account: React.FC = () => {
     localStorage.setItem("cancelRequests", JSON.stringify(updated));
   };
 
-  // Sắp xếp lịch sử đặt vé mới nhất lên đầu
   const sortedHistory = [...bookingHistory].sort(
     (a, b) => new Date(b.time).getTime() - new Date(a.time).getTime()
   );
 
-  // Lọc và tìm kiếm vé
   const filteredHistory = sortedHistory.filter((item) => {
     const matchSearch =
       item.name?.toLowerCase().includes(search.toLowerCase()) ||
@@ -57,21 +54,7 @@ const Account: React.FC = () => {
     <div className={styles["account-page"]}>
       <Navbar />
       <div className={styles["account-container"]}>
-        <h2>Thông tin cá nhân</h2>
-        <div className={styles["user-info"]}>
-          <p>
-            <b>Họ tên:</b> {user.name || "Chưa cập nhật"}
-          </p>
-          <p>
-            <b>Email:</b> {user.email || "Chưa cập nhật"}
-          </p>
-          <p>
-            <b>Số điện thoại:</b> {user.phone || "Chưa cập nhật"}
-          </p>
-        </div>
-
         <h2>Lịch sử đặt vé của bạn</h2>
-        {/* Tìm kiếm và lọc */}
         <div style={{ marginBottom: 16, display: "flex", gap: 12 }}>
           <input
             type="text"
@@ -80,16 +63,6 @@ const Account: React.FC = () => {
             onChange={(e) => setSearch(e.target.value)}
             style={{ padding: 6, borderRadius: 4, border: "1px solid #ccc" }}
           />
-          <select
-            value={filter}
-            onChange={(e) => setFilter(e.target.value)}
-            style={{ padding: 6, borderRadius: 4, border: "1px solid #ccc" }}
-          >
-            <option value="all">Tất cả phương thức thanh toán</option>
-            <option value="Tiền mặt">Tiền mặt</option>
-            <option value="Chuyển khoản">Chuyển khoản</option>
-            {/* Thêm các phương thức khác nếu có */}
-          </select>
         </div>
 
         {filteredHistory.length === 0 ? (
@@ -99,86 +72,121 @@ const Account: React.FC = () => {
             <thead>
               <tr>
                 <th>Họ tên</th>
-                <th>Số điện thoại</th>
-                <th>Email</th>
                 <th>Ghế</th>
-                <th>Phương thức thanh toán</th>
                 <th>Thời gian đặt</th>
                 <th>Trạng thái</th>
+                <th>Tổng tiền</th>
                 <th>Chi tiết</th>
                 <th>Yêu cầu hủy</th>
                 <th>Xóa</th>
               </tr>
             </thead>
             <tbody>
-              {filteredHistory.map((item: any, idx: number) => (
-                <tr key={idx}>
-                  <td>{item.name}</td>
-                  <td>{item.phone}</td>
-                  <td>{item.email}</td>
-                  <td>{item.seats}</td>
-                  <td>{item.paymentMethod}</td>
-                  <td>{new Date(item.time).toLocaleString()}</td>
-                  <td>
-                    {item.status === "success" ? (
-                      <span className={styles["status-success"]}>
-                        Thành công
-                      </span>
-                    ) : item.status === "completed" ? (
-                      <span className={styles["status-completed"]}>
-                        Đã hoàn thành
-                      </span>
-                    ) : (
-                      <span className={styles["status-pending"]}>
-                        Chờ xác nhận
-                      </span>
-                    )}
-                  </td>
-                  <td>
-                    <button
-                      className={styles["action-btn"]}
-                      onClick={() => setSelectedTicket(item)}
-                    >
-                      Xem
-                    </button>
-                  </td>
-                  <td>
-                    {cancelRequests[idx] ? (
-                      <span className={styles["status-cancel"]}>
-                        Đã yêu cầu hủy
-                      </span>
-                    ) : (
+              {filteredHistory.map((item: any, idx: number) => {
+                const realIdx = bookingHistory.findIndex(
+                  (b: any) =>
+                    b.time === item.time &&
+                    b.name === item.name &&
+                    b.seats === item.seats
+                );
+                return (
+                  <tr key={idx}>
+                    <td>{item.name}</td>
+                    <td>{item.seats}</td>
+                    <td>{new Date(item.time).toLocaleString()}</td>
+                    <td>
+                      {item.status === "success" ? (
+                        <span className={styles["status-success"]}>
+                          Thành công
+                        </span>
+                      ) : item.status === "completed" ? (
+                        <span className={styles["status-completed"]}>
+                          Đã hoàn thành
+                        </span>
+                      ) : (
+                        <span className={styles["status-pending"]}>
+                          Chờ xác nhận
+                        </span>
+                      )}
+                    </td>
+                    <td>
+                      {item.totalPrice
+                        ? item.totalPrice.toLocaleString() + "đ"
+                        : "0đ"}
+                    </td>
+                    <td>
                       <button
-                        className={styles["warning-btn"]}
-                        onClick={() => handleCancelRequest(idx)}
-                        disabled={item.status !== "pending"}
-                        title={
-                          item.status === "completed"
-                            ? "Vé đã hoàn thành, không thể hủy"
-                            : item.status !== "pending"
-                            ? "Chỉ hủy khi đang chờ xác nhận"
-                            : ""
-                        }
+                        className={styles["action-btn"]}
+                        onClick={() => setSelectedTicket(item)}
                       >
-                        Yêu cầu hủy
+                        Xem
                       </button>
-                    )}
-                  </td>
-                  <td>
-                    <button
-                      className={styles["danger-btn"]}
-                      onClick={() => handleDelete(idx)}
-                    >
-                      Xóa
-                    </button>
-                  </td>
-                </tr>
-              ))}
+                    </td>
+                    <td>
+                      {cancelRequests[realIdx] ? (
+                        <span className={styles["status-cancel"]}>
+                          Đã yêu cầu hủy
+                        </span>
+                      ) : (
+                        <button
+                          className={styles["warning-btn"]}
+                          onClick={() => handleCancelRequest(realIdx)}
+                          disabled={item.status === "completed"}
+                          title={
+                            item.status === "completed"
+                              ? "Vé đã hoàn thành, không thể hủy"
+                              : ""
+                          }
+                        >
+                          Yêu cầu hủy
+                        </button>
+                      )}
+                    </td>
+                    <td>
+                      <button
+                        className={styles["danger-btn"]}
+                        onClick={() => handleDelete(realIdx)}
+                        title="Xóa"
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          padding: 0,
+                          width: 36,
+                          height: 36,
+                        }}
+                      >
+                        <svg
+                          width="20"
+                          height="20"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                        >
+                          <path
+                            d="M3 6h18M9 6v12m6-12v12M5 6v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V6"
+                            stroke="#fff"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                          <rect
+                            x="9"
+                            y="2"
+                            width="6"
+                            height="2"
+                            rx="1"
+                            fill="#fff"
+                          />
+                        </svg>
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         )}
 
-        {/* Modal chi tiết vé */}
         {selectedTicket && (
           <div
             style={{
@@ -210,7 +218,29 @@ const Account: React.FC = () => {
                 <b>Số điện thoại:</b> {selectedTicket.phone}
               </p>
               <p>
+                <b>Nhà xe:</b> {selectedTicket.coachName}
+              </p>
+              <p>
+                <b>Tuyến đường:</b> {selectedTicket.pickupPoint} →{" "}
+                {selectedTicket.payPonit}
+              </p>
+              <p>
+                <b>Thời gian:</b> {selectedTicket.departureTime} -{" "}
+                {selectedTicket.pickupPoint} → {selectedTicket.departureEndTime}{" "}
+                - {selectedTicket.payPonit}
+              </p>
+              <p>
+                <b>Ngày đi:</b> {selectedTicket.departureDate}
+              </p>
+              <p>
+                <b>Biển số xe:</b> {selectedTicket.licensePlateNumberCoach}
+              </p>
+              <p>
                 <b>Ghế:</b> {selectedTicket.seats}
+              </p>
+              <p>
+                <b>Tổng tiền:</b>{" "}
+                {selectedTicket.totalPrice?.toLocaleString() || "0"}đ
               </p>
               <p>
                 <b>Phương thức thanh toán:</b> {selectedTicket.paymentMethod}
@@ -219,7 +249,6 @@ const Account: React.FC = () => {
                 <b>Thời gian đặt:</b>{" "}
                 {new Date(selectedTicket.time).toLocaleString()}
               </p>
-              {/* Thêm các thông tin khác nếu có */}
               <button
                 className={styles["action-btn"]}
                 style={{ marginTop: 16 }}

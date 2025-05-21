@@ -35,23 +35,22 @@
   font-size: 1rem;
 }
 
-.user-info strong {
-  color: #3b3b98;
-}
-
 .booking-history-table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
   background: #fff;
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(60,60,60,0.04);
+  margin-bottom: 32px;
 }
 
 .booking-history-table th,
 .booking-history-table td {
-  padding: 14px 12px;
+  padding: 14px 10px;
   text-align: left;
+  vertical-align: middle;
 }
 
 .booking-history-table th {
@@ -60,10 +59,13 @@
   font-weight: 600;
   font-size: 1rem;
   border-bottom: 2px solid #c5cae9;
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
 
 .booking-history-table tr:nth-child(even) {
-  background: #f4f6fb;
+  background: #f7f9fb;
 }
 
 .booking-history-table tr:hover {
@@ -75,6 +77,18 @@
   color: #333;
   font-size: 0.98rem;
   border-bottom: 1px solid #e3eafc;
+  word-break: break-word;
+}
+
+/* Nút hành động */
+.action-btn,
+.danger-btn,
+.warning-btn {
+  font-size: 0.97rem;
+  font-weight: 500;
+  outline: none;
+  min-width: 70px;
+  margin: 0 2px;
 }
 
 .action-btn {
@@ -82,7 +96,7 @@
   background: #fff;
   border: 1px solid #1976d2;
   border-radius: 4px;
-  padding: 4px 10px;
+  padding: 4px 12px;
   cursor: pointer;
   transition: background 0.2s, color 0.2s;
 }
@@ -95,7 +109,7 @@
   background: #d32f2f;
   border: none;
   border-radius: 4px;
-  padding: 4px 10px;
+  padding: 4px 12px;
   cursor: pointer;
   transition: background 0.2s;
 }
@@ -108,7 +122,7 @@
   background: #ff9800;
   border: none;
   border-radius: 4px;
-  padding: 4px 10px;
+  padding: 4px 12px;
   cursor: pointer;
   transition: background 0.2s;
 }
@@ -118,44 +132,83 @@
   cursor: not-allowed;
 }
 
+/* Trạng thái vé */
 .status-success {
   color: #388e3c;
   font-weight: 600;
+  background: #e8f5e9;
+  border-radius: 6px;
+  padding: 2px 10px;
+  display: inline-block;
 }
 .status-pending {
   color: #ff9800;
   font-weight: 600;
+  background: #fff3e0;
+  border-radius: 6px;
+  padding: 2px 10px;
+  display: inline-block;
 }
 .status-completed {
   color: #1976d2;
   font-weight: 600;
+  background: #e3eafc;
+  border-radius: 6px;
+  padding: 2px 10px;
+  display: inline-block;
 }
 .status-cancel {
   color: #d32f2f;
   font-weight: 600;
+  background: #ffebee;
+  border-radius: 6px;
+  padding: 2px 10px;
+  display: inline-block;
 }
 
+/* Modal chi tiết vé */
 .ticket-modal {
   background: #fff;
-  padding: 24px;
-  border-radius: 8px;
+  padding: 28px 22px 18px 22px;
+  border-radius: 10px;
   min-width: 320px;
   max-width: 400px;
   box-shadow: 0 2px 16px rgba(0,0,0,0.18);
   animation: modalFadeIn 0.2s;
+  position: relative;
 }
 @keyframes modalFadeIn {
   from { transform: scale(0.95); opacity: 0; }
   to { transform: scale(1); opacity: 1; }
 }
+.ticket-modal h3 {
+  color: #1a237e;
+  margin-bottom: 18px;
+  text-align: center;
+}
+.ticket-modal p {
+  margin: 8px 0;
+  color: #222;
+  font-size: 1rem;
+}
+.ticket-modal button {
+  display: block;
+  margin: 18px auto 0 auto;
+}
 
+/* Responsive */
 @media (max-width: 700px) {
   .account-container {
-    padding: 12px 2px;
+    padding: 10px 2px;
   }
   .booking-history-table th,
   .booking-history-table td {
     padding: 8px 4px;
     font-size: 0.92rem;
+  }
+  .ticket-modal {
+    min-width: 90vw;
+    max-width: 98vw;
+    padding: 16px 6px 10px 6px;
   }
 }
