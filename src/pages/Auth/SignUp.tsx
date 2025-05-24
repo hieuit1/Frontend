@@ -4,6 +4,7 @@ import { GoogleLogin } from "@react-oauth/google";
 import { signUp } from "../../api/indexApi";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { googleSignUp } from "../../api/signupApi";
 
 interface SignUpProps {
   onAuthSuccess: () => void;
@@ -22,13 +23,13 @@ export function SignUp({ onAuthSuccess }: SignUpProps) {
       const data = await signUp(name, phone, email, password);
 
       toast.success("Đăng ký thành công!", {
-        position: "top-right", 
+        position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        closeButton: false, 
+        closeButton: false,
       });
 
       onAuthSuccess();
@@ -39,39 +40,63 @@ export function SignUp({ onAuthSuccess }: SignUpProps) {
           error.message || "Đã xảy ra lỗi trong quá trình đăng ký."
         }`,
         {
-          position: "top-right", 
+          position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
-          closeButton: false, 
+          closeButton: false,
         }
       );
     }
   };
 
-  const handleGoogleSignupSuccess = (response: any) => {
-    console.log("Google Signup Success:", response);
+  const handleGoogleSignupSuccess = async (response: any) => {
+    try {
+      const credential = response.credential;
+      if (!credential) throw new Error("Google credential not found");
 
-    toast.success("Đăng ký bằng Google thành công!", {
-      position: "top-right", // Di chuyển thông báo ra giữa phía trên
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      closeButton: false, 
-    });
+      const data = await googleSignUp(credential);
 
-    onAuthSuccess();
+      toast.success("Đăng ký bằng Google thành công!", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        closeButton: false,
+      });
+
+      onAuthSuccess();
+      console.log("Signup with Google successful:", data);
+    } catch (error: any) {
+      console.error("Google Signup Error:", error);
+
+      // Kiểm tra lỗi từ backend, giả sử backend trả message này khi tài khoản đã tồn tại
+      const errorMessage =
+        error.message === "Google account already registered"
+          ? "Tài khoản Google này đã được đăng ký, vui lòng đăng nhập."
+          : error.message || "Lỗi không xác định.";
+
+      toast.error(errorMessage, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        closeButton: false,
+      });
+    }
   };
 
   const handleGoogleSignupFailure = () => {
     console.error("Google Signup Failed");
 
     toast.error("Đăng ký bằng Google thất bại!", {
-      position: "top-right", 
+      position: "top-right",
       autoClose: 3000,
       hideProgressBar: false,
       closeOnClick: true,

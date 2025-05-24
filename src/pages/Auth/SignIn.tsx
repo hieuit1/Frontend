@@ -3,9 +3,9 @@ import "./auth_css/SignIn_SignUp.css";
 import { useNavigate } from "react-router-dom";
 import { GoogleLogin } from "@react-oauth/google"; // Import GoogleLogin component
 import { signIn } from "../../api/indexApi";
-import { googleSignIn } from "../../api/signinApi"; // Import API mới
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { googleSignIn } from "../../api/signinApi";
 
 interface SignInProps {
   onAuthSuccess: () => void;
@@ -63,7 +63,6 @@ export function SignIn({ onAuthSuccess }: SignInProps) {
 
   const handleGoogleLoginSuccess = async (response: any) => {
     try {
-      // Lấy token từ Google
       const googleToken = response.credential;
       console.log("Google Token:", googleToken);
 
@@ -71,34 +70,38 @@ export function SignIn({ onAuthSuccess }: SignInProps) {
 
       if (data.token && data.user) {
         localStorage.setItem("token", data.token);
-        localStorage.setItem("user", data.user.name);
+        localStorage.setItem("user", data.user.name); // <-- sửa key thành 'user'
 
         toast.success("Đăng nhập bằng Google thành công!", {
           position: "top-center",
           autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          closeButton: false,
         });
 
         onAuthSuccess();
         navigate("/");
-        window.location.reload(); // Thêm dòng này sau navigate
+        window.location.reload(); // bạn có thể thêm reload để update Navbar luôn
       } else {
-        throw new Error("Xác thực Google thất bại.");
+        if (
+          data.message?.toLowerCase().includes("user not found") ||
+          data.error?.toLowerCase().includes("user not found") ||
+          data.error?.toLowerCase().includes("please sign up")
+        ) {
+          toast.error(
+            "Chưa có tài khoản, vui lòng đăng ký trước khi đăng nhập.",
+            {
+              position: "top-right",
+              autoClose: 4000,
+            }
+          );
+        } else {
+          throw new Error("Xác thực Google thất bại.");
+        }
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Google Login Failed:", error);
-      toast.error("Đăng nhập bằng Google thất bại!", {
+      toast.error(`Đăng nhập bằng Google thất bại! ${error.message || ""}`, {
         position: "top-right",
         autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        closeButton: false,
       });
     }
   };
