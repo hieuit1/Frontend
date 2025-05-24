@@ -16,11 +16,17 @@ import Payment from "../pages/Payment/Payment";
 import AdminAbout from "../pages/admin/aboutAdmin/about";
 import ContactAdmin from "../pages/admin/contactAdmin/contact";
 import { UserManagement } from "../pages/admin/userManagement/userManagementExport";
-import {AirlineTicketSalesPage, IntercityBusTicketSalesPage, TrainTicketSalesPage, MotorcycleTicketSalesPage,TaxiTicketSalesPage, TouristBusTicketSalesPage } from "../pages/ticketSalesPage/indexExport";
+import {
+  AirlineTicketSalesPage,
+  IntercityBusTicketSalesPage,
+  TrainTicketSalesPage,
+  MotorcycleTicketSalesPage,
+  TaxiTicketSalesPage,
+  TouristBusTicketSalesPage,
+} from "../pages/ticketSalesPage/indexExport";
 import Account from "../pages/Account/Account";
 
 import TicketAnalytics from "../pages/admin/bookingManagement/ticketsSold/sellTickets";
-
 
 const AppRouter: React.FC = () => {
   return (
@@ -52,7 +58,7 @@ const AppRouter: React.FC = () => {
 
         <Route path="/forgot-password" element={<ForgotPassword />} />
         {/* Trang trả về mật khẩu */}
-        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="auth/reset-password" element={<ResetPassword />} />
 
         {/* Trang giới thiệu về quản trị viên */}
         <Route path="/admin/about" element={<AdminAbout />} />
@@ -70,7 +76,10 @@ const AppRouter: React.FC = () => {
         {/* Trang Ban vé taxi */}
         <Route path="/taxiTicket" element={<TaxiTicketSalesPage />} />
         {/* */}
-        <Route path="/touristBusTicket" element={<TouristBusTicketSalesPage />} />
+        <Route
+          path="/touristBusTicket"
+          element={<TouristBusTicketSalesPage />}
+        />
         {/* Trang Ban vé xe máy */}
         <Route
           path="/motorcycleTicket"
@@ -88,7 +97,6 @@ const AppRouter: React.FC = () => {
 
         {/* Trang quản lý vé đã bán Test*/}
         <Route path="/admin/tickets-sold" element={<TicketAnalytics />} />
-
       </Routes>
     </Router>
   );

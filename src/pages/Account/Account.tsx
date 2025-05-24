@@ -11,9 +11,18 @@ function safeParse(json: string | null) {
   }
 }
 
+function safeParseArray(json: string | null) {
+  try {
+    const parsed = json ? JSON.parse(json) : [];
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
 const Account: React.FC = () => {
   const [bookingHistory, setBookingHistory] = useState<any[]>(
-    safeParse(localStorage.getItem("bookingHistory")) || []
+    safeParseArray(localStorage.getItem("bookingHistory"))
   );
   const user = safeParse(localStorage.getItem("user")) || {};
 

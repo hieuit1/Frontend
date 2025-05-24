@@ -39,6 +39,17 @@ const LOCATION_COORDS: Record<string, [number, number]> = {
   "Sa Pa": [22.340168, 103.844813],
   "Vũng Tàu": [10.411379, 107.136227],
 };
+
+function isInVietnam(lat: number, lng: number) {
+  // Giới hạn biên giới Việt Nam (tương đối)
+  return (
+    lat >= 8.2 &&
+    lat <= 23.4 && // Bắc - Nam
+    lng >= 102.1 &&
+    lng <= 109.5 // Tây - Đông
+  );
+}
+
 function Routing({ from, to }: { from: string; to: string }) {
   const map = useMap();
   const routingRef = React.useRef<any>(null);
@@ -80,7 +91,21 @@ function Routing({ from, to }: { from: string; to: string }) {
         serviceUrl: "https://router.project-osrm.org/route/v1",
         profile: "car",
       }),
-    }).addTo(map);
+    })
+      .on("routesfound", function (e: any) {
+        // Kiểm tra tất cả các điểm trên tuyến đường
+        const coordinates = e.routes[0].coordinates;
+        const outOfVN = coordinates.some(
+          (c: any) => !isInVietnam(c.lat, c.lng)
+        );
+        if (outOfVN) {
+          alert(
+            "Tuyến đường đi ra ngoài lãnh thổ Việt Nam. Vui lòng chọn lại!"
+          );
+          routingControl.setWaypoints([]); // Xóa tuyến đường
+        }
+      })
+      .addTo(map);
 
     routingRef.current = routingControl;
 
@@ -138,8 +163,13 @@ const BusTicket: React.FC = () => {
   const filteredTrips = trips.filter(
     (trip) =>
       (!from ||
-        trip.pickupPoint?.toLowerCase().includes(from.trim().toLowerCase())) &&
-      (!to || trip.payPonit?.toLowerCase().includes(to.trim().toLowerCase())) &&
+        (LOCATION_COORDS[from] &&
+          trip.pickupPoint
+            ?.toLowerCase()
+            .includes(from.trim().toLowerCase()))) &&
+      (!to ||
+        (LOCATION_COORDS[to] &&
+          trip.payPonit?.toLowerCase().includes(to.trim().toLowerCase()))) &&
       (!date || trip.departureDate === date)
   );
 

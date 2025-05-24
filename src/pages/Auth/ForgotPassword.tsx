@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { forgotPassword } from "../../api/indexApi"; // Adjust the import path as necessary
-
+import { forgotPassword } from "../../api/indexApi";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./auth_css/ForgotPassword.css";
-
 
 export function ForgotPassword() {
   const [email, setEmail] = useState("");
@@ -12,12 +12,15 @@ export function ForgotPassword() {
   const handleForgotPassword = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await forgotPassword(email);//API
-      alert("Password reset link has been sent to your email.");
-      navigate("/signin");
+      await forgotPassword(email); //API
+      toast.success(
+        "đã giử link về email vui lòng kiểm tra email để thay đổi mật khẩu."
+      );
     } catch (error: any) {
       console.error("Error:", error.message);
-      alert(`Failed to send reset link: ${error.message || "Unknown error"}`);
+      toast.error(
+        `Failed to send reset link: ${error.message || "Unknown error"}`
+      );
     }
   };
 
@@ -38,6 +41,7 @@ export function ForgotPassword() {
             Back to Sign In
           </a>
         </form>
+        <ToastContainer />
       </div>
     </div>
   );
