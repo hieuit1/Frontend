@@ -176,3 +176,75 @@
   color: #666;
   margin-top: 10px;
 }
+
+@media (max-width: 600px) {
+  .payment-contact-info,
+  .payment-method-section {
+    margin: 20px 10px;
+    padding: 20px;
+    border-radius: 12px;
+  }
+
+  .payment-contact-info h3,
+  .payment-method-section h3 {
+    font-size: 1.25rem;
+    padding-bottom: 8px;
+  }
+
+  .payment-contact-info label,
+  .payment-card-form label {
+    font-size: 0.95rem;
+  }
+
+  .payment-contact-info input,
+  .payment-card-form input {
+    font-size: 0.95rem;
+    padding: 9px 12px;
+  }
+
+  .payment-next-btn,
+  .payment-confirm-btn {
+    padding: 10px;
+    font-size: 0.95rem;
+    border-radius: 10px;
+  }
+
+  .payment-method-options {
+    gap: 12px;
+  }
+
+  .payment-method-option {
+    padding: 10px 12px;
+    font-size: 0.95rem;
+  }
+
+  .payment-method-option input {
+    margin-right: 10px;
+    transform: scale(1.1);
+  }
+
+  .payment-qr-section {
+    padding: 12px;
+    margin-top: 16px;
+  }
+
+  .payment-qr-section img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .payment-card-form {
+    padding: 16px;
+  }
+
+  .payment-card-form .flex-row {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .payment-card-form .note {
+    font-size: 11px;
+    text-align: center;
+  }
+}
+

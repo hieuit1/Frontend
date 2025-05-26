@@ -495,4 +495,19 @@ section h2::after {
   margin-bottom: 10px;
 }
 
+@media (max-width: 768px) {
+  .search-bar {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .promotion-card {
+    min-width: 85%;
+  }
+
+  .slider-btn {
+    display: none; /* Ẩn nút khi không cần thiết trên mobile */
+  }
+}
+
 
