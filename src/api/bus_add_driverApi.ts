@@ -10,12 +10,15 @@ export const createDriver = async (formData: FormData) => {
     body: formData,
   });
 
+/* Đoạn mã này xử lý tình huống lỗi khi phản hồi từ API không thành công
+(tức là mã trạng thái HTTP không nằm trong phạm vi 200-299). Sau đây là phân tích về những gì nó thực hiện: */
   if (!response.ok) {
-    const errorText = await response.text(); // lấy lỗi chi tiết
+    const errorText = await response.text(); 
     console.error("API Error:", errorText);
     throw new Error("Gửi dữ liệu thất bại: " + errorText);
   }
-
+  /* Mã `const res = await response.json(); return res;` đang phân tích cú pháp phản hồi từ API dưới dạng
+JSON. */
   const res = await response.json();
   return res;
 };

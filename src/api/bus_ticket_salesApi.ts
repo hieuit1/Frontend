@@ -3,11 +3,11 @@
 export const createTripCar = async (payload: any) => {
   const token = localStorage.getItem("token");
 
-  const response = await fetch("http://localhost:8080/api-tripcar/create-tripcar", {
+  const response = await fetch(`${process.env.REACT_APP_API_URL}/api-tripcar/create-tripcar`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`, // thêm token ở đây
+      Authorization: `Bearer ${token}`, 
     },
     body: JSON.stringify(payload),
   });
@@ -16,6 +16,5 @@ export const createTripCar = async (payload: any) => {
     const errorText = await response.text();
     throw new Error(`Gửi dữ liệu thất bại: ${errorText}`);
   }
-
   return response.json();
 };
