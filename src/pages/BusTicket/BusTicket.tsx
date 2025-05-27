@@ -30,25 +30,34 @@ const POPULAR_LOCATIONS = [
   "Vũng Tàu",
 ];
 
-// Địa danh phổ biến và toạ độ (bạn có thể bổ sung thêm)
 const LOCATION_COORDS: Record<string, [number, number]> = {
   "Hà Nội": [21.028511, 105.804817],
   "Quảng Ninh": [21.006382, 107.292514],
   "Ninh Bình": [20.250614, 105.974453],
   "Đà Nẵng": [16.047079, 108.20623],
-  "Sài Gòn": [10.776889, 106.700806], // hoặc đổi thành "TP. Hồ Chí Minh" nếu bạn muốn đồng bộ với key LOCATION_COORDS
+  "Sài Gòn": [10.776889, 106.700806],
   "Sa Pa": [22.340168, 103.844813],
   "Vũng Tàu": [10.411379, 107.136227],
 };
+
+function isInVietnam(lat: number, lng: number) {
+  // Giới hạn biên giới Việt Nam (tương đối)
+  return (
+    lat >= 8.2 &&
+    lat <= 23.4 && // Bắc - Nam
+    lng >= 102.1 &&
+    lng <= 109.5 // Tây - Đông
+  );
+}
+
 function Routing({ from, to }: { from: string; to: string }) {
   const map = useMap();
   const routingRef = React.useRef<any>(null);
 
   React.useEffect(() => {
-    // Xóa control cũ nếu có
     if (routingRef.current && routingRef.current._map) {
       try {
-        routingRef.current.off(); // Hủy toàn bộ sự kiện trước khi remove
+        routingRef.current.off();
         routingRef.current.remove();
       } catch (e) {
         // ignore nếu đã bị huỷ
@@ -82,14 +91,28 @@ function Routing({ from, to }: { from: string; to: string }) {
         serviceUrl: "https://router.project-osrm.org/route/v1",
         profile: "car",
       }),
-    }).addTo(map);
+    })
+      .on("routesfound", function (e: any) {
+        // Kiểm tra tất cả các điểm trên tuyến đường
+        const coordinates = e.routes[0].coordinates;
+        const outOfVN = coordinates.some(
+          (c: any) => !isInVietnam(c.lat, c.lng)
+        );
+        if (outOfVN) {
+          alert(
+            "Tuyến đường đi ra ngoài lãnh thổ Việt Nam. Vui lòng chọn lại!"
+          );
+          routingControl.setWaypoints([]); // Xóa tuyến đường
+        }
+      })
+      .addTo(map);
 
     routingRef.current = routingControl;
 
     return () => {
       if (routingRef.current && routingRef.current._map) {
         try {
-          routingRef.current.off(); // Hủy toàn bộ sự kiện trước khi remove
+          routingRef.current.off();
           routingRef.current.remove();
         } catch (e) {
           // ignore nếu đã bị huỷ
@@ -114,6 +137,8 @@ const BusTicket: React.FC = () => {
   const [showToDropdown, setShowToDropdown] = useState(false);
   const fromInputRef = useRef<HTMLInputElement>(null);
   const toInputRef = useRef<HTMLInputElement>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const resultsPerPage = 15;
 
   useEffect(() => {
     getTripsData()
@@ -130,12 +155,21 @@ const BusTicket: React.FC = () => {
     setDate(params.get("date") || "");
   }, [location.search]);
 
+  useEffect(() => {
+    setCurrentPage(1); // Reset về trang 1 khi bộ lọc thay đổi
+  }, [from, to, date, sortCriteria]);
+
   // Lọc dữ liệu chuyến đi dựa trên tìm kiếm
   const filteredTrips = trips.filter(
     (trip) =>
       (!from ||
-        trip.pickupPoint?.toLowerCase().includes(from.trim().toLowerCase())) &&
-      (!to || trip.payPonit?.toLowerCase().includes(to.trim().toLowerCase())) &&
+        (LOCATION_COORDS[from] &&
+          trip.pickupPoint
+            ?.toLowerCase()
+            .includes(from.trim().toLowerCase()))) &&
+      (!to ||
+        (LOCATION_COORDS[to] &&
+          trip.payPonit?.toLowerCase().includes(to.trim().toLowerCase()))) &&
       (!date || trip.departureDate === date)
   );
 
@@ -154,12 +188,17 @@ const BusTicket: React.FC = () => {
     }
   });
 
+  const totalPages = Math.ceil(sortedTrips.length / resultsPerPage);
+  const paginatedTrips = sortedTrips.slice(
+    (currentPage - 1) * resultsPerPage,
+    currentPage * resultsPerPage
+  );
+
   return (
     <div className="bus-ticket-page">
       <Navbar />
       <div className="bus-search-section">
         <div className="bus-search-box">
-          {/* Nơi xuất phát */}
           <div className="bus-dropdown-wrapper">
             <input
               type="text"
@@ -191,7 +230,7 @@ const BusTicket: React.FC = () => {
             )}
           </div>
           <span className="bus-arrow-icon">→</span>
-          {/* Nơi đến */}
+
           <div className="bus-dropdown-wrapper">
             <input
               type="text"
@@ -231,7 +270,6 @@ const BusTicket: React.FC = () => {
         </div>
       </div>
 
-      {/* Thêm bản đồ ngay dưới phần tìm kiếm */}
       {from && to && LOCATION_COORDS[from] && LOCATION_COORDS[to] && (
         <div className="bus-map-container">
           <MapContainer
@@ -308,7 +346,7 @@ const BusTicket: React.FC = () => {
 
         <section className="results-area">
           <h2>Kết quả: {sortedTrips.length} chuyến</h2>
-          {sortedTrips.map((trip) => (
+          {paginatedTrips.map((trip) => (
             <div className="trip-card" key={trip.tripCarId}>
               <img src={trip.url} alt="bus" className="trip-image" />
               <div className="trip-details">
@@ -348,6 +386,33 @@ const BusTicket: React.FC = () => {
               </div>
             </div>
           ))}
+          {totalPages > 1 && (
+            <div className="pagination">
+              <button
+                onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                disabled={currentPage === 1}
+              >
+                &lt;
+              </button>
+              {Array.from({ length: totalPages }, (_, i) => (
+                <button
+                  key={i + 1}
+                  className={currentPage === i + 1 ? "active" : ""}
+                  onClick={() => setCurrentPage(i + 1)}
+                >
+                  {i + 1}
+                </button>
+              ))}
+              <button
+                onClick={() =>
+                  setCurrentPage((p) => Math.min(totalPages, p + 1))
+                }
+                disabled={currentPage === totalPages}
+              >
+                &gt;
+              </button>
+            </div>
+          )}
         </section>
       </div>
       <Footer year={2025} companyName="Ticket Car" />

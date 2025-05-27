@@ -261,3 +261,68 @@
     width: 100%;
   }
 }
+
+@media (max-width: 480px) {
+  .navbar-container {
+    padding: 10px;
+  }
+
+  .navbar-logo img {
+    height: 24px;
+  }
+
+  .navbar-links {
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .navbar-link {
+    font-size: 13px;
+    padding: 6px 10px;
+    width: 100%;
+  }
+
+  .navbar-auth {
+    width: 100%;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .navbar-login {
+    font-size: 13px;
+    padding: 4px 8px;
+  }
+
+  .navbar-user > div {
+    padding: 6px 14px;
+    font-size: 13px;
+  }
+
+  .navbar-user-link,
+  .navbar-user-menu button {
+    font-size: 14px;
+    padding: 12px 16px;
+  }
+
+  .navbar-modal > div {
+    min-width: 280px;
+    padding: 24px 20px;
+  }
+
+  .navbar-modal p {
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+
+  .navbar-modal button {
+    padding: 8px 18px;
+    font-size: 14px;
+  }
+
+  .navbar-right {
+    width: 100%;
+    gap: 8px;
+  }
+}

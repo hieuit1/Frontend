@@ -12,13 +12,13 @@ export const signIn = async (email: string, password: string) => {
   return data;
 };
 
-export const googleSignIn = async (googleToken: string) => {
+export const googleSignIn = async (credential: string) => {
   const response = await fetch(
-    `${process.env.REACT_APP_API_URL}/auth/google-login`,
+    `${process.env.REACT_APP_API_URL}/auth/google-signin`,
     {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ token: googleToken }),
+      body: JSON.stringify({ credential }),
     }
   );
   const data = await response.json();

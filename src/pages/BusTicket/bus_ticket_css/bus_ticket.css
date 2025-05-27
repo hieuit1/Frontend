@@ -289,6 +289,37 @@ bus_ticket.css
   opacity: 0.9;
 }
 
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: flex-end; /* Đổi từ center sang flex-end để căn phải */
+  align-items: center;
+  gap: 6px;
+  margin: 18px 0 0 0;
+}
+
+.pagination button {
+  background: #fff;
+  border: 1px solid #007bff;
+  color: #007bff;
+  padding: 5px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.15s, color 0.15s;
+}
+
+.pagination button.active,
+.pagination button:hover {
+  background: #007bff;
+  color: #fff;
+}
+
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 /* Responsive cho màn hình nhỏ */
 @media (max-width: 768px) {
   .filter-sidebar {
@@ -324,3 +355,79 @@ bus_ticket.css
     display: none;
   }
 }
+
+@media (max-width: 768px) {
+  /* Căn chỉnh box tìm kiếm */
+  .bus-search-box {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .bus-search-box input[type="text"],
+  .bus-search-box input[type="date"] {
+    width: 100%;
+  }
+
+  .bus-search-btn {
+    width: 100%;
+  }
+
+  .bus-map-container {
+    height: 300px; /* Giảm chiều cao bản đồ cho phù hợp mobile */
+  }
+
+  /* Dropdown */
+  .bus-dropdown-wrapper {
+    width: 100%;
+  }
+
+  .bus-dropdown-list {
+    max-height: 200px;
+  }
+
+  /* Sắp xếp và kết quả dọc thay vì ngang */
+  .main-section {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .filter-sidebar,
+  .results-area {
+    max-width: 100%;
+  }
+
+  /* Card chuyến xe */
+  .trip-card {
+    flex-direction: column;
+    margin-bottom: 16px;
+  }
+
+  .trip-image {
+    width: 100%;
+    height: 180px;
+  }
+
+  .trip-time {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .trip-footer {
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .pagination {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .pagination button {
+    flex: 1 1 auto;
+    min-width: 40px;
+  }
+}
+

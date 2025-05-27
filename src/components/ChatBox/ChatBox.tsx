@@ -54,10 +54,7 @@ const ChatBox: React.FC = () => {
         response.data?.candidates?.[0]?.content?.parts?.[0]?.text ||
         "Xin lỗi, tôi không hiểu câu hỏi của bạn.";
 
-      setMessages((prev) => [
-        ...prev,
-        { role: "assistant", text: botReply },
-      ]);
+      setMessages((prev) => [...prev, { role: "assistant", text: botReply }]);
     } catch (error: any) {
       console.error("Lỗi khi gọi Gemini API:", error.response || error.message);
       setMessages((prev) => [

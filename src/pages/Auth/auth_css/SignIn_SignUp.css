@@ -348,4 +348,73 @@ body {
     outline: none;
 }
 
-/* Thêm tiền tố cho các lớp khác nếu cần */
+@media (max-width: 768px) {
+    body, .auth-page {
+        padding: 20px 10px;
+    }
+
+    .container, .auth-page .container {
+        width: 100%;
+        min-height: auto;
+        box-shadow: none;
+        border-radius: 16px;
+        margin: 0 auto;
+    }
+
+    .form-container,
+    .auth-page .container form {
+        padding: 20px;
+        height: auto;
+    }
+
+    .sign-in, .sign-up {
+        width: 100%;
+        position: relative;
+        left: 0;
+        transform: translateX(0) ;
+        opacity: 1;
+        z-index: 2 ;
+    }
+
+    .toggle-container {
+        display: none;
+    }
+
+    .toggle-panel,
+    .container.active .toggle-left,
+    .container.active .toggle-right {
+        display: none;
+    }
+
+    .social-icons,
+    .social-icons-google {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin: 15px 0;
+    }
+
+    .social-icons a {
+        width: 32px;
+        height: 32px;
+        margin: 5px;
+    }
+
+    .google-signup-label,
+    .google-signin-label {
+        font-size: 13px;
+        margin-bottom: 5px;
+    }
+
+    input {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    button {
+        font-size: 14px;
+        padding: 10px 25px;
+    }
+}
+
+
