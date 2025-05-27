@@ -1,3 +1,4 @@
+//Frontend\src\pages\admin\ticketSalesManagement\busTicketSales\busTicketSalesPage.tsx
 import React, { useState } from "react";
 import {
   Form,
@@ -12,41 +13,41 @@ import {
   Col,
 } from "antd";
 import dayjs from "dayjs";
+import { createTripCar } from "../../../../api/bus_ticket_salesApi";
 
 const { Option } = Select;
 
 const BusTicketSalesPage = () => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
+  const [submitMessage, setSubmitMessage] = useState<{
+  type: "success" | "error";
+  text: string;
+} | null>(null);
+
 
   const onFinish = async (values: any) => {
-    setLoading(true);
+  setLoading(true);
+  setSubmitMessage(null); // reset thông báo cũ
 
-    const payload = {
-      ...values,
-      departureDate: values.departureDate.format("YYYY-MM-DD"),
-      departureTime: values.departureTime.format("HH:mm:ss"),
-      departureEndTime: values.departureEndTime.format("HH:mm:ss"),
-    };
-
-    try {
-      const res = await fetch("http://localhost:8080/api-tripcar/create-tripcar", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      if (!res.ok) throw new Error("Gửi dữ liệu thất bại");
-
-      message.success("Tạo chuyến xe thành công!");
-      form.resetFields();
-    } catch (err) {
-      console.error(err);
-      message.error("Tạo chuyến xe thất bại!");
-    } finally {
-      setLoading(false);
-    }
+  const payload = {
+    ...values,
+    departureDate: values.departureDate.format("YYYY-MM-DD"),
+    departureTime: values.departureTime.format("HH:mm:ss"),
+    departureEndTime: values.departureEndTime.format("HH:mm:ss"),
   };
+
+  try {
+    await createTripCar(payload);
+    setSubmitMessage({ type: "success", text: "✅ Tạo chuyến xe thành công!" });
+    form.resetFields();
+  } catch (err: any) {
+    console.error(err);
+    setSubmitMessage({ type: "error", text: "❌ Tạo chuyến xe thất bại!" });
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className="p-8 max-w-3xl mx-auto bg-white shadow rounded">
@@ -129,7 +130,21 @@ const BusTicketSalesPage = () => {
             </Form.Item>
           </Col>
         </Row>
-
+{submitMessage && (
+  <div
+    style={{
+      marginTop: 16,
+      padding: "12px",
+      borderRadius: 6,
+      fontWeight: 500,
+      color: submitMessage.type === "success" ? "green" : "red",
+      background: submitMessage.type === "success" ? "#f6ffed" : "#fff1f0",
+      border: `1px solid ${submitMessage.type === "success" ? "#b7eb8f" : "#ffa39e"}`,
+    }}
+  >
+    {submitMessage.text}
+  </div>
+)}
         <Form.Item>
           <Button type="primary" htmlType="submit" loading={loading}>
             Tạo chuyến xe

@@ -1,102 +1,131 @@
 import React, { useEffect, useState } from "react";
-import { Table, Tag, message, Button } from "antd";
+import { Table, message, Button } from "antd";
 import type { ColumnsType } from "antd/es/table";
 
-interface Ticket {
-  id: string;
-  routeName: string;
-  driverName: string;
-  departure: string;
-  destination: string;
+interface TripTicket {
+  tripCarId: number;
+  tripName: string;
+  departureDate: string;
   departureTime: string;
-  price: number;
-  seatCount: number;
+  departureEndTime: string;
+  pickupPoint: string;
+  payPonit: string;
+  seatNumber: number;
+  emptySeatNumber: number;
+  priceSeatNumber: number;
+  driverId?: number;
+  coachId?: number | null;
+  rickshawId?: number | null;
+  fullName?: string;      // driver's full name
+  phoneNumber?: string;   // driver's phone number
+  yearOfBirth?: number;
+  gender?: string;
 }
+
 
 interface BusTicketSalesListPageProps {
   onAddTicket: () => void;
-   onAddDriver: () => void; 
+  onAddDriver: () => void;
 }
 
-const BusTicketSalesListPage: React.FC<BusTicketSalesListPageProps> = ({ onAddTicket, onAddDriver }) => {
-  const [tickets, setTickets] = useState<Ticket[]>([]);
+const BusTicketSalesListPage: React.FC<BusTicketSalesListPageProps> = ({
+  onAddTicket,
+  onAddDriver,
+}) => {
+  const [tickets, setTickets] = useState<TripTicket[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    fetchTickets();
+    fetchAllTrips();
   }, []);
 
-  const fetchTickets = async () => {
-    setLoading(true);
-    try {
-      const res = await fetch("http://localhost:8080/useradmin-all-driver");
-      if (!res.ok) throw new Error("Lỗi khi lấy dữ liệu vé");
-
-      const data = await res.json();
-      setTickets(data);
-    } catch (err) {
-      console.error(err);
-      message.error("Không thể tải danh sách vé đã đăng");
-    } finally {
-      setLoading(false);
+  const fetchAllTrips = async () => {
+  setLoading(true);
+  try {
+    const token = localStorage.getItem("token");
+    if (!token || token.split(".").length !== 3) {
+      message.error("Token không hợp lệ hoặc chưa đăng nhập.");
+      return;
     }
-  };
 
-  const columns: ColumnsType<Ticket> = [
-    {
-      title: "Tên tuyến",
-      dataIndex: "routeName",
-      key: "routeName",
-    },
-    {
-      title: "Tài xế",
-      dataIndex: "driverName",
-      key: "driverName",
-    },
-    {
-      title: "Nơi đi",
-      dataIndex: "departure",
-      key: "departure",
-    },
-    {
-      title: "Nơi đến",
-      dataIndex: "destination",
-      key: "destination",
-    },
-    {
-      title: "Khởi hành",
-      dataIndex: "departureTime",
-      key: "departureTime",
-      render: (text) => new Date(text).toLocaleString(),
-    },
-    {
-      title: "Giá vé (VNĐ)",
-      dataIndex: "price",
-      key: "price",
-      render: (price) => price.toLocaleString(),
-    },
-    {
-      title: "Số ghế",
-      dataIndex: "seatCount",
-      key: "seatCount",
-    },
-  ];
+    const response = await fetch(
+      "http://localhost:8080/useradmin-all-tripcar",
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || "Không thể lấy dữ liệu chuyến xe.");
+    }
+
+    if (Array.isArray(data)) {
+      setTickets(data);
+      message.success("Đã tải danh sách chuyến xe thành công");
+    } else {
+      message.error("Dữ liệu phản hồi không hợp lệ!");
+    }
+  } catch (error) {
+    console.error("Lỗi khi tải danh sách chuyến xe:", error);
+    message.error("Không thể tải danh sách chuyến xe");
+  } finally {
+    setLoading(false);
+  }
+};
+
+
+const columns: ColumnsType<TripTicket> = [
+  { title: "Tên chuyến", dataIndex: "tripName", key: "tripName" },
+  { title: "Điểm đón", dataIndex: "pickupPoint", key: "pickupPoint" },
+  { title: "Điểm trả", dataIndex: "payPonit", key: "payPonit" },
+  { title: "Ngày khởi hành", dataIndex: "departureDate", key: "departureDate" },
+  { title: "Giờ khởi hành", dataIndex: "departureTime", key: "departureTime" },
+  { title: "Giờ kết thúc", dataIndex: "departureEndTime", key: "departureEndTime" },
+  { title: "Tổng số ghế", dataIndex: "seatNumber", key: "seatNumber" },
+  { title: "Ghế trống", dataIndex: "emptySeatNumber", key: "emptySeatNumber" },
+  {
+    title: "Giá vé (VNĐ)",
+    dataIndex: "priceSeatNumber",
+    key: "priceSeatNumber",
+    render: (price: number) => price?.toLocaleString("vi-VN") || "0",
+  },
+  {
+    title: "Tên tài xế",
+    dataIndex: "fullName",
+    key: "fullName",
+  },
+  {
+    title: "SĐT tài xế",
+    dataIndex: "phoneNumber",
+    key: "phoneNumber",
+  },
+];
+
 
   return (
     <div className="p-8 bg-white max-w-7xl mx-auto shadow rounded">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-semibold">Danh sách vé đã đăng bán</h2>
-        <Button type="primary" onClick={onAddTicket}>
-          Đăng bán vé mới
-        </Button>
-        <Button type="primary" onClick={onAddDriver}>
-          Thêm tài xế
-        </Button>
+        <h2 className="text-2xl font-semibold">Danh sách chuyến xe Bus</h2>
+        <div className="flex gap-3">
+          <Button type="primary" onClick={onAddTicket} className="bg-green-500">
+            Thêm chuyến xe mới
+          </Button>
+          <Button type="primary" onClick={onAddDriver} className="bg-blue-500">
+            Thêm tài xế mới
+          </Button>
+        </div>
       </div>
+
       <Table
         columns={columns}
         dataSource={tickets}
-        rowKey="id"
+        rowKey="tripCarId"
         loading={loading}
         bordered
         pagination={{ pageSize: 10 }}

@@ -1,7 +1,8 @@
+//Frontend\src\api\bus_add_driverApi.ts
 export const createDriver = async (formData: FormData) => {
   const token = localStorage.getItem("token");
 
-  const response = await fetch("http://localhost:8080/api-driver/create-driver", {
+  const response = await fetch(`${process.env.REACT_APP_API_URL}/api-driver/create-driver`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,

@@ -1,0 +1,13 @@
+[
+  { "id": 1, "user": "Nguyễn Văn A", "ticketId": "T001", "reason": "Bận việc", "cancelDate": "2024-06-01", "cancelTime": "08:30", "cancelStatus": "Đã hủy vé" },
+  { "id": 2, "user": "Trần Thị B", "ticketId": "T002", "reason": "Đổi lịch", "cancelDate": "2024-06-02", "cancelTime": "09:15", "cancelStatus": "Đã hủy vé" },
+  { "id": 3, "user": "Lê Văn C", "ticketId": "T003", "reason": "Có việc đột xuất", "cancelDate": "2024-06-03", "cancelTime": "10:00", "cancelStatus": "Chờ xác nhận" },
+  { "id": 4, "user": "Phạm Thị D", "ticketId": "T004", "reason": "Bị ốm", "cancelDate": "2024-06-04", "cancelTime": "11:20", "cancelStatus": "Đã hủy vé" },
+  { "id": 5, "user": "Trần Văn E", "ticketId": "T005", "reason": "Thay đổi kế hoạch", "cancelDate": "2024-06-05", "cancelTime": "12:45", "cancelStatus": "Chờ xác nhận" },
+  { "id": 6, "user": "Ngô Thị F", "ticketId": "T006", "reason": "Không cần đi nữa", "cancelDate": "2024-06-06", "cancelTime": "13:30", "cancelStatus": "Đã hủy vé" },
+  { "id": 7, "user": "Đỗ Văn G", "ticketId": "T007", "reason": "Đặt nhầm vé", "cancelDate": "2024-06-07", "cancelTime": "14:10", "cancelStatus": "Đã hủy vé" },
+  { "id": 8, "user": "Vũ Thị H", "ticketId": "T008", "reason": "Gia đình có việc", "cancelDate": "2024-06-08", "cancelTime": "15:00", "cancelStatus": "Chờ xác nhận" },
+  { "id": 9, "user": "Bùi Văn I", "ticketId": "T009", "reason": "Không hài lòng dịch vụ", "cancelDate": "2024-06-09", "cancelTime": "16:25", "cancelStatus": "Đã hủy vé" },
+  { "id": 10, "user": "Nguyễn Thị K", "ticketId": "T010", "reason": "Bạn bè hủy chuyến", "cancelDate": "2024-06-10", "cancelTime": "17:40", "cancelStatus": "Đã hủy vé" },
+  { "id": 11, "user": "Phan Văn L", "ticketId": "T011", "reason": "Có việc gấp", "cancelDate": "2024-06-11", "cancelTime": "18:55", "cancelStatus": "Chờ xác nhận" }
+]
