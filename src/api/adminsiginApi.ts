@@ -1,6 +1,7 @@
+// Dang Nhap Admin
 export const adminSignIn = async (email: string, password: string) => {
   const response = await fetch(
-    "http://localhost:8080/auth/signin",
+    `${process.env.REACT_APP_API_URL}/auth/signin`,
     {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -10,17 +11,8 @@ export const adminSignIn = async (email: string, password: string) => {
 
   let data;
   const text = await response.text();
-  try {
-    data = text ? JSON.parse(text) : {};
-  } catch {
-    data = {};
-  }
-
-  // Log để debug
+  try { data = text ? JSON.parse(text) : {};} catch { data = {};}
   console.log("API response:", data);
-
-  if (!response.ok || !data.token) {
-    throw new Error(data.message || "Đăng nhập thất bại.");
-  }
+  if (!response.ok || !data.token) { throw new Error(data.message || "Đăng nhập thất bại."); }
   return data;
 }

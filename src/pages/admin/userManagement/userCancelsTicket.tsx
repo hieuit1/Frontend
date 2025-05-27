@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Table, Input, Button, Popconfirm, message, Tag } from "antd";
-
 import { fetchCancels, deleteCancel, confirmCancel } from "../../../api/userCancelsTicketApi";
 
 

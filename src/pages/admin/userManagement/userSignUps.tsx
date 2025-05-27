@@ -8,7 +8,7 @@ interface User {
   registeredAt: string;
   method?: "Google" | "Tài khoản";
   password?: string;
-  updatedAt?: string; // yyyy-MM-dd HH:mm:ss
+  updatedAt?: string; 
 }
 
 const mockUsers: User[] = [
