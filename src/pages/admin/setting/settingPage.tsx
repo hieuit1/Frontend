@@ -13,7 +13,16 @@ interface UserSettings {
   fontSize: 'small' | 'medium' | 'large';
 }
 
+
+
 const SettingPage: React.FC = () => {
+
+  const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
   const [form] = Form.useForm();
   const [settings, setSettings] = useState<UserSettings>({
     theme: 'light',
@@ -72,6 +81,33 @@ const SettingPage: React.FC = () => {
   return (
     <div className="setting-page">
       <style>{`
+/* Mặc định */
+:root {
+  --bg-color: #ffffff;
+  --text-color: #000000;
+}
+
+/* Chế độ tối */
+[data-theme="dark"] {
+  --bg-color: #181818;
+  --text-color: #ffffff;
+}
+
+/* Áp dụng */
+.dashboard-root {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+.dashboard-sidebar {
+  background-color: var(--bg-color);
+}
+
+.dashboard-main {
+  background-color: var(--bg-color);
+}
+
+
         .setting-page {
           padding: 40px 20px;
           max-width: auto;
@@ -571,7 +607,11 @@ const SettingPage: React.FC = () => {
         <div className="setting-card">
           <div className="section-title">Giao diện</div>
           <Form.Item label="Chủ đề" name="theme">
-            <Select className="theme-select">
+            <Select
+          className="theme-select"
+          value={theme}
+          onChange={(value) => setTheme(value)}
+        >
               <Select.Option value="light" data-value="light">Sáng</Select.Option>
               <Select.Option value="dark" data-value="dark">Tối</Select.Option>
               <Select.Option value="auto" data-value="auto">Tự động (theo giờ hệ thống)</Select.Option>
