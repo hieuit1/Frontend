@@ -184,17 +184,17 @@ const Home: React.FC<{ setCurrentPage: (page: string) => void }> = ({
         </div>
       </section>
 
-      {/* Vì Sao Chọn Chúng Tôi */}
+
       <SectionFour />
-      {/* Testimonials */}
+   
       <SectionFive />
-      {/* Nền tảng kết nối */}
+    
       <SectionSix />
-      {/* Thêm phần Được nhắc đến trên */}
+  
       <SectionSeven />
-      {/* Thêm ChatBox */}
+
       <ChatBox />
-      {/* Thêm phần Footer */}
+
       <Footer year={2025} companyName="Ticket Car" />
     </div>
   );

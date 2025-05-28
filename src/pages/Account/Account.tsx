@@ -96,7 +96,6 @@ const Account: React.FC = () => {
                 <th>Trạng thái</th>
                 <th>Chi tiết</th>
                 <th>Yêu cầu hủy</th>
-                <th>Xóa</th>
               </tr>
             </thead>
             <tbody>
@@ -107,6 +106,9 @@ const Account: React.FC = () => {
                     b.name === item.name &&
                     b.seats === item.seats
                 );
+                // Xét trạng thái vé
+                const isRemovable = false; // Không cho phép xóa nữa
+
                 return (
                   <tr key={idx}>
                     <td>{item.name}</td>
@@ -118,18 +120,14 @@ const Account: React.FC = () => {
                     <td>{item.seats}</td>
                     <td>{new Date(item.time).toLocaleString()}</td>
                     <td>
-                      {item.status === "success" ? (
-                        <span className={styles["status-success"]}>
-                          Thành công
-                        </span>
-                      ) : item.status === "completed" ? (
-                        <span className={styles["status-completed"]}>
-                          Đã hoàn thành
-                        </span>
+                      {item.status === "success" || item.status === "CONFIRMED" ? (
+                        <span className={styles["status-success"]}>Thành công</span>
+                      ) : item.status === "completed" || item.status === "CHECKED_IN" ? (
+                        <span className={styles["status-completed"]}>Đã hoàn thành</span>
+                      ) : item.status === "CANCELLED" ? (
+                        <span className={styles["status-cancel"]}>Đã hủy</span>
                       ) : (
-                        <span className={styles["status-pending"]}>
-                          Chờ xác nhận
-                        </span>
+                        <span className={styles["status-pending"]}>Chờ xác nhận</span>
                       )}
                     </td>
                     <td>
@@ -142,17 +140,21 @@ const Account: React.FC = () => {
                     </td>
                     <td>
                       {cancelRequests[realIdx] ? (
-                        <span className={styles["status-cancel"]}>
-                          Đã yêu cầu hủy
-                        </span>
+                        <span className={styles["status-cancel"]}>Đã yêu cầu hủy</span>
                       ) : (
                         <button
                           className={styles["warning-btn"]}
                           onClick={() => setConfirmCancelIdx(realIdx)}
-                          disabled={item.status === "completed"}
+                          disabled={
+                            item.status === "completed" ||
+                            item.status === "CHECKED_IN" ||
+                            item.status === "CANCELLED"
+                          }
                           title={
-                            item.status === "completed"
-                              ? "Vé đã hoàn thành, không thể hủy"
+                            item.status === "completed" ||
+                            item.status === "CHECKED_IN" ||
+                            item.status === "CANCELLED"
+                              ? "Không thể hủy vé này"
                               : ""
                           }
                         >
@@ -161,42 +163,7 @@ const Account: React.FC = () => {
                       )}
                     </td>
                     <td>
-                      <button
-                        className={styles["danger-btn"]}
-                        onClick={() => handleDelete(realIdx)}
-                        title="Xóa"
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          padding: 0,
-                          width: 36,
-                          height: 36,
-                        }}
-                      >
-                        <svg
-                          width="20"
-                          height="20"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                        >
-                          <path
-                            d="M3 6h18M9 6v12m6-12v12M5 6v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V6"
-                            stroke="#fff"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                          <rect
-                            x="9"
-                            y="2"
-                            width="6"
-                            height="2"
-                            rx="1"
-                            fill="#fff"
-                          />
-                        </svg>
-                      </button>
+                      {/* Không cho xóa nữa */}
                     </td>
                   </tr>
                 );
