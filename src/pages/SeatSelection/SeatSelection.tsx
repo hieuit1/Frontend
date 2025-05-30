@@ -11,6 +11,8 @@ interface Seat {
   floor: number;
 }
 
+const volang = require("../../images/home/volang.jpg");
+
 const SeatSelection: React.FC = () => {
   const location = useLocation();
   const { trip } = location.state || {};
@@ -98,7 +100,17 @@ const SeatSelection: React.FC = () => {
           <div className="seat-selection-floor-container">
             <div className="seat-selection-seat-map">
               <p>Chọn Chỗ </p>
-              <div className="seat-selection-steering-wheel">🛞</div>
+              <div className="seat-selection-steering-wheel">
+                <img
+                  src={volang}
+                  style={{
+                    width: "40px",
+                    height: "40px",
+                    marginTop: "10px",
+                    marginLeft: "16px",
+                  }}
+                />
+              </div>
               {/* Tầng 1 */}
               <div className="seat-selection-floor">
                 {seats

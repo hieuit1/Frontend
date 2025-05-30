@@ -25,9 +25,13 @@ const POPULAR_LOCATIONS = [
   "Quảng Ninh",
   "Ninh Bình",
   "Đà Nẵng",
-  "Sài Gòn",
-  "Sa Pa",
-  "Vũng Tàu",
+  "Hà Tĩnh",
+  "Nghệ An",
+  "Thanh Hóa",
+  "Hải Phòng",
+  "Hội An",
+  "Quảng Ngãi",
+  "Quảng Nam",
 ];
 
 const LOCATION_COORDS: Record<string, [number, number]> = {
@@ -35,9 +39,13 @@ const LOCATION_COORDS: Record<string, [number, number]> = {
   "Quảng Ninh": [21.006382, 107.292514],
   "Ninh Bình": [20.250614, 105.974453],
   "Đà Nẵng": [16.047079, 108.20623],
-  "Sài Gòn": [10.776889, 106.700806],
-  "Sa Pa": [22.340168, 103.844813],
-  "Vũng Tàu": [10.411379, 107.136227],
+  "Hà Tĩnh": [18.342814, 105.905693],
+  "Nghệ An": [19.234248, 104.920036],
+  "Thanh Hóa": [19.806692, 105.785181],
+  "Hải Phòng": [20.844911, 106.688084],
+  "Hội An": [15.880058, 108.338047],
+  "Quảng Ngãi": [15.120152, 108.792264],
+  "Quảng Nam": [15.539353, 108.019111],
 };
 
 function isInVietnam(lat: number, lng: number) {

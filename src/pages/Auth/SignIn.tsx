@@ -25,9 +25,12 @@ export function SignIn({ onAuthSuccess }: SignInProps) {
 
       // Sửa lại điều kiện kiểm tra
       if (data.token && data.email) {
+        console.log("API response:", data);
+
         localStorage.setItem("token", data.token);
         localStorage.setItem("user", data.name);
         localStorage.setItem("name", data.name);
+        localStorage.setItem("id", data.id);
 
         toast.success("Đăng nhập thành công!", {
           position: "top-right",
@@ -71,6 +74,7 @@ export function SignIn({ onAuthSuccess }: SignInProps) {
       if (data.token && data.user) {
         localStorage.setItem("token", data.token);
         localStorage.setItem("user", data.user.name); // <-- sửa key thành 'user'
+        localStorage.setItem("id", data.user.id);
 
         toast.success("Đăng nhập bằng Google thành công!", {
           position: "top-center",

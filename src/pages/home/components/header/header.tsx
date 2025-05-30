@@ -3,7 +3,18 @@ import { useNavigate } from "react-router-dom";
 import "./styles/header.css";
 
 const POPULAR_LOCATIONS = [
-  "Hà Nội", "Quảng Ninh", "Ninh Bình", "Đà Nẵng", "Sài Gòn", "Sa Pa", "Vũng Tàu"
+  "Hà Nội",
+  "Quảng Ninh",
+  "Ninh Bình",
+  "Đà Nẵng",
+  "Sa Pa",
+  "Hà Tĩnh",
+  "Nghệ An",
+  "Thanh Hóa",
+  "Hải Phòng",
+  "Hội An",
+  "Quảng Ngãi",
+  "Quảng Nam",
 ];
 
 const HomeHeader: React.FC = () => {
@@ -18,7 +29,9 @@ const HomeHeader: React.FC = () => {
 
   const handleSearch = () => {
     navigate(
-      `/busTicket?from=${encodeURIComponent(from.trim())}&to=${encodeURIComponent(to.trim())}&date=${encodeURIComponent(date)}`
+      `/busTicket?from=${encodeURIComponent(
+        from.trim()
+      )}&to=${encodeURIComponent(to.trim())}&date=${encodeURIComponent(date)}`
     );
   };
 
