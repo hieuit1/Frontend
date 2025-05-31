@@ -16,8 +16,8 @@ interface TripTicket {
   driverId?: number;
   coachId?: number | null;
   rickshawId?: number | null;
-  fullName?: string;      // driver's full name
-  phoneNumber?: string;   // driver's phone number
+  fullName?: string;      
+  phoneNumber?: string;   
   yearOfBirth?: number;
   gender?: string;
 }

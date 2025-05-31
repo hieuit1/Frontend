@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Sidebar, Header, Footer } from "./components/indexExport";
 import Widgets from "./components/widgets";
-import SettingPage from "../setting/settingPage"; // Import SettingPage
+import SettingPage from "../setting/settingPage"; 
 import { userSubMenus } from "../../../data/userSubMenus";
 import { ticketRenderHandlers } from "../dashboard/components/renderConditions/ticketConditions";
 import { renderUserManagement } from "../dashboard/components/renderConditions/userManagementCondition";
@@ -46,7 +46,7 @@ const Dashboard: React.FC = () => {
     }
 
     if (selectedMenu === "Cài Đặt") {
-      return <SettingPage />; // Render SettingPage for "Cài Đặt"
+      return <SettingPage />; 
     }
 
     if (selectedMenu in ticketRenderHandlers) {

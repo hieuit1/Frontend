@@ -1,4 +1,4 @@
-/* Biểu tượng tin nhắn */
+
 .chatbox-icon {
   position: fixed;
   bottom: 20px;
@@ -23,7 +23,7 @@
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
-/* ChatBox */
+
 .chatbox {
   position: fixed;
   bottom: 90px;
@@ -47,7 +47,6 @@
   opacity: 0;
 }
 
-/* Header */
 .chatbox-header {
   background: linear-gradient(135deg, #007bff, #00c6ff);
   color: white;
@@ -75,7 +74,6 @@
   opacity: 1;
 }
 
-/* Messages */
 .chatbox-messages {
   flex: 1;
   padding: 12px;
@@ -106,7 +104,6 @@
   align-self: flex-end;
 }
 
-/* Input area */
 .chatbox-input {
   display: flex;
   border-top: 1px solid #ddd;

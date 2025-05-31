@@ -1,3 +1,4 @@
+//Frontend\src\components\ChatBox\ChatBox.tsx
 import React, { useState } from "react";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -18,20 +19,13 @@ const ChatBox: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const handleSendMessage = async () => {
     if (!input.trim()) return;
-
-    // Thêm tin nhắn người dùng vào messages ngay lập tức
     const newMessages: { role: "user" | "assistant"; text: string }[] = [
       ...messages,
       { role: "user", text: input },
     ];
-
-    setMessages(newMessages); // Cập nhật state ngay lập tức
-
-    console.log("Gemini API Key:", process.env.REACT_APP_GEMINI_API_KEY);
-
+    setMessages(newMessages); 
     try {
       const apiKey = process.env.REACT_APP_GEMINI_API_KEY;
-
       const response = await axios.post(
         `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
         {
@@ -47,13 +41,12 @@ const ChatBox: React.FC = () => {
           },
         }
       );
-
-      console.log("Gemini API Response:", response.data);
-
+      if (!response.data || !response.data.candidates) {
+        throw new Error("Không có phản hồi từ API.");
+      }
       const botReply =
         response.data?.candidates?.[0]?.content?.parts?.[0]?.text ||
         "Xin lỗi, tôi không hiểu câu hỏi của bạn.";
-
       setMessages((prev) => [...prev, { role: "assistant", text: botReply }]);
     } catch (error: any) {
       console.error("Lỗi khi gọi Gemini API:", error.response || error.message);
@@ -65,8 +58,7 @@ const ChatBox: React.FC = () => {
         },
       ]);
     }
-
-    setInput(""); // Xóa input sau khi gửi
+    setInput(""); 
   };
 
   return (
@@ -74,7 +66,6 @@ const ChatBox: React.FC = () => {
       <div className="chatbox-icon" onClick={() => setIsOpen(!isOpen)}>
         <FontAwesomeIcon icon={faComments} />
       </div>
-
       {isOpen && (
         <div className="chatbox">
           <div className="chatbox-header">
@@ -112,3 +103,4 @@ const ChatBox: React.FC = () => {
 };
 
 export default ChatBox;
+

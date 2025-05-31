@@ -24,6 +24,13 @@ src/api/
  - npm install @ant-design/icons
  - npm i recharts
  - npm i dayjs
+ - npm install moment
+ - npm install --save-dev @testing-library/react  
+ - npm install --save-dev @testing-library/dom
+ - npm install --save-dev @types/react
+ - npm install --save-dev @types/react-dom
+ - npm install jest
+
 process.env.REACT_APP_API_URL_ADMIN
     `${process.env.REACT_APP_API_URL_ADMIN}/auth/admin`,
 

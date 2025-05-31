@@ -1,29 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { Table, Tag, Input, Button, Popconfirm, message, Modal, Form } from "antd";
-
-interface User {
-  id: number;
-  name: string;
-  email: string;
-  registeredAt: string;
-  method?: "Google" | "Tài khoản";
-  password?: string;
-  updatedAt?: string; 
-}
-
-const mockUsers: User[] = [
-  { id: 1, name: "Nguyễn Văn A", email: "a@gmail.com", registeredAt: "2024-06-01", method: "Google", password: "" },
-  { id: 2, name: "Trần Thị B", email: "b@gmail.com", registeredAt: "2024-06-02", method: "Tài khoản", password: "matkhau2" },
-  { id: 3, name: "Lê Văn C", email: "c@gmail.com", registeredAt: "2024-06-03", method: "Google", password: "" },
-  { id: 4, name: "Phạm Thị D", email: "d@gmail.com", registeredAt: "2024-06-04", method: "Tài khoản", password: "matkhau4" },
-  { id: 5, name: "Trần Văn E", email: "e@gmail.com", registeredAt: "2024-06-05", method: "Google", password: "" },
-  { id: 6, name: "Ngô Thị F", email: "f@gmail.com", registeredAt: "2024-06-06", method: "Tài khoản", password: "matkhau6" },
-  { id: 7, name: "Đỗ Văn G", email: "g@gmail.com", registeredAt: "2024-06-07", method: "Google", password: "" },
-  { id: 8, name: "Vũ Thị H", email: "h@gmail.com", registeredAt: "2024-06-08", method: "Tài khoản", password: "matkhau8" },
-  { id: 9, name: "Bùi Văn I", email: "i@gmail.com", registeredAt: "2024-06-09", method: "Google", password: "" },
-  { id: 10, name: "Nguyễn Thị K", email: "k@gmail.com", registeredAt: "2024-06-10", method: "Tài khoản", password: "matkhau10" },
-  { id: 11, name: "Phan Văn L", email: "l@gmail.com", registeredAt: "2024-06-11", method: "Google", password: "" },
-];
+import {
+  Table,
+  Tag,
+  Input,
+  Button,
+  Popconfirm,
+  message,
+  Modal,
+  Form,
+} from "antd";
+import {
+  fetchUsers,
+  deleteUser,
+  bulkDeleteUsers,
+  updateUser,
+  User,
+} from "../../../api/userSignUpsApi";
 
 const UserSignUps: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
@@ -31,63 +23,94 @@ const UserSignUps: React.FC = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [editingUser, setEditingUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
+  // Load user data
   useEffect(() => {
-    setUsers(mockUsers);
+    const loadUsers = async () => {
+      setLoading(true);
+      try {
+        const data = await fetchUsers();
+        setUsers(data);
+      } catch (err: any) {
+        setError(err.message);
+        message.error("Không thể tải người dùng");
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadUsers();
   }, []);
 
-  const filteredUsers = users.filter(
-    (u) =>
-      u.name.toLowerCase().includes(search.toLowerCase()) ||
-      u.email.toLowerCase().includes(search.toLowerCase()) ||
-      (u.password && u.password.toLowerCase().includes(search.toLowerCase())) ||
-      u.registeredAt.includes(search) ||
-      (u.method && u.method.toLowerCase().includes(search.toLowerCase())) ||
-      (u.updatedAt && u.updatedAt.includes(search))
+  // Tìm kiếm người dùng
+  const filteredUsers = users.filter((u) =>
+    [
+      u.name,
+      u.email,
+      u.password || "",
+      u.registeredAt,
+      u.method || "",
+      u.updatedAt || "",
+    ].some((field) =>
+      field.toLowerCase().includes(search.toLowerCase())
+    )
   );
 
-  const handleDelete = (id: number) => {
-    setUsers((prev) => prev.filter((item) => item.id !== id));
-    message.success("Đã xóa thành công");
+  // Xóa 1 người dùng
+  const handleDelete = async (id: number) => {
+    try {
+      await deleteUser(id);
+      setUsers((prev) => prev.filter((item) => item.id !== id));
+      message.success("Đã xóa thành công");
+    } catch {
+      message.error("Xóa người dùng thất bại");
+    }
   };
 
-  const handleBulkDelete = () => {
-    setUsers((prev) => prev.filter((item) => !selectedRowKeys.includes(item.id)));
-    setSelectedRowKeys([]);
-    message.success("Đã xóa các mục đã chọn");
+  // Xóa nhiều người dùng
+  const handleBulkDelete = async () => {
+    try {
+      await bulkDeleteUsers(selectedRowKeys as number[]);
+      setUsers((prev) =>
+        prev.filter((item) => !selectedRowKeys.includes(item.id))
+      );
+      setSelectedRowKeys([]);
+      message.success("Đã xóa các mục đã chọn");
+    } catch {
+      message.error("Xóa hàng loạt thất bại");
+    }
   };
 
+  // Mở modal chỉnh sửa
   const handleEdit = (user: User) => {
     setEditingUser(user);
     setEditModalVisible(true);
   };
 
-  const handleEditOk = (values: any) => {
-    const now = new Date();
-    const updatedAt = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(
-      now.getDate()
-    ).padStart(2, "0")} ${String(now.getHours()).padStart(2, "0")}:${String(
-      now.getMinutes()
-    ).padStart(2, "0")}:${String(now.getSeconds()).padStart(2, "0")}`;
-    setUsers((prev) =>
-      prev.map((u) =>
-        u.id === editingUser?.id
-          ? {
-              ...u,
-              ...values,
-              updatedAt,
-            }
-          : u
-      )
-    );
-    setEditModalVisible(false);
-    setEditingUser(null);
-    message.success("Đã cập nhật thành công");
+  // Cập nhật thông tin người dùng
+  const handleEditOk = async (values: any) => {
+    try {
+      const updatedUser = await updateUser(editingUser!.id, values);
+      setUsers((prev) =>
+        prev.map((u) => (u.id === editingUser?.id ? updatedUser : u))
+      );
+      setEditModalVisible(false);
+      setEditingUser(null);
+      message.success("Đã cập nhật thành công");
+    } catch {
+      message.error("Cập nhật người dùng thất bại");
+    }
   };
 
   return (
     <div>
       <h2>Người Dùng Đăng Ký</h2>
+
+      {error && (
+        <div style={{ color: "red", marginBottom: 16 }}>{error}</div>
+      )}
+
       <div style={{ marginBottom: 16, display: "flex", gap: 8 }}>
         <Input
           placeholder="Tìm kiếm theo tên, email, mật khẩu, ngày, phương thức..."
@@ -107,7 +130,9 @@ const UserSignUps: React.FC = () => {
           </Button>
         </Popconfirm>
       </div>
+
       <Table
+        loading={loading}
         dataSource={filteredUsers}
         rowKey="id"
         rowSelection={{
@@ -123,13 +148,23 @@ const UserSignUps: React.FC = () => {
           { title: "ID", dataIndex: "id", key: "id" },
           { title: "Tên", dataIndex: "name", key: "name" },
           { title: "Email", dataIndex: "email", key: "email" },
-          { title: "Mật khẩu", dataIndex: "password", key: "password", render: (pw: string) => pw ? pw : <i style={{color:"#aaa"}}>Google</i> },
-          { title: "Ngày đăng ký", dataIndex: "registeredAt", key: "registeredAt" },
           {
-            title: "Phương thức đăng ký",
+            title: "Mật khẩu",
+            dataIndex: "password",
+            key: "password",
+            render: (pw: string) =>
+              pw ? pw : <i style={{ color: "#aaa" }}>Google</i>,
+          },
+          {
+            title: "Ngày đăng ký",
+            dataIndex: "registeredAt",
+            key: "registeredAt",
+          },
+          {
+            title: "Phương thức",
             dataIndex: "method",
             key: "method",
-            render: (method: User["method"]) =>
+            render: (method) =>
               method === "Google" ? (
                 <Tag color="blue">Google</Tag>
               ) : (
@@ -142,9 +177,7 @@ const UserSignUps: React.FC = () => {
             key: "updatedAt",
             render: (updatedAt: string | undefined) =>
               updatedAt ? (
-                <span>
-                  {updatedAt}
-                </span>
+                <span>{updatedAt}</span>
               ) : (
                 <span style={{ color: "#aaa" }}>Chưa sửa</span>
               ),
@@ -153,12 +186,8 @@ const UserSignUps: React.FC = () => {
             title: "Thao tác",
             key: "action",
             render: (_: any, record: User) => (
-              <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-                <Button
-                  size="small"
-                  style={{ marginRight: 0 }}
-                  onClick={() => handleEdit(record)}
-                >
+              <div style={{ display: "flex", gap: 8 }}>
+                <Button size="small" onClick={() => handleEdit(record)}>
                   Sửa
                 </Button>
                 <Popconfirm
@@ -167,13 +196,16 @@ const UserSignUps: React.FC = () => {
                   okText="Xóa"
                   cancelText="Hủy"
                 >
-                  <Button danger size="small">Xóa</Button>
+                  <Button danger size="small">
+                    Xóa
+                  </Button>
                 </Popconfirm>
               </div>
             ),
           },
         ]}
       />
+
       <Modal
         title="Sửa thông tin người dùng"
         open={editModalVisible}
@@ -193,6 +225,7 @@ const UserSignUps: React.FC = () => {
           >
             <Input />
           </Form.Item>
+
           <Form.Item
             name="email"
             label="Email"
@@ -200,6 +233,7 @@ const UserSignUps: React.FC = () => {
           >
             <Input />
           </Form.Item>
+
           <Form.Item
             name="password"
             label="Mật khẩu"
@@ -219,6 +253,7 @@ const UserSignUps: React.FC = () => {
           >
             <Input />
           </Form.Item>
+
           <Button type="primary" htmlType="submit" block>
             Lưu
           </Button>
@@ -226,6 +261,6 @@ const UserSignUps: React.FC = () => {
       </Modal>
     </div>
   );
-}
+};
 
-export  {UserSignUps};
+export { UserSignUps };
