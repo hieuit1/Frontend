@@ -30,6 +30,8 @@ src/api/
  - npm install --save-dev @types/react
  - npm install --save-dev @types/react-dom
  - npm install jest
+ - npm install --save-dev ts-jest @types/jest
+ - npm install --save-dev @types/jest
 
 process.env.REACT_APP_API_URL_ADMIN
     `${process.env.REACT_APP_API_URL_ADMIN}/auth/admin`,

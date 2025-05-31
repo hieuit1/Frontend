@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Navbar from "../../components/navbar/Navbar";
-import Footer from "../../components/common/footer/Footer";
+import Footer from "../home/components/footer/Footer";
 import "./bus_ticket_css/bus_ticket.css";
 import { getTripsData } from "../../api/tripsApi";
 import { MapContainer, TileLayer, useMap } from "react-leaflet";

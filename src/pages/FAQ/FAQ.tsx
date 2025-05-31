@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Navbar from "../../components/navbar/Navbar";
-import Footer from "../../components/common/footer/Footer";
+import Footer from "../home/components/footer/Footer";
 import "./FAQ.css";
 
 const FAQ: React.FC = () => {

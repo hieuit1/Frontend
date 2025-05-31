@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import Footer from "../../components/common/footer/Footer";
+import Footer from "../home/components/footer/Footer";
 import Navbar from "../../components/navbar/Navbar";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
