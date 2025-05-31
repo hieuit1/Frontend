@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import PersonIcon from "@mui/icons-material/Person";
-import "./navbar_css/Navbar.css";
+import "./styles/Navbar.css";
 
 const logo = require("../../images/payment/Logo.jpg");
 

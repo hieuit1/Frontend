@@ -7,3 +7,4 @@ export { resetPassword} from "./reset_passwordApi";
 export { getTripsData, getTripById } from "./tripsApi";
 export { createDriver } from "./bus_add_driverApi";
 export {  createTripCar } from "./bus_ticket_salesApi";
+export { sendMessageToGemini } from "./chatBoxApi"

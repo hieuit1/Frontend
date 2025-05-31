@@ -7,19 +7,32 @@ export interface User {
   id: number;
   name: string;
   email: string;
+  numberphone: string;  // 🆕 Thêm số điện thoại
+  role: string;         // 🆕 Thêm vai trò
   registeredAt: string;
   method?: "Google" | "Tài khoản";
   password?: string;
   updatedAt?: string;
+  isEnabled: boolean;   // 🆕 Thêm trạng thái tài khoản
 }
 
-const API_URL = "https://api.example.com/users"; // Thay bằng URL thực tế nếu cần
+
+const API_URL = `${process.env.REACT_APP_API_URL}/manager-user`; 
+
+/**
+ * Lấy token từ localStorage
+ */
+const getToken = () => localStorage.getItem("token");
 
 /**
  * Lấy danh sách tất cả người dùng.
  */
 export const fetchUsers = async (): Promise<User[]> => {
-  const response = await fetch(API_URL);
+  const token = getToken();
+  const response = await fetch(API_URL, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+
   if (!response.ok) {
     throw new Error("Không thể tải danh sách người dùng");
   }
@@ -30,9 +43,12 @@ export const fetchUsers = async (): Promise<User[]> => {
  * Xóa 1 người dùng theo ID.
  */
 export const deleteUser = async (id: number): Promise<void> => {
+  const token = getToken();
   const response = await fetch(`${API_URL}/${id}`, {
     method: "DELETE",
+    headers: { Authorization: `Bearer ${token}` }
   });
+
   if (!response.ok) {
     throw new Error(`Xóa người dùng thất bại (ID: ${id})`);
   }
@@ -42,10 +58,12 @@ export const deleteUser = async (id: number): Promise<void> => {
  * Xóa hàng loạt người dùng theo danh sách ID.
  */
 export const bulkDeleteUsers = async (ids: number[]): Promise<void> => {
+  const token = getToken();
   await Promise.all(
     ids.map((id) =>
       fetch(`${API_URL}/${id}`, {
         method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` }
       }).then((res) => {
         if (!res.ok) throw new Error(`Xóa người dùng thất bại (ID: ${id})`);
       })
@@ -60,10 +78,12 @@ export const updateUser = async (
   id: number,
   values: Partial<User>
 ): Promise<User> => {
+  const token = getToken();
   const response = await fetch(`${API_URL}/${id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
     },
     body: JSON.stringify({
       ...values,

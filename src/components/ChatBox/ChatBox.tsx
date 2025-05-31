@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComments } from "@fortawesome/free-solid-svg-icons";
+import {sendMessageToGemini} from "../../api/indexApi";
 import "./ChatBox.css";
 
 interface Message {
@@ -12,44 +13,22 @@ const ChatBox: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([
     { role: "assistant", text: "Xin chào! Tôi có thể giúp gì cho bạn về vé xe?" }
   ]);
-
   const [input, setInput] = useState("");
   const [isOpen, setIsOpen] = useState(false);
 
   const handleSendMessage = async () => {
-    if (!input.trim()) return;
+    if (!input./* Phương thức `trim()` trong JavaScript được sử dụng để xóa các ký tự khoảng trắng khỏi cả
+hai đầu của một chuỗi. Các ký tự khoảng trắng bao gồm khoảng trắng, tab và dòng mới. Phương thức này
+không sửa đổi chuỗi gốc, nhưng trả về một chuỗi mới với khoảng trắng đầu và
+cuối đã được xóa. Phương thức này thường được sử dụng để khử trùng đầu vào của người dùng bằng cách xóa
+bất kỳ khoảng trắng không cần thiết nào trước hoặc sau nội dung thực tế của chuỗi.*/
+    trim()) return;
 
-const newMessages: Message[] = [
-  ...messages,
-  { role: "user" as "user", text: input }, // Xác định kiểu cho "user"
-];
+    const newMessages: Message[] = [...messages, { role: "user", text: input }];
+    setMessages(newMessages);
 
-setMessages(newMessages);
-
-
-    try {
-      const apiKey = process.env.REACT_APP_GEMINI_API_KEY;
-      const response = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ contents: [{ parts: [{ text: input }] }] }),
-        }
-      );
-
-      const jsonResponse = await response.json();
-
-      if (!jsonResponse?.candidates?.[0]?.content?.parts?.[0]?.text) {
-        throw new Error("Không có phản hồi từ API.");
-      }
-
-      const botReply = jsonResponse.candidates[0].content.parts[0].text;
-      setMessages((prev) => [...prev, { role: "assistant", text: botReply }]);
-    } catch (error) {
-      console.error("Lỗi khi gọi Gemini API:", error);
-      setMessages((prev) => [...prev, { role: "assistant", text: "Xin lỗi, đã xảy ra lỗi. Vui lòng thử lại sau." }]);
-    }
+    const botReply = await sendMessageToGemini(input);
+    setMessages((prev) => [...prev, { role: "assistant", text: botReply }]);
 
     setInput("");
   };
