@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Footer from "../home/components/footer/Footer";
 import Navbar from "../../components/navbar/Navbar";
@@ -34,8 +34,33 @@ const Payment: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { selectedSeats, trip } = location.state || {};
+  const locationState = location.state || {};
 
-  // TÍNH TỔNG TIỀN DỰA TRÊN selectedSeats và trip.priceSeatNumber
+  useEffect(() => {
+    console.log("Location state:", locationState);
+    console.log("Selected seats:", selectedSeats);
+    console.log("Trip data:", trip);
+  }, [locationState, selectedSeats, trip]);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      toast.error("Vui lòng đăng nhập để đặt vé!");
+      setTimeout(() => {
+        navigate("/auth", {
+          state: { from: location.pathname, tripData: { selectedSeats, trip } },
+        });
+      }, 2000);
+    }
+  }, [navigate, location.pathname, selectedSeats, trip]);
+
+  useEffect(() => {
+    if (!selectedSeats.length || !trip?.tripCarId) {
+      toast.error("Không tìm thấy thông tin chuyến đi hoặc ghế đã chọn!");
+      setTimeout(() => navigate("/bus-ticket"), 3000);
+    }
+  }, [selectedSeats, trip, navigate]);
+
   const totalPrice =
     Array.isArray(selectedSeats) && trip?.priceSeatNumber
       ? selectedSeats.length * trip.priceSeatNumber
@@ -53,7 +78,7 @@ const Payment: React.FC = () => {
   });
   const [paymentMethod, setPaymentMethod] = useState<string>("");
   const [showPayment, setShowPayment] = useState(false);
-
+  const [isLoading, setIsLoading] = useState(false);
   const [cardInfo, setCardInfo] = useState({
     cardNumber: "",
     cardHolder: "",
@@ -95,6 +120,56 @@ const Payment: React.FC = () => {
       }
     }
 
+    if (!trip || !trip.tripCarId) {
+      toast.error("Không tìm thấy thông tin chuyến đi!");
+      return;
+    }
+
+    const token = localStorage.getItem("token");
+    const userId = localStorage.getItem("id");
+
+    console.log("Token:", token);
+    console.log("User ID:", userId);
+    console.log("Trip:", trip);
+    const seatNumbers = selectedSeats.map((seat: any) => seat.id).join(", ");
+    const bookTicketData = {
+      seatNumber: seatNumbers,
+      tripCarId: Number(trip.tripCarId),
+      id: Number(userId),
+    };
+
+    console.log("Booking data:", bookTicketData);
+
+    const bookTicketPromise = fetch(
+      `${process.env.REACT_APP_API_URL}/user-ticket/book-ticket`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token ? `Bearer ${token}` : "",
+        },
+        body: JSON.stringify(bookTicketData),
+      }
+    ).then(async (res) => {
+      const responseText = await res.text();
+      if (!res.ok) {
+        throw new Error(
+          `Lỗi đặt vé: ${
+            responseText || "Không có phản hồi chi tiết từ server"
+          }`
+        );
+      }
+
+      let ticketData;
+      try {
+        ticketData = JSON.parse(responseText);
+      } catch (e) {
+        console.log("Không thể parse JSON:", e);
+        ticketData = { tickerId: null, status: "UNKNOWN" };
+      }
+      return ticketData;
+    });
+
     const paymentData = {
       name: contactInfo.name,
       phone: contactInfo.phone,
@@ -112,39 +187,43 @@ const Payment: React.FC = () => {
       priceSeatNumber: trip?.priceSeatNumber,
       coachName: trip?.coachName,
       licensePlateNumberCoach: trip?.licensePlateNumberCoach,
-      totalPrice: totalPrice.toLocaleString(), // hoặc giá trị tổng tiền đã tính
+      totalPrice: totalPrice.toLocaleString(),
       url: trip?.url,
     };
 
-    const token = localStorage.getItem("token");
-    fetch(`${process.env.REACT_APP_API_URL}/api-tripcar/payment`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token ? `Bearer ${token}` : "",
-      },
-      body: JSON.stringify(paymentData),
-    })
-      .then(async (res) => {
-        if (!res.ok) throw new Error(await res.text());
-        return res.text();
+    bookTicketPromise
+      .then(() => {
+        return fetch(`${process.env.REACT_APP_API_URL}/send-email/payment`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token ? `Bearer ${token}` : "",
+          },
+          body: JSON.stringify(paymentData),
+        }).then(async (res) => {
+          if (!res.ok) throw new Error(await res.text());
+          return res.text();
+        });
       })
       .then((msg) => {
-        // Lưu lịch sử đặt vé vào localStorage (nếu muốn)
-        const history = JSON.parse(localStorage.getItem("bookingHistory") || "[]");
+        const history = JSON.parse(
+          localStorage.getItem("bookingHistory") || "[]"
+        );
         history.push({
           ...paymentData,
           time: new Date().toISOString(),
         });
         localStorage.setItem("bookingHistory", JSON.stringify(history));
 
-        toast.success("Thanh toán thành công! Thông tin vé đã được gửi qua email.");
+        toast.success(
+          "Thanh toán thành công! Thông tin vé đã được gửi qua email."
+        );
         setTimeout(() => {
           navigate("/account");
         }, 1500);
       })
       .catch((err) => {
-        toast.error("Đã xảy ra lỗi khi gửi email: " + err.message);
+        toast.error("Đã xảy ra lỗi: " + err.message);
       });
   };
 

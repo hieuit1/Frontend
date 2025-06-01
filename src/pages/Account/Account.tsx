@@ -85,6 +85,36 @@ const Account: React.FC = () => {
     fetchTicketDetails();
   }, [selectedTicketId]);
 
+  const handleRequestCancel = async (ticketId: number) => {
+    const confirm = window.confirm("Bạn có chắc muốn gửi yêu cầu hủy vé?");
+    if (!confirm) return;
+
+    try {
+      const token = localStorage.getItem("token");
+      await axios.put(
+        `${process.env.REACT_APP_API_URL}/user-ticket/request-cancel/${ticketId}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      // Cập nhật trạng thái trong danh sách
+      setBookingHistory((prev) =>
+        prev.map((t) =>
+          t.tickerId === ticketId ? { ...t, status: "CANCEL_REQUESTED" } : t
+        )
+      );
+
+      alert("Yêu cầu hủy vé đã được gửi.");
+    } catch (err) {
+      console.error("Lỗi khi gửi yêu cầu hủy:", err);
+      alert("Gửi yêu cầu hủy thất bại.");
+    }
+  };
+
   return (
     <div className={styles["account-page"]}>
       <Navbar />
@@ -110,6 +140,7 @@ const Account: React.FC = () => {
                 <th>Ghế</th>
                 <th>Trạng thái</th>
                 <th>Chi tiết</th>
+                <th>Hủy vé</th>
               </tr>
             </thead>
             <tbody>
@@ -153,6 +184,21 @@ const Account: React.FC = () => {
                     >
                       Xem
                     </button>
+                  </td>
+                  <td>
+                    {["PENDING"].includes(ticket.status) && (
+                      <button
+                        className={
+                          ticket.status === "PENDING"
+                            ? styles["status-request-cancel"]
+                            : styles["status-request-cancel-disabled"]
+                        }
+                        onClick={() => handleRequestCancel(ticket.tickerId)}
+                        style={{ marginLeft: 8 }}
+                      >
+                        Yêu cầu hủy
+                      </button>
+                    )}
                   </td>
                 </tr>
               ))}
