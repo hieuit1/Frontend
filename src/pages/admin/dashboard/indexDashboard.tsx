@@ -20,6 +20,7 @@ const Dashboard: React.FC = () => {
   const [showTaxiTicketForm, setShowTaxiTicketForm] = useState(false);
   const [showBusTicketForm, setShowBusTicketForm] = useState(false);
   const [showDriverForm, setShowDriverForm] = useState(false);
+  const [showCoachForm, setShowCoachForm] = useState(false); // ✅ Thêm trạng thái
 
   const handleMenuSelect = (menu: string) => {
     setSelectedMenu(menu);
@@ -37,6 +38,7 @@ const Dashboard: React.FC = () => {
     if (menu !== "Bán Vé Xe Bus") {
       setShowBusTicketForm(false);
       setShowDriverForm(false);
+      setShowCoachForm(false); // ✅ Đóng form tạo xe khách khi đổi menu
     }
   };
 
@@ -46,38 +48,21 @@ const Dashboard: React.FC = () => {
     }
 
     if (selectedMenu === "Cài Đặt") {
-      return <SettingPage />; 
+      return <SettingPage />;
     }
 
-    if (selectedMenu in ticketRenderHandlers) {
-      const handler = ticketRenderHandlers[selectedMenu as keyof typeof ticketRenderHandlers];
-      const stateMap: Record<string, [boolean, React.Dispatch<React.SetStateAction<boolean>>]> = {
-        "Bán Vé Xe Du Lịch": [showTouristBusForm, setShowTouristBusForm],
-        "Bán Vé Xe Khách": [showIntercityBusForm, setShowIntercityBusForm],
-        "Bán Vé Tàu": [showTrainTicketForm, setShowTrainTicketForm],
-        "Bán Vé Máy Bay": [showAirlineTicketForm, setShowAirlineTicketForm],
-        "Bán Vé Xe Ôm": [showMotorcycleTicketForm, setShowMotorcycleTicketForm],
-        "Bán Vé Taxi": [showTaxiTicketForm, setShowTaxiTicketForm],
-        "Bán Vé Xe Bus": [showBusTicketForm, setShowBusTicketForm],
-      };
-      const [showForm, setShowForm] = stateMap[selectedMenu];
+if (selectedMenu in ticketRenderHandlers) {
+  return ticketRenderHandlers[selectedMenu as keyof typeof ticketRenderHandlers](
+    showBusTicketForm,
+    setShowBusTicketForm,
+    showDriverForm,
+    setShowDriverForm,
+    showCoachForm, // ✅ Đã thêm tham số thiếu
+    setShowCoachForm // ✅ Đã thêm tham số thiếu
+  );
+}
 
-      if (selectedMenu === "Bán Vé Xe Bus") {
-        const busHandler = handler as (
-          showForm: boolean,
-          setShowForm: React.Dispatch<React.SetStateAction<boolean>>,
-          showDriverForm: boolean,
-          setShowDriverForm: React.Dispatch<React.SetStateAction<boolean>>
-        ) => React.ReactElement;
-        return busHandler(showForm, setShowForm, showDriverForm, setShowDriverForm);
-      } else {
-        const commonHandler = handler as (
-          showForm: boolean,
-          setShowForm: React.Dispatch<React.SetStateAction<boolean>>
-        ) => React.ReactElement;
-        return commonHandler(showForm, setShowForm);
-      }
-    }
+
 
     if (selectedMenu === "Danh Thu") return <Widgets />;
 

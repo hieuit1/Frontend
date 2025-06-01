@@ -16,6 +16,9 @@ import {
     BusTicketSalesListPage,
     BusTicketSalesPage,
     BusAddDriver,
+    BusDriverListPage,
+    BusCreateCoachPage,
+    BusCoachListPage,
 } from "../../../ticketSalesManagement/indexExport";
 import { Add } from "@mui/icons-material";
 
@@ -91,34 +94,41 @@ export const ticketRenderHandlers = {
     ) : (
       <TaxiTicketSalesListPage onAddTicket={() => setShowForm(true)} />
     ),
-    "Bán Vé Xe Bus": (
-    showForm: boolean,
-    setShowForm: (b: boolean) => void,
-    showDriverForm: boolean,
-    setShowDriverForm: (b: boolean) => void
-  ) =>
-    showForm ? (
-      <>
-        <Button onClick={() => setShowForm(false)} style={{ marginBottom: 16 }}>
-          Quay lại danh sách vé
-        </Button>
-        <BusTicketSalesPage />
-      </>
-    ) : showDriverForm ? (
-      <>
-        <Button
-          onClick={() => setShowDriverForm(false)}
-          style={{ marginBottom: 16 }}
-        >
-          Quay lại danh sách vé
-        </Button>
-        <BusAddDriver />
-      </>
-    ) : (
-      <BusTicketSalesListPage
-        onAddTicket={() => setShowForm(true)}
-        onAddDriver={() => setShowDriverForm(true)}
-      />
-    ),
+   "Bán Vé Xe Bus": (
+  showForm: boolean,
+  setShowForm: (b: boolean) => void,
+  showDriverForm: boolean,
+  setShowDriverForm: (b: boolean) => void,
+  showCoachForm: boolean,
+  setShowCoachForm: (b: boolean) => void
+) =>
+  showForm ? (
+    <>
+      <Button onClick={() => setShowForm(false)} style={{ marginBottom: 16 }}>
+        Quay lại danh sách vé
+      </Button>
+      <BusTicketSalesPage />
+    </>
+  ) : showDriverForm ? (
+    <>
+      <Button onClick={() => setShowDriverForm(false)} style={{ marginBottom: 16 }}>
+        Quay lại danh sách vé
+      </Button>
+      <BusAddDriver />
+    </>
+  ) : showCoachForm ? (
+    <>
+      <Button onClick={() => setShowCoachForm(false)} style={{ marginBottom: 16 }}>
+        Quay lại danh sách vé
+      </Button>
+      <BusCreateCoachPage />
+    </>
+  ) : (
+    <BusTicketSalesListPage
+      onAddTicket={() => setShowForm(true)}
+      onAddDriver={() => setShowDriverForm(true)}
+      onAddCoach={() => setShowCoachForm(true)} // ✅ Mở trang tạo xe khách
+    />
+  ),
 
 };

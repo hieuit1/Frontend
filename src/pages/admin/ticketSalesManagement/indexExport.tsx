@@ -15,3 +15,5 @@ export { BusTicketSalesListPage } from "./busTicketSales/busTicketSalesListPage"
 export { BusTicketSalesPage } from "./busTicketSales/busTicketSalesPage";
 export { BusAddDriver } from "./busTicketSales/busAddDriverPage";
 export { BusDriverListPage } from "./busTicketSales/busDriverListPage";
+export { BusCreateCoachPage } from "./busTicketSales/busCreateCoachPage";
+export { BusCoachListPage } from "./busTicketSales/busCoachListPage";
