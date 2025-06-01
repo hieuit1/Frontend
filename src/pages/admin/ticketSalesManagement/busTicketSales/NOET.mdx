@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Table, message, Button, Modal, Form, Input } from "antd";
+import { Table, message, Button } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { BusDriverListPage } from "../../ticketSalesManagement/busTicketSales/busDriverListPage"; 
 import { BusCoachListPage } from "../../ticketSalesManagement/busTicketSales/busCoachListPage"; // ✅ Import danh sách xe khách
@@ -11,7 +11,7 @@ interface TripTicket {
   departureTime: string;
   departureEndTime: string;
   pickupPoint: string;
-  payPonit: string;
+  payPoint: string;
   seatNumber: number;
   emptySeatNumber: number;
   priceSeatNumber: number;
@@ -36,8 +36,7 @@ const BusTicketSalesListPage: React.FC<BusTicketSalesListPageProps> = ({
   const [loading, setLoading] = useState<boolean>(false);
   const [showDriverPage, setShowDriverPage] = useState(false); 
   const [showCoachPage, setShowCoachPage] = useState(false); // ✅ Kiểm soát hiển thị trang xe khách
-const [isModalVisible, setIsModalVisible] = useState(false);
-  const [editingTicket, setEditingTicket] = useState<TripTicket | null>(null);
+
   useEffect(() => {
     fetchAllTrips();
   }, []);
@@ -74,80 +73,25 @@ const [isModalVisible, setIsModalVisible] = useState(false);
     }
   };
 
-  const handleEditTicket = async (tripCarId: number, updatedTicket: TripTicket) => {
-  try {
-    const response = await fetch(`http://localhost:8080/api/api-tripcar/update-tripcar/${tripCarId}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-      body: JSON.stringify(updatedTicket),
-    });
+  const columns: ColumnsType<TripTicket> = [
+  { title: "Tên chuyến", dataIndex: "tripName", key: "tripName" },
+  { title: "Điểm đón", dataIndex: "pickupPoint", key: "pickupPoint" },
+  { title: "Điểm trả", dataIndex: "payPonit", key: "payPonit" }, // ✅ Sửa tên chính xác
+  { title: "Ngày khởi hành", dataIndex: "departureDate", key: "departureDate" },
+  { title: "Giờ khởi hành", dataIndex: "departureTime", key: "departureTime" },
+  { title: "Giờ kết thúc", dataIndex: "departureEndTime", key: "departureEndTime" },
+  { title: "Tổng số ghế", dataIndex: "seatNumber", key: "seatNumber" },
+  { title: "Ghế trống", dataIndex: "emptySeatNumber", key: "emptySeatNumber" },
+  {
+    title: "Giá vé (VNĐ)",
+    dataIndex: "priceSeatNumber",
+    key: "priceSeatNumber",
+    render: (price: number) => price?.toLocaleString("vi-VN") || "0",
+  },
+  { title: "Tên tài xế", dataIndex: "fullName", key: "fullName" },
+  { title: "SĐT tài xế", dataIndex: "phoneNumber", key: "phoneNumber" },
+];
 
-    if (!response.ok) throw new Error("Không thể cập nhật chuyến xe");
-
-    message.success("Đã sửa thành công!");
-    setEditingTicket(null); // Đóng modal sau khi sửa
-    fetchAllTrips(); // Cập nhật danh sách chuyến xe
-  } catch (error) {
-    console.error("Lỗi khi cập nhật chuyến xe:", error);
-    message.error("Có lỗi xảy ra khi cập nhật vé xe.");
-  }
-};
-
-
-  const handleDeleteTicket = async (tripCarId: number) => {
-    try {
-      const response = await fetch(`http://localhost:8080/api/api-tripcar/${tripCarId}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-
-      if (!response.ok) throw new Error("Không thể xóa chuyến xe");
-
-      message.success("Xóa chuyến xe thành công!");
-      fetchAllTrips();
-    } catch (error) {
-      console.error("Lỗi khi xóa chuyến xe:", error);
-      message.error("Có lỗi xảy ra khi xóa vé xe.");
-    }
-  };
-
-   const columns: ColumnsType<TripTicket> = [
-    { title: "Tên chuyến", dataIndex: "tripName", key: "tripName" },
-    { title: "Điểm đón", dataIndex: "pickupPoint", key: "pickupPoint" },
-    { title: "Điểm trả", dataIndex: "payPoint", key: "payPoint" },
-    { title: "Ngày khởi hành", dataIndex: "departureDate", key: "departureDate" },
-    { title: "Giờ khởi hành", dataIndex: "departureTime", key: "departureTime" },
-    { title: "Giờ kết thúc", dataIndex: "departureEndTime", key: "departureEndTime" },
-    { title: "Tổng số ghế", dataIndex: "seatNumber", key: "seatNumber" },
-    { title: "Ghế trống", dataIndex: "emptySeatNumber", key: "emptySeatNumber" },
-    {
-      title: "Giá vé (VNĐ)",
-      dataIndex: "priceSeatNumber",
-      key: "priceSeatNumber",
-      render: (price: number) => price?.toLocaleString("vi-VN") || "0",
-    },
-    { title: "Tên tài xế", dataIndex: "fullName", key: "fullName" },
-    { title: "SĐT tài xế", dataIndex: "phoneNumber", key: "phoneNumber" },
-    {
-      title: "Hành động",
-      key: "actions",
-      render: (_: any, record: TripTicket) => (
-        <>
-          <Button type="primary" onClick={() => setEditingTicket(record)}>
-            Sửa
-          </Button>
-          <Button danger onClick={() => handleDeleteTicket(record.tripCarId)}>
-            Xóa
-          </Button>
-        </>
-      ),
-    },
-  ];
 
   return (
     <div className="p-8 bg-white max-w-7xl mx-auto shadow rounded">
@@ -225,28 +169,6 @@ const [isModalVisible, setIsModalVisible] = useState(false);
     </div>
   </div>
       )}
-      <Modal
-  title="Sửa chuyến xe"
-  visible={!!editingTicket}
-  onCancel={() => setEditingTicket(null)}
-  onOk={() => handleEditTicket(editingTicket!.tripCarId, editingTicket!)}
->
-  <Form layout="vertical">
-    <Form.Item label="Tên chuyến">
-      <Input 
-        value={editingTicket?.tripName} 
-        onChange={(e) => setEditingTicket({ ...editingTicket!, tripName: e.target.value })} 
-      />
-    </Form.Item>
-    <Form.Item label="Điểm đón">
-      <Input 
-        value={editingTicket?.pickupPoint} 
-        onChange={(e) => setEditingTicket({ ...editingTicket!, pickupPoint: e.target.value })} 
-      />
-    </Form.Item>
-  </Form>
-</Modal>
-
     </div>
   );
 };

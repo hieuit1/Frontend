@@ -1,11 +1,10 @@
-const API_URL = `${process.env.REACT_APP_API_URL}`;
-// const API_COACH = `${process.env.REACT_APP_API_URL}/api-coach`;
+
 /**
  * Lấy danh sách tất cả xe khách.
  */
 export const fetchCoaches = async () => {
   const token = localStorage.getItem("token");
-  const response = await fetch(`${API_URL}/useradmin-all-coach`, {
+  const response = await fetch(`${process.env.REACT_APP_API_URL}/useradmin-all-coach`, {
     headers: { Authorization: `Bearer ${token}` }
   });
 
@@ -20,7 +19,7 @@ export const fetchCoaches = async () => {
  */
 export const fetchCoachById = async (id: number) => {
   const token = localStorage.getItem("token");
-  const response = await fetch(`${API_URL}/useradmin-all-coach/${id}`, {
+  const response = await fetch(`${process.env.REACT_APP_API_URL}useradmin-all-coach/${id}`, {
     headers: { Authorization: `Bearer ${token}` }
   });
 
@@ -38,7 +37,7 @@ export const createCoach = async (formData: FormData) => {
   console.log("📡 Đang gửi request API createCoach...", formData);
   console.log("🔒 Token gửi đi:", token);
 
-  const response = await fetch(`http://localhost:8080/api/api-coach/create-coach`, {
+  const response = await fetch(`${process.env.REACT_APP_API_URL}/api-coach/create-coach`, {
     method: "POST",
     headers: { Authorization: `Bearer ${token}` },
     body: formData,
@@ -54,30 +53,42 @@ export const createCoach = async (formData: FormData) => {
 };
 
 
-
-
 /**
  * Cập nhật thông tin xe khách.
  */
-export const updateCoach = async (id: number, values: any) => {
+export const updateCoach = async (id: number, values: any, file?: File) => {
   const token = localStorage.getItem("token");
-  const response = await fetch(`${API_URL}/update-coach/${id}`, {
+  const formData = new FormData();
+  
+  formData.append("coachName", values.coachName);
+  formData.append("licensePlateNumberCoach", values.licensePlateNumberCoach);
+  
+  if (file) {
+    formData.append("image", file); // ✅ Đảm bảo gửi file ảnh đúng kiểu `MultipartFile`
+  }
+
+  console.log("📡 Dữ liệu gửi API cập nhật xe khách:", formData);
+
+  const response = await fetch(`${process.env.REACT_APP_API_URL}/api-coach/update-coach/${id}`, {
     method: "PUT",
-    headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-    body: JSON.stringify(values),
+    headers: { Authorization: `Bearer ${token}` },
+    body: formData,
   });
 
   if (!response.ok) {
     throw new Error("Không thể cập nhật xe khách");
   }
+
+  return await response.json();
 };
+
 
 /**
  * Xóa xe khách theo ID.
  */
 export const deleteCoach = async (id: number) => {
   const token = localStorage.getItem("token");
-  const response = await fetch(`${API_URL}/delete-coach/${id}`, {
+  const response = await fetch(`${process.env.REACT_APP_API_URL}/api-coach/delete-coach/${id}`, {
     method: "DELETE",
     headers: { Authorization: `Bearer ${token}` }
   });

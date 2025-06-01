@@ -94,7 +94,7 @@ export const ticketRenderHandlers = {
     ) : (
       <TaxiTicketSalesListPage onAddTicket={() => setShowForm(true)} />
     ),
-   "Bán Vé Xe Bus": (
+  "Bán Vé Xe Bus": (
   showForm: boolean,
   setShowForm: (b: boolean) => void,
   showDriverForm: boolean,
@@ -127,8 +127,11 @@ export const ticketRenderHandlers = {
     <BusTicketSalesListPage
       onAddTicket={() => setShowForm(true)}
       onAddDriver={() => setShowDriverForm(true)}
-      onAddCoach={() => setShowCoachForm(true)} // ✅ Mở trang tạo xe khách
+      onAddCoach={() => setShowCoachForm(true)}
+      onShowListDriver={() => setShowDriverForm(true)} 
+      onShowListCoach={() => setShowCoachForm(true)} // ✅ Thêm vào đây
     />
   ),
+
 
 };

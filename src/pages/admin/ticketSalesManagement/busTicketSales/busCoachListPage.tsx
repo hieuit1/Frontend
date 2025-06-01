@@ -16,13 +16,13 @@ const BusCoachListPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [editingCoach, setEditingCoach] = useState<Coach | null>(null);
+  const [fileList, setFileList] = useState<FileList | null>(null);
   const [form] = Form.useForm();
 
   useEffect(() => {
     loadCoaches();
   }, []);
 
-  // Tải danh sách xe khách từ API
   const loadCoaches = async () => {
     setLoading(true);
     try {
@@ -35,7 +35,6 @@ const BusCoachListPage: React.FC = () => {
     }
   };
 
-  // Xóa xe khách theo ID
   const handleDelete = async (id: number) => {
     try {
       await deleteCoach(id);
@@ -46,7 +45,6 @@ const BusCoachListPage: React.FC = () => {
     }
   };
 
-  // Chỉnh sửa xe khách theo ID
   const handleEdit = async (id: number) => {
     try {
       const coachData = await fetchCoachById(id);
@@ -54,7 +52,6 @@ const BusCoachListPage: React.FC = () => {
         message.error("Không thể tải thông tin xe khách!");
         return;
       }
-
       setEditingCoach(coachData);
       setEditModalVisible(true);
       form.setFieldsValue(coachData);
@@ -63,26 +60,30 @@ const BusCoachListPage: React.FC = () => {
     }
   };
 
-  // Cập nhật thông tin xe khách
   const handleEditOk = async (values: { coachName: string; licensePlateNumberCoach: string }) => {
-    if (!editingCoach) {
-      message.error("Không thể cập nhật vì dữ liệu xe khách không tồn tại!");
-      return;
-    }
+  if (!editingCoach) {
+    message.error("Không thể cập nhật vì dữ liệu xe khách không tồn tại!");
+    return;
+  }
 
-    try {
-      await updateCoach(editingCoach.coachId, values);
-      setCoaches((prev) =>
-        prev.map((c) => (c.coachId === editingCoach.coachId ? { ...c, ...values } : c))
-      );
-      setEditModalVisible(false);
-      message.success("Cập nhật xe khách thành công!");
-    } catch {
-      message.error("Cập nhật xe khách thất bại!");
-    }
-  };
+const file = fileList && fileList.length > 0 ? fileList[0] : undefined;
 
-  // Lọc danh sách theo tìm kiếm
+  console.log("📡 Dữ liệu gửi API:", values, "Ảnh:", file);
+
+  try {
+    await updateCoach(editingCoach.coachId, values, file); // ✅ Gửi ảnh kèm dữ liệu cập nhật
+    message.success("Cập nhật xe khách thành công!");
+    setEditModalVisible(false);
+    loadCoaches();
+  } catch (error) {
+    console.error("❌ Lỗi khi cập nhật:", error);
+    message.error("Cập nhật xe khách thất bại!");
+  }
+};
+
+
+
+
   const filteredCoaches = coaches.filter((coach) =>
     [coach.coachName, coach.licensePlateNumberCoach].some((field) =>
       field?.toLowerCase().includes(search.toLowerCase())
@@ -90,14 +91,21 @@ const BusCoachListPage: React.FC = () => {
   );
 
   return (
-    <div>
-      <h2>Danh Sách Xe Khách</h2>
+    <div className="p-8 bg-white shadow rounded max-w-7xl mx-auto">
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-semibold">Danh sách xe & biển số</h2>
+        <Button type="primary" onClick={loadCoaches} className="bg-red-500">
+          Tải lại danh sách xe khách
+        </Button>
+      </div>
+
       <Input
         placeholder="Tìm kiếm theo tên hoặc biển số..."
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         style={{ marginBottom: 16, width: 300 }}
       />
+
       <Table
         loading={loading}
         dataSource={filteredCoaches}
@@ -130,16 +138,19 @@ const BusCoachListPage: React.FC = () => {
         destroyOnClose
       >
         <Form form={form} onFinish={handleEditOk} layout="vertical">
-          <Form.Item name="coachName" label="Tên xe khách" rules={[{ required: true }]}>
-            <Input />
-          </Form.Item>
-          <Form.Item name="licensePlateNumberCoach" label="Biển số xe" rules={[{ required: true }]}>
-            <Input />
-          </Form.Item>
-          <Button type="primary" htmlType="submit" block>Cập nhật</Button>
-        </Form>
+  <Form.Item name="coachName" label="Tên xe khách" rules={[{ required: true }]}>
+    <Input />
+  </Form.Item>
+  <Form.Item name="licensePlateNumberCoach" label="Biển số xe" rules={[{ required: true }]}>
+    <Input />
+  </Form.Item>
+  <Form.Item label="Chọn ảnh mới">
+    <Input type="file" onChange={(e) => setFileList(e.target.files)} />
+  </Form.Item> {/* ✅ Thêm input chọn ảnh */}
+  <Button type="primary" htmlType="submit" block>Cập nhật</Button>
+</Form>
+
       </Modal>
-      
     </div>
   );
 };
