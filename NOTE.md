@@ -32,6 +32,7 @@ src/api/
  - npm install jest
  - npm install --save-dev ts-jest @types/jest
  - npm install --save-dev @types/jest
+ - npm create hintrc
 
 process.env.REACT_APP_API_URL_ADMIN
     `${process.env.REACT_APP_API_URL_ADMIN}/auth/admin`,
