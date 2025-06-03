@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Navbar from "../../components/navbar/Navbar";
-import Footer from "../home/components/footer/Footer";
+import Footer from "../home/components/footer/footer";
 import styles from "./AccountPage.module.css";
 import { toast, ToastContainer } from "react-toastify";
 

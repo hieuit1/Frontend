@@ -2,7 +2,7 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import { promotionsData } from "../../data/promotionsData";
 import Navbar from "../../components/navbar/Navbar";
-import Footer from "../home/components/footer/Footer";
+import Footer from "../home/components/footer/footer";
 import "./PromotionDetail.css"; // import CSS riêng
 
 const PromotionDetail: React.FC = () => {

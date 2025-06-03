@@ -16,16 +16,36 @@ Frontend/
 │   │   ├── styles/                  # Các tệp CSS dành cho giao diện
 │   │   │   ├── index.css            # Tệp định kiểu chính của ứng dụng
 │   │   ├── images/                  # Thư mục chứa hình ảnh
-│   ├── components/                   # Thư mục chứa các thành phần UI
+│   ├── components/                  # Thư mục chứa các thành phần UI
 │   │   ├── ChatBox/                 # Thư mục chứa thành phần ChatBox
 │   │   │   ├── ChatBox.css          # Tệp CSS định dạng giao diện của ChatBox
 │   │   │   ├── ChatBox.tsx          # Tệp TypeScript định nghĩa thành phần ChatBox
 │   │   │   ├── chat_box.test.tsx    # Tệp kiểm thử cho thành phần ChatBox
 │   │   ├── common/                  # Thư mục chứa các thành phần chung 
-│── public/                          # Tài nguyên tĩnh
-│   ├── favicon.ico                  # Biểu tượng trang web (favicon)
-│   ├── index.html                   # Tệp HTML chính của ứng dụng
-│   ├── logo192.png                  # Hình ảnh logo ứng dụng, có thể dùng làm icon ứng dụng
-│   ├── logo512.png                  # Phiên bản lớn hơn của logo ứng dụng
-│   ├── robots.txt                   # Tệp hướng dẫn các công cụ tìm kiếm cách thu thập dữ liệu trang web
-│   ├── manifest.json                # Tệp cấu hình cho Progressive Web App (PWA)
+│   │   ├── navbar/                  # Thư mục chứa thành phần Navbar
+│   │   │   ├── styles/              # Thư mục chứa các tệp CSS cho Navbar
+│   │   │   │   ├── Navbar.css       # Tệp định dạng giao diện của Navbar
+│   │   │   ├── testing/             # Thư mục chứa các tệp kiểm thử cho Navbar
+│   │   │   │   ├── Navbar.test.tsx  # Tệp kiểm thử cho Navbar
+│   │   │   ├── Navbar.tsx           # Tệp TypeScript định nghĩa thành phần Navbar
+│   ├── data/                        # Thư mục chứa dữ liệu tĩnh
+│   │   ├── jsons/                   # Thư mục chứa các tệp JSON dùng cho ứng dụng
+│   │   ├── management_intercity.ts  # Tệp quản lý dữ liệu tuyến đường liên tỉnh
+│   ├── interfaces/                   # Thư mục chứa các interface TypeScript
+│   ├── models/                       # Thư mục chứa các mô hình dữ liệu
+│   ├── pages/                        # Thư mục chứa các trang chính của ứng dụng
+│   │   ├── home/                     # Trang Home
+│   │   │   ├── components/           # Các thành phần của Home
+│   │   │   │   ├── footer/           # Thành phần Footer
+│   │   │   │   │   ├── footer.tsx    # Thành phần TypeScript cho Footer
+│   │   │   │   │   ├── styles/       # Thư mục chứa định dạng giao diện cho Footer
+│   │   │   │   │   │   ├── footer.css # Tệp CSS định dạng giao diện của Footer
+│   ├── routers/                      # Thư mục chứa các cấu hình route
+│   ├── types/                        # Thư mục chứa các kiểu dữ liệu TypeScript
+│── public/                           # Tài nguyên tĩnh
+│   ├── favicon.ico                   # Biểu tượng trang web (favicon)
+│   ├── index.html                    # Tệp HTML chính của ứng dụng
+│   ├── logo192.png                    # Hình ảnh logo ứng dụng, có thể dùng làm icon ứng dụng
+│   ├── logo512.png                    # Phiên bản lớn hơn của logo ứng dụng
+│   ├── robots.txt                     # Tệp hướng dẫn các công cụ tìm kiếm cách thu thập dữ liệu trang web
+│   ├── manifest.json                   # Tệp cấu hình cho Progressive Web App (PWA)

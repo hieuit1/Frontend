@@ -102,4 +102,4 @@ const SectionFour: React.FC = () => {
   );
 };
 
-export default SectionFour;
+export  {SectionFour};
