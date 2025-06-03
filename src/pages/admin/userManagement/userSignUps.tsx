@@ -1,14 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
-  Table,
-  Tag,
-  Input,
-  Button,
-  Popconfirm,
-  message,
-  Modal,
-  Form,
-} from "antd";
+  Table, Tag, Input, Button,
+  Popconfirm, message, Modal, Form } from "antd";
 import {
   fetchUsers,
   deleteUser,
@@ -26,21 +19,15 @@ const UserSignUps: React.FC = () => {
   useEffect(() => {
     const loadUsers = async () => {
       setLoading(true);
-      try {
-        const data = await fetchUsers();
-        setUsers(data);
-      } catch {
-        message.error("Không thể tải danh sách người dùng");
-      } finally {
-        setLoading(false);
-      }
+      try { const data = await fetchUsers(); setUsers(data);} 
+      catch {  message.error("Không thể tải danh sách người dùng"); } finally {  setLoading(false); }
     };
     loadUsers();
   }, []);
 
 const filteredUsers = users.filter((user) =>
   [
-    user.name || "",  // 🛠 Nếu null hoặc undefined, thay thế bằng ""
+    user.name || "",  
     user.email || "",
     user.numberphone || "",
     user.role || ""
@@ -52,26 +39,18 @@ const filteredUsers = users.filter((user) =>
       await deleteUser(id);
       setUsers((prev) => prev.filter((item) => item.id !== id));
       message.success("Đã xóa thành công");
-    } catch {
-      message.error("Xóa người dùng thất bại");
-    }
+    } catch {  message.error("Xóa người dùng thất bại"); }
   };
 
-  const handleEdit = (user: User) => {
-    setEditingUser(user);
-    setEditModalVisible(true);
-  };
+  const handleEdit = (user: User) => { setEditingUser(user); setEditModalVisible(true); };
 
   const handleEditOk = async (values: any) => {
     try {
       const updatedUser = await updateUser(editingUser!.id, values);
       setUsers((prev) => prev.map((u) => (u.id === editingUser?.id ? updatedUser : u)));
-      setEditModalVisible(false);
-      setEditingUser(null);
+      setEditModalVisible(false); setEditingUser(null);
       message.success("Đã cập nhật thông tin người dùng");
-    } catch {
-      message.error("Cập nhật thất bại");
-    }
+    } catch { message.error("Cập nhật thất bại"); }
   };
 
   return (
@@ -83,7 +62,6 @@ const filteredUsers = users.filter((user) =>
         onChange={(e) => setSearch(e.target.value)}
         style={{ width: 300, marginBottom: 16 }}
       />
-      
       <Table
         loading={loading}
         dataSource={filteredUsers}
@@ -98,14 +76,6 @@ const filteredUsers = users.filter((user) =>
             dataIndex: "role",
             key: "role",
             render: (role) => <Tag color={role === "ADMIN" ? "red" : "green"}>{role}</Tag>,
-          },
-          {
-            title: "Trạng thái",
-            dataIndex: "isEnabled",
-            key: "isEnabled",
-            render: (isEnabled) => (
-              <Tag color={isEnabled ? "blue" : "grey"}>{isEnabled ? "Active" : "Inactive"}</Tag>
-            ),
           },
           {
             title: "Thao tác",
@@ -126,7 +96,6 @@ const filteredUsers = users.filter((user) =>
           },
         ]}
       />
-
       <Modal
         title="Sửa thông tin"
         open={editModalVisible}
