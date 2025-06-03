@@ -76,6 +76,7 @@ const Payment: React.FC = () => {
     phone: "",
     email: "",
   });
+
   const [paymentMethod, setPaymentMethod] = useState<string>("");
   const [showPayment, setShowPayment] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
