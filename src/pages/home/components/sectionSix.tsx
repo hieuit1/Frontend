@@ -13,14 +13,14 @@ const SectionSix: React.FC = () => {
     position: "relative",
   };
 
-  const underlineStyle: React.CSSProperties = {
-    content: "''",
-    width: "80px",
-    height: "4px",
-    backgroundColor: "#007bff",
-    margin: "10px auto 0",
-    borderRadius: "4px",
-  };
+  // const underlineStyle: React.CSSProperties = {
+  //   content: "''",
+  //   width: "80px",
+  //   height: "4px",
+  //   backgroundColor: "#007bff",
+  //   margin: "10px auto 0",
+  //   borderRadius: "4px",
+  // };
 
   const gridStyle: React.CSSProperties = {
     display: "flex",
@@ -136,4 +136,4 @@ const SectionSix: React.FC = () => {
   );
 };
 
-export default SectionSix;
+export  { SectionSix };

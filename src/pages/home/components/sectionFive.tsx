@@ -111,4 +111,4 @@ const SectionFive: React.FC = () => {
   );
 };
 
-export default SectionFive;
+export  {SectionFive};

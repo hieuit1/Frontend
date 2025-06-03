@@ -66,4 +66,4 @@ const SectionSeven: React.FC = () => {
   );
 };
 
-export default SectionSeven;
+export  { SectionSeven };

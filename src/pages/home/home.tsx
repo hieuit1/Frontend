@@ -5,10 +5,8 @@ import Footer from "./components/footer/Footer";
 import { getTripsData } from "../../api/tripsApi"; // Dùng API thật
 import { promotionsData } from "../../data/promotionsData";
 import ChatBox from "../../components/ChatBox/ChatBox";
-import SectionFour from "./components/sectionFour";
-import SectionSeven from "./components/sectionSeven";
-import SectionFive from "./components/sectionFive";
-import SectionSix from "./components/sectionSix";
+import { SectionFour, SectionSeven, SectionFive, SectionSix } from "./components/index";
+
 import HomeHeader from "./components/header/header";
 import "./home_css/home.css";
 

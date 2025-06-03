@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import PersonIcon from "@mui/icons-material/Person";
 import "./styles/Navbar.css";
 
-const logo = require("../../images/payment/Logo.jpg");
+import logo from "../../images/payment/Logo.jpg";
 
 const Navbar: React.FC = () => {
   const [user, setUser] = useState<string | null>(null);
