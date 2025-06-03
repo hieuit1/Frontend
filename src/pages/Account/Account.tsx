@@ -3,6 +3,7 @@ import axios from "axios";
 import Navbar from "../../components/navbar/Navbar";
 import Footer from "../home/components/footer/Footer";
 import styles from "./AccountPage.module.css";
+import { toast, ToastContainer } from "react-toastify";
 
 interface Ticket {
   tickerId: number;
@@ -36,7 +37,7 @@ const Account: React.FC = () => {
         const token = localStorage.getItem("token");
 
         if (!userId || !token) {
-          setError("Không tìm thấy thông tin người dùng hoặc token.");
+          setError("Bạn cần đăng nhập để xem lịch sử đặt vé.");
           setLoading(false);
           return;
         }
@@ -50,7 +51,12 @@ const Account: React.FC = () => {
           }
         );
 
-        setBookingHistory(response.data);
+        const sortedData = response.data.sort((a, b) => {
+          const dateTimeA = new Date(`${a.departureDate}T${a.departureTime}`);
+          const dateTimeB = new Date(`${b.departureDate}T${b.departureTime}`);
+          return dateTimeB.getTime() - dateTimeA.getTime();
+        });
+        setBookingHistory(sortedData);
       } catch (err) {
         setError("Lỗi khi tải lịch sử đặt vé.");
         console.error(err);
@@ -92,7 +98,7 @@ const Account: React.FC = () => {
     try {
       const token = localStorage.getItem("token");
       await axios.put(
-        `${process.env.REACT_APP_API_URL}/user-ticket/request-cancel/${ticketId}`,
+        `${process.env.REACT_APP_API_URL}/admin-ticket/${ticketId}?status=CHECKED_IN`,
         {},
         {
           headers: {
@@ -104,14 +110,14 @@ const Account: React.FC = () => {
       // Cập nhật trạng thái trong danh sách
       setBookingHistory((prev) =>
         prev.map((t) =>
-          t.tickerId === ticketId ? { ...t, status: "CANCEL_REQUESTED" } : t
+          t.tickerId === ticketId ? { ...t, status: "CHECKED_IN" } : t
         )
       );
 
-      alert("Yêu cầu hủy vé đã được gửi.");
+      toast.success(" Yêu cầu hủy vé đã được gửi.");
     } catch (err) {
       console.error("Lỗi khi gửi yêu cầu hủy:", err);
-      alert("Gửi yêu cầu hủy thất bại.");
+      toast.error(" Gửi yêu cầu hủy thất bại.");
     }
   };
 
@@ -170,7 +176,7 @@ const Account: React.FC = () => {
                     )}
                     {ticket.status === "CHECKED_IN" && (
                       <span className={styles["status-completed"]}>
-                        Đã lên xe
+                        Đã yêu cầu hủy
                       </span>
                     )}
                     {ticket.status === "CANCELLED" && (
@@ -258,7 +264,7 @@ const Account: React.FC = () => {
                   : selectedTicket.status === "CONFIRMED"
                   ? "Đã xác nhận"
                   : selectedTicket.status === "CHECKED_IN"
-                  ? "Đã lên xe"
+                  ? "dã yêu cầu hủy"
                   : selectedTicket.status === "CANCELLED"
                   ? "Đã hủy"
                   : selectedTicket.status}
@@ -275,6 +281,7 @@ const Account: React.FC = () => {
         )}
       </div>
       <Footer year={2025} companyName="Ticket Car" />
+      <ToastContainer />
     </div>
   );
 };
