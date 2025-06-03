@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import {ImageList} from "@mui/material";
 import "./styles/header.css";
 
 const POPULAR_LOCATIONS = [
@@ -103,7 +104,6 @@ const HomeHeader: React.FC = () => {
             </div>
           )}
         </div>
-        {/* Ngày đi */}
         <input
           id="date-input"
           type="date"
