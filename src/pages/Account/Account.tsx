@@ -211,7 +211,7 @@ const Account: React.FC = () => {
             </tbody>
           </table>
         )}
-
+        
         {selectedTicket && (
           <div
             style={{
