@@ -6,8 +6,6 @@ import { resetPassword } from "../../api/indexApi";
 import "./auth_css/ResetPassword.css";
 
 export function ResetPassword() {
-  /* These lines of code are setting up the state variables and hooks used in a React functional
-  component called `ResetPassword`. Here's a breakdown of each line: */
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
