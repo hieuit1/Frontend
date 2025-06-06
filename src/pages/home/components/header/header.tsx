@@ -15,6 +15,7 @@ const POPULAR_LOCATIONS = [
   "Hội An",
   "Quảng Ngãi",
   "Quảng Nam",
+  "Hồ Chí Minh"
 ];
 
 const HomeHeader: React.FC = () => {

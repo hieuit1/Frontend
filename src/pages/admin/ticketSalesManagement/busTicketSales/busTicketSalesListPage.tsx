@@ -3,6 +3,7 @@ import { Table, message, Button, Modal, Form, Input } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { BusDriverListPage } from "../../ticketSalesManagement/busTicketSales/busDriverListPage"; 
 import { BusCoachListPage } from "../../ticketSalesManagement/busTicketSales/busCoachListPage"; // ✅ Import danh sách xe khách
+import dayjs from "dayjs";
 
 interface TripTicket {
   tripCarId: number;
@@ -24,7 +25,7 @@ interface BusTicketSalesListPageProps {
   onAddDriver: () => void;
   onAddCoach: () => void;
   onShowListDriver: () => void; 
-  onShowListCoach: () => void;  // ✅ Thêm prop mở danh sách xe & biển số
+  onShowListCoach: () => void;  // ✅ 
 }
 
 const BusTicketSalesListPage: React.FC<BusTicketSalesListPageProps> = ({
@@ -35,7 +36,7 @@ const BusTicketSalesListPage: React.FC<BusTicketSalesListPageProps> = ({
   const [tickets, setTickets] = useState<TripTicket[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [showDriverPage, setShowDriverPage] = useState(false); 
-  const [showCoachPage, setShowCoachPage] = useState(false); // ✅ Kiểm soát hiển thị trang xe khách
+  const [showCoachPage, setShowCoachPage] = useState(false); // ✅ 
 const [isModalVisible, setIsModalVisible] = useState(false);
   const [editingTicket, setEditingTicket] = useState<TripTicket | null>(null);
   useEffect(() => {
@@ -88,8 +89,8 @@ const [isModalVisible, setIsModalVisible] = useState(false);
     if (!response.ok) throw new Error("Không thể cập nhật chuyến xe");
 
     message.success("Đã sửa thành công!");
-    setEditingTicket(null); // Đóng modal sau khi sửa
-    fetchAllTrips(); // Cập nhật danh sách chuyến xe
+    setEditingTicket(null); 
+    fetchAllTrips(); 
   } catch (error) {
     console.error("Lỗi khi cập nhật chuyến xe:", error);
     message.error("Có lỗi xảy ra khi cập nhật vé xe.");
@@ -107,7 +108,6 @@ const [isModalVisible, setIsModalVisible] = useState(false);
       });
 
       if (!response.ok) throw new Error("Không thể xóa chuyến xe");
-
       message.success("Xóa chuyến xe thành công!");
       fetchAllTrips();
     } catch (error) {
@@ -120,8 +120,9 @@ const [isModalVisible, setIsModalVisible] = useState(false);
     { title: "Tên chuyến", dataIndex: "tripName", key: "tripName" },
     { title: "Điểm đón", dataIndex: "pickupPoint", key: "pickupPoint" },
     { title: "Điểm trả", dataIndex: "payPoint", key: "payPoint" },
-    { title: "Ngày khởi hành", dataIndex: "departureDate", key: "departureDate" },
-    { title: "Giờ khởi hành", dataIndex: "departureTime", key: "departureTime" },
+{ title: "Ngày khởi hành", dataIndex: "departureDate", key: "departureDate",
+  render: (date: string) => dayjs(date).format("DD-MM-YYYY") 
+},     { title: "Giờ khởi hành", dataIndex: "departureTime", key: "departureTime" },
     { title: "Giờ kết thúc", dataIndex: "departureEndTime", key: "departureEndTime" },
     { title: "Tổng số ghế", dataIndex: "seatNumber", key: "seatNumber" },
     { title: "Ghế trống", dataIndex: "emptySeatNumber", key: "emptySeatNumber" },
@@ -220,7 +221,7 @@ const [isModalVisible, setIsModalVisible] = useState(false);
         loading={loading}
         bordered
         pagination={{ pageSize: 10 }}
-        scroll={{ x: "max-content" }} // ✅ Tự động cuộn ngang khi có nhiều cột
+        scroll={{ x: "max-content" }} // ✅ 
       />
     </div>
   </div>

@@ -60,8 +60,9 @@ const BusTicketSalesPage = () => {
         <Row gutter={16}>
           <Col span={8}>
             <Form.Item name="departureDate" label="Ngày đi" rules={[{ required: true }]}>
-              <DatePicker style={{ width: "100%" }} />
-            </Form.Item>
+  <DatePicker format="DD-MM-YYYY" style={{ width: "100%" }} />
+</Form.Item>
+
           </Col>
 
           <Col span={8}>
@@ -125,7 +126,7 @@ const BusTicketSalesPage = () => {
           </Col>
 
           <Col span={8}>
-            <Form.Item name="rickshawId" label="ID Xe trung chuyển" rules={[{ required: true }]}>
+            <Form.Item name="rickshawId" label="Biển số xe khách" rules={[{ required: true }]}>
               <InputNumber min={1} style={{ width: "100%" }} />
             </Form.Item>
           </Col>
