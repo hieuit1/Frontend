@@ -9,7 +9,6 @@ const Content: React.FC<ContentProps> = ({ selectedMenu }) => {
   if (selectedMenu === "Danh Thu") {
     return <div>Danh Thu Content</div>;
   }
-
   return (
     <section className="dashboard-content">
       <Widgets />

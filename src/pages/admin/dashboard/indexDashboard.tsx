@@ -11,7 +11,9 @@ const Dashboard: React.FC = () => {
   const [selectedMenu, setSelectedMenu] = useState<string>("Trang chủ");
   const [openSubMenu, setOpenSubMenu] = useState<boolean>(false);
   const [selectedUserSubMenu, setSelectedUserSubMenu] = useState<string>(userSubMenus[0].label);
+  
 
+  const [showCoDriverForm, setShowCoDriverForm] = useState(false); // ✅ Thêm trạng thái
   const [showTouristBusForm, setShowTouristBusForm] = useState(false);
   const [showIntercityBusForm, setShowIntercityBusForm] = useState(false);
   const [showTrainTicketForm, setShowTrainTicketForm] = useState(false);
@@ -39,6 +41,7 @@ const Dashboard: React.FC = () => {
       setShowBusTicketForm(false);
       setShowDriverForm(false);
       setShowCoachForm(false); // ✅ Đóng form tạo xe khách khi đổi menu
+      setShowCoDriverForm(false); // ✅ Đóng form tạo tài xế phụ xe khi đổi menu
     }
   };
 
@@ -58,7 +61,9 @@ if (selectedMenu in ticketRenderHandlers) {
     showDriverForm,
     setShowDriverForm,
     showCoachForm, // ✅ Đã thêm tham số thiếu
-    setShowCoachForm // ✅ Đã thêm tham số thiếu
+    setShowCoachForm, // ✅ Đã thêm tham số thiếu
+    showCoDriverForm,
+    setShowCoDriverForm,
   );
 }
 

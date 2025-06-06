@@ -1,6 +1,5 @@
 // src/pages/admin/dashboard/renderConditions/userManagementCondition.tsx
-import React from "react";
-import { userSubMenus } from "../../../../../data/userSubMenus"; // Import danh sách submenu từ file riêng
+import { userSubMenus } from "../../../../../data/userSubMenus"; 
 
 export const renderUserManagement = (
   selectedUserSubMenu: string,

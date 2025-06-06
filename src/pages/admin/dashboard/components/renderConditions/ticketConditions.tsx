@@ -16,11 +16,11 @@ import {
     BusTicketSalesListPage,
     BusTicketSalesPage,
     BusAddDriver,
+    BusAddCoDriver,
     BusDriverListPage,
     BusCreateCoachPage,
     BusCoachListPage,
 } from "../../../ticketSalesManagement/indexExport";
-import { Add } from "@mui/icons-material";
 
 export const ticketRenderHandlers = {
   "Bán Vé Xe Du Lịch": (showForm: boolean, setShowForm: (b: boolean) => void) =>
@@ -95,12 +95,10 @@ export const ticketRenderHandlers = {
       <TaxiTicketSalesListPage onAddTicket={() => setShowForm(true)} />
     ),
   "Bán Vé Xe Bus": (
-  showForm: boolean,
-  setShowForm: (b: boolean) => void,
-  showDriverForm: boolean,
-  setShowDriverForm: (b: boolean) => void,
-  showCoachForm: boolean,
-  setShowCoachForm: (b: boolean) => void
+  showForm: boolean, setShowForm: (b: boolean) => void,
+  showDriverForm: boolean, setShowDriverForm: (b: boolean) => void,
+  showCoachForm: boolean, setShowCoachForm: (b: boolean) => void,
+  showCoDriverForm: boolean, setShowCoDriverForm: (b: boolean) => void
 ) =>
   showForm ? (
     <>
@@ -108,6 +106,13 @@ export const ticketRenderHandlers = {
         Quay lại danh sách vé
       </Button>
       <BusTicketSalesPage />
+    </>
+  ) : showCoDriverForm ? ( // ✅ Kiểm tra trạng thái mở trang tài xế phụ xe
+    <>
+      <Button onClick={() => setShowCoDriverForm(false)} style={{ marginBottom: 16 }}>
+        Quay lại danh sách vé
+      </Button>
+      <BusAddCoDriver /> // ✅ Đúng trang tài xế phụ xe
     </>
   ) : showDriverForm ? (
     <>
@@ -125,13 +130,15 @@ export const ticketRenderHandlers = {
     </>
   ) : (
     <BusTicketSalesListPage
+      onAddCoDriver={() => setShowCoDriverForm(true)} // ✅ Gọi đúng trạng thái
       onAddTicket={() => setShowForm(true)}
       onAddDriver={() => setShowDriverForm(true)}
       onAddCoach={() => setShowCoachForm(true)}
-      onShowListDriver={() => setShowDriverForm(true)} 
-      onShowListCoach={() => setShowCoachForm(true)} // ✅ Thêm vào đây
+      onShowListDriver={() => setShowDriverForm(true)}
+      onShowListCoach={() => setShowCoachForm(true)}
     />
   ),
+
 
 
 };

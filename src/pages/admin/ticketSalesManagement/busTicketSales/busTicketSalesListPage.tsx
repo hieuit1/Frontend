@@ -3,42 +3,27 @@ import { Table, message, Button, Modal, Form, Input } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { BusDriverListPage } from "../../ticketSalesManagement/busTicketSales/busDriverListPage"; 
 import { BusCoachListPage } from "../../ticketSalesManagement/busTicketSales/busCoachListPage"; // ✅ Import danh sách xe khách
+import { BusCoDriverListPage } from "../../ticketSalesManagement/busTicketSales/busCoDriverListPage";
 import dayjs from "dayjs";
+import { TripTicket } from "../../../../interfaces/TripTicket";
+import { BusTicketSalesListPageProps } from "../../../../interfaces/BusTicketSalesListPageProps";
 
-interface TripTicket {
-  tripCarId: number;
-  tripName: string;
-  departureDate: string;
-  departureTime: string;
-  departureEndTime: string;
-  pickupPoint: string;
-  payPonit: string;
-  seatNumber: number;
-  emptySeatNumber: number;
-  priceSeatNumber: number;
-  fullName?: string;
-  phoneNumber?: string;
-}
 
-interface BusTicketSalesListPageProps {
-  onAddTicket: () => void;
-  onAddDriver: () => void;
-  onAddCoach: () => void;
-  onShowListDriver: () => void; 
-  onShowListCoach: () => void;  // ✅ 
-}
+
 
 const BusTicketSalesListPage: React.FC<BusTicketSalesListPageProps> = ({
   onAddTicket,
   onAddDriver,
   onAddCoach,
+  onAddCoDriver,
 }) => {
   const [tickets, setTickets] = useState<TripTicket[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [showDriverPage, setShowDriverPage] = useState(false); 
   const [showCoachPage, setShowCoachPage] = useState(false); // ✅ 
-const [isModalVisible, setIsModalVisible] = useState(false);
+  const [showCoDriverPage, setShowCoDriverPage] = useState(false);
   const [editingTicket, setEditingTicket] = useState<TripTicket | null>(null);
+
   useEffect(() => {
     fetchAllTrips();
   }, []);
@@ -64,7 +49,6 @@ const [isModalVisible, setIsModalVisible] = useState(false);
       if (!response.ok) {
         throw new Error(data.message || "Không thể lấy dữ liệu chuyến xe.");
       }
-
       setTickets(Array.isArray(data) ? data : []);
       message.success("Đã tải danh sách chuyến xe thành công");
     } catch (error) {
@@ -85,9 +69,7 @@ const [isModalVisible, setIsModalVisible] = useState(false);
       },
       body: JSON.stringify(updatedTicket),
     });
-
     if (!response.ok) throw new Error("Không thể cập nhật chuyến xe");
-
     message.success("Đã sửa thành công!");
     setEditingTicket(null); 
     fetchAllTrips(); 
@@ -96,8 +78,6 @@ const [isModalVisible, setIsModalVisible] = useState(false);
     message.error("Có lỗi xảy ra khi cập nhật vé xe.");
   }
 };
-
-
   const handleDeleteTicket = async (tripCarId: number) => {
     try {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/api-tripcar/${tripCarId}`, {
@@ -106,7 +86,6 @@ const [isModalVisible, setIsModalVisible] = useState(false);
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-
       if (!response.ok) throw new Error("Không thể xóa chuyến xe");
       message.success("Xóa chuyến xe thành công!");
       fetchAllTrips();
@@ -159,7 +138,14 @@ const [isModalVisible, setIsModalVisible] = useState(false);
           </Button>
           <BusDriverListPage />
         </>
-      ) : showCoachPage ? (
+      ) : showCoDriverPage ? (
+        <>
+          <Button onClick={() => setShowCoDriverPage(false)} style={{ marginBottom: 16 }}>
+            Quay lại danh sách vé
+          </Button>
+          <BusCoDriverListPage />
+        </>
+      ): showCoachPage ? (
         <>
           <Button onClick={() => setShowCoachPage(false)} style={{ marginBottom: 16 }}>
             Quay lại danh sách vé
@@ -197,19 +183,25 @@ const [isModalVisible, setIsModalVisible] = useState(false);
       }}
     >
       <Button type="primary" onClick={onAddTicket} style={{ backgroundColor: "#28a745", color: "#fff" }}>
-        Thêm vé xe mới
+        Bán vé mới
+      </Button>
+      <Button type="primary" onClick={onAddCoDriver} style={{ backgroundColor: "#000000", color: "#fff" }}>
+        Phụ xế mới
       </Button>
       <Button type="primary" onClick={onAddDriver} style={{ backgroundColor: "#007bff", color: "#fff" }}>
-        Thêm tài xế mới
+        Tài xế mới
       </Button>
       <Button type="primary" onClick={onAddCoach} style={{ backgroundColor: "#ffc107", color: "#fff" }}>
         Thêm loại xe
       </Button>
       <Button type="primary" onClick={() => setShowDriverPage(true)} style={{ backgroundColor: "#dc3545", color: "#fff" }}>
-        Xem danh sách tài xế
+        Danh sách tài xế
       </Button>
       <Button type="primary" onClick={() => setShowCoachPage(true)} style={{ backgroundColor: "#5F9EA0", color: "#fff" }}>
-        Xem danh sách xe & biển số
+        Danh sách biển số xe
+      </Button>
+      <Button type="primary" onClick={() => setShowCoDriverPage(true)} style={{ backgroundColor: "#5F9EA0", color: "#fff" }}>
+        Danh sách tài xế phụ
       </Button>
     </div>
 
@@ -247,7 +239,6 @@ const [isModalVisible, setIsModalVisible] = useState(false);
     </Form.Item>
   </Form>
 </Modal>
-
     </div>
   );
 };

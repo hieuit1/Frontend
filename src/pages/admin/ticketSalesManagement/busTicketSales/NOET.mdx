@@ -1,27 +1,34 @@
 import React, { useEffect, useState } from "react";
-import { Table, message, Button, Avatar, Popconfirm } from "antd";
+import { Table, message, Button, Modal, Form, Input } from "antd";
 import type { ColumnsType } from "antd/es/table";
+import { BusDriverListPage } from "../../ticketSalesManagement/busTicketSales/busDriverListPage"; 
+import { BusCoachListPage } from "../../ticketSalesManagement/busTicketSales/busCoachListPage"; // ✅ Import danh sách xe khách
+import { BusCoDriverListPage } from "../../ticketSalesManagement/busTicketSales/busCoDriverListPage";
+import dayjs from "dayjs";
+import { TripTicket } from "../../../../interfaces/TripTicket";
+import { BusTicketSalesListPageProps } from "../../../../interfaces/BusTicketSalesListPageProps";
 
-interface Driver {
-  driverId: number;
-  fullName: string;
-  phoneNumber: string;
-  yearOfBirth: number;
-  descriptions: string;
-  gender: string;
-  url: string;
-  publicId: string;
-}
 
-const BusDriverListPage: React.FC = () => {
-  const [drivers, setDrivers] = useState<Driver[]>([]);
-  const [loading, setLoading] = useState(false);
+
+
+const BusTicketSalesListPage: React.FC<BusTicketSalesListPageProps> = ({
+  onAddTicket,
+  onAddDriver,
+  onAddCoach,
+  onAddCoDriver,
+}) => {
+  const [tickets, setTickets] = useState<TripTicket[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [showDriverPage, setShowDriverPage] = useState(false); 
+  const [showCoachPage, setShowCoachPage] = useState(false); // ✅ 
+  const [showCoDriverPage, setShowCoDriverPage] = useState(false);
+  const [editingTicket, setEditingTicket] = useState<TripTicket | null>(null);
 
   useEffect(() => {
-    fetchDrivers();
+    fetchAllTrips();
   }, []);
 
-  const fetchDrivers = async () => {
+  const fetchAllTrips = async () => {
     setLoading(true);
     try {
       const token = localStorage.getItem("token");
@@ -30,120 +37,210 @@ const BusDriverListPage: React.FC = () => {
         return;
       }
 
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/useradmin-all-driver`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/useradmin-all-tripcar`, {
+        method: "GET",
         headers: {
-          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
       });
 
       const data = await response.json();
       if (!response.ok) {
-        throw new Error(data.message || "Không thể lấy dữ liệu tài xế.");
+        throw new Error(data.message || "Không thể lấy dữ liệu chuyến xe.");
       }
-
-      setDrivers(Array.isArray(data) ? data : []);
+      setTickets(Array.isArray(data) ? data : []);
+      message.success("Đã tải danh sách chuyến xe thành công");
     } catch (error) {
-      console.error("❌ Lỗi khi lấy danh sách tài xế:", error);
-      message.error("Không thể tải danh sách tài xế");
+      console.error("Lỗi khi tải danh sách chuyến xe:", error);
+      message.error("Không thể tải danh sách chuyến xe");
     } finally {
       setLoading(false);
     }
   };
 
-  const updateDriver = async (driverId: number, updatedData: any) => {
+  const handleEditTicket = async (tripCarId: number, updatedTicket: TripTicket) => {
+  try {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/api-tripcar/update-tripcar/${tripCarId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify(updatedTicket),
+    });
+    if (!response.ok) throw new Error("Không thể cập nhật chuyến xe");
+    message.success("Đã sửa thành công!");
+    setEditingTicket(null); 
+    fetchAllTrips(); 
+  } catch (error) {
+    console.error("Lỗi khi cập nhật chuyến xe:", error);
+    message.error("Có lỗi xảy ra khi cập nhật vé xe.");
+  }
+};
+  const handleDeleteTicket = async (tripCarId: number) => {
     try {
-      const token = localStorage.getItem("token");
-      const formData = new FormData();
-      Object.entries(updatedData).forEach(([key, value]) => {
-        formData.append(key, value as any);
-      });
-
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api-driver/update-driver/${driverId}`, {
-        method: "PUT",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: formData,
-      });
-
-      if (!response.ok) {
-        throw new Error("Không thể cập nhật tài xế.");
-      }
-
-      message.success("Cập nhật tài xế thành công!");
-      fetchDrivers(); // Reload danh sách tài xế
-    } catch (error) {
-      console.error("❌ Lỗi khi cập nhật tài xế:", error);
-      message.error("Không thể cập nhật tài xế.");
-    }
-  };
-
-  const deleteDriver = async (driverId: number) => {
-    try {
-      const token = localStorage.getItem("token");
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api-driver/delete-driver/${driverId}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api-tripcar/${tripCarId}`, {
         method: "DELETE",
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-
-      if (!response.ok) {
-        throw new Error("Không thể xóa tài xế.");
-      }
-
-      message.success("Xóa tài xế thành công!");
-      fetchDrivers(); // Reload danh sách tài xế
+      if (!response.ok) throw new Error("Không thể xóa chuyến xe");
+      message.success("Xóa chuyến xe thành công!");
+      fetchAllTrips();
     } catch (error) {
-      console.error("❌ Lỗi khi xóa tài xế:", error);
-      message.error("Không thể xóa tài xế.");
+      console.error("Lỗi khi xóa chuyến xe:", error);
+      message.error("Có lỗi xảy ra khi xóa vé xe.");
     }
   };
 
-  const columns: ColumnsType<Driver> = [
+   const columns: ColumnsType<TripTicket> = [
+    { title: "Tên chuyến", dataIndex: "tripName", key: "tripName" },
+    { title: "Điểm đón", dataIndex: "pickupPoint", key: "pickupPoint" },
+    { title: "Điểm trả", dataIndex: "payPoint", key: "payPoint" },
+{ title: "Ngày khởi hành", dataIndex: "departureDate", key: "departureDate",
+  render: (date: string) => dayjs(date).format("DD-MM-YYYY") 
+},     { title: "Giờ khởi hành", dataIndex: "departureTime", key: "departureTime" },
+    { title: "Giờ kết thúc", dataIndex: "departureEndTime", key: "departureEndTime" },
+    { title: "Tổng số ghế", dataIndex: "seatNumber", key: "seatNumber" },
+    { title: "Ghế trống", dataIndex: "emptySeatNumber", key: "emptySeatNumber" },
     {
-      title: "Ảnh",
-      dataIndex: "url",
-      key: "url",
-      render: (url) => <Avatar src={url || "https://via.placeholder.com/150"} size={40} alt="Driver avatar" />,
+      title: "Giá vé (VNĐ)",
+      dataIndex: "priceSeatNumber",
+      key: "priceSeatNumber",
+      render: (price: number) => price?.toLocaleString("vi-VN") || "0",
     },
-    { title: "Họ và tên", dataIndex: "fullName", key: "fullName" },
-    { title: "Số điện thoại", dataIndex: "phoneNumber", key: "phoneNumber" },
-    { title: "Năm sinh", dataIndex: "yearOfBirth", key: "yearOfBirth" },
-    { title: "Giới tính", dataIndex: "gender", key: "gender" },
-    { title: "Mô tả", dataIndex: "descriptions", key: "descriptions", ellipsis: true },
+    { title: "Tên tài xế", dataIndex: "fullName", key: "fullName" },
+    { title: "SĐT tài xế", dataIndex: "phoneNumber", key: "phoneNumber" },
     {
       title: "Hành động",
       key: "actions",
-      render: (_, record) => (
-        <div className="flex gap-3">
-<Button type="primary" onClick={() => {
-   console.log("Bấm vào Sửa:", record);
-   updateDriver(record.driverId, record);
-}}>
-   Sửa
-</Button>
-          <Popconfirm title="Bạn có chắc chắn muốn xóa?" onConfirm={() => deleteDriver(record.driverId)} okText="Xóa" cancelText="Hủy">
-            <Button type="primary" danger>Xóa</Button>
-          </Popconfirm>
-        </div>
+      render: (_: any, record: TripTicket) => (
+        <>
+          <Button type="primary" onClick={() => setEditingTicket(record)}>
+            Sửa
+          </Button>
+          <Button danger onClick={() => handleDeleteTicket(record.tripCarId)}>
+            Xóa
+          </Button>
+        </>
       ),
     },
   ];
 
   return (
-    <div className="p-6 bg-white shadow rounded max-w-7xl mx-auto">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-semibold">Danh sách tài xế</h2>
-        <Button type="primary" onClick={fetchDrivers} className="bg-red-500">
-          Tải lại danh sách tài xế
-        </Button>
-      </div>
+    <div className="p-8 bg-white max-w-7xl mx-auto shadow rounded">
+      {showDriverPage ? (
+        <>
+          <Button onClick={() => setShowDriverPage(false)} style={{ marginBottom: 16 }}>
+            Quay lại danh sách vé
+          </Button>
+          <BusDriverListPage />
+        </>
+      ) : showCoDriverPage ? (
+        <>
+          <Button onClick={() => setShowCoDriverPage(false)} style={{ marginBottom: 16 }}>
+            Quay lại danh sách vé
+          </Button>
+          <BusCoDriverListPage />
+        </>
+      ): showCoachPage ? (
+        <>
+          <Button onClick={() => setShowCoachPage(false)} style={{ marginBottom: 16 }}>
+            Quay lại danh sách vé
+          </Button>
+          <BusCoachListPage />
+        </>
+      ) : (
+          <div
+    style={{
+      padding: "20px",
+      backgroundColor: "#fff",
+      margin: "auto",
+      // borderRadius: "8px",
+      boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
+    }}
+  >
+    <h2
+      style={{
+        fontSize: "24px",
+        fontWeight: "bold",
+        marginBottom: "16px",
+        textAlign: "center",
+      }}
+    >
+      Danh sách vé xe Bus
+    </h2>
 
-      <Table columns={columns} dataSource={drivers} rowKey="driverId" loading={loading} pagination={{ pageSize: 10 }} />
+    <div
+      style={{
+        display: "flex",
+        flexWrap: "wrap",
+        gap: "10px",
+        justifyContent: "center",
+        marginBottom: "20px",
+      }}
+    >
+      <Button type="primary" onClick={onAddTicket} style={{ backgroundColor: "#28a745", color: "#fff" }}>
+        Thêm vé xe mới
+      </Button>
+      <Button type="primary" onClick={onAddCoDriver} style={{ backgroundColor: "#000000", color: "#fff" }}>
+        Thêm tài xế phụ xe
+      </Button>
+      <Button type="primary" onClick={onAddDriver} style={{ backgroundColor: "#007bff", color: "#fff" }}>
+        Thêm tài xế mới
+      </Button>
+      <Button type="primary" onClick={onAddCoach} style={{ backgroundColor: "#ffc107", color: "#fff" }}>
+        Thêm loại xe
+      </Button>
+      <Button type="primary" onClick={() => setShowDriverPage(true)} style={{ backgroundColor: "#dc3545", color: "#fff" }}>
+        Xem danh sách tài xế
+      </Button>
+      <Button type="primary" onClick={() => setShowCoachPage(true)} style={{ backgroundColor: "#5F9EA0", color: "#fff" }}>
+        Xem danh sách xe & biển số
+      </Button>
+      <Button type="primary" onClick={() => setShowCoDriverPage(true)} style={{ backgroundColor: "#5F9EA0", color: "#fff" }}>
+        Xem danh sách tài xế phụ
+      </Button>
+    </div>
+
+    <div style={{ overflowX: "auto", borderRadius: "8px" }}>
+      <Table
+        columns={columns}
+        dataSource={tickets}
+        rowKey="tripCarId"
+        loading={loading}
+        bordered
+        pagination={{ pageSize: 10 }}
+        scroll={{ x: "max-content" }} // ✅ 
+      />
+    </div>
+  </div>
+      )}
+      <Modal
+  title="Sửa chuyến xe"
+  visible={!!editingTicket}
+  onCancel={() => setEditingTicket(null)}
+  onOk={() => handleEditTicket(editingTicket!.tripCarId, editingTicket!)}
+>
+  <Form layout="vertical">
+    <Form.Item label="Tên chuyến">
+      <Input 
+        value={editingTicket?.tripName} 
+        onChange={(e) => setEditingTicket({ ...editingTicket!, tripName: e.target.value })} 
+      />
+    </Form.Item>
+    <Form.Item label="Điểm đón">
+      <Input 
+        value={editingTicket?.pickupPoint} 
+        onChange={(e) => setEditingTicket({ ...editingTicket!, pickupPoint: e.target.value })} 
+      />
+    </Form.Item>
+  </Form>
+</Modal>
     </div>
   );
 };
 
-export { BusDriverListPage };
+export { BusTicketSalesListPage };
