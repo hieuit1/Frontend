@@ -16,7 +16,7 @@ const BusCreateCoachPage = () => {
   useEffect(() => {
     const fetchId = async () => {
       try {
-        const coachData = await fetchCoachById(1); // 🔹 Giả sử ID xe khách là 1
+        const coachData = await fetchCoachById(1); 
         if (!coachData || !coachData.coachId) {
           message.error("Không thể lấy ID xe buýt, dữ liệu không hợp lệ!");
           return;
