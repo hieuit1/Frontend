@@ -19,7 +19,7 @@ export const fetchCoaches = async () => {
  */
 export const fetchCoachById = async (id: number) => {
   const token = localStorage.getItem("token");
-  const response = await fetch(`${process.env.REACT_APP_API_URL}useradmin-all-coach/${id}`, {
+  const response = await fetch(`${process.env.REACT_APP_API_URL}/useradmin-all-coach/${id}`, {
     headers: { Authorization: `Bearer ${token}` }
   });
 

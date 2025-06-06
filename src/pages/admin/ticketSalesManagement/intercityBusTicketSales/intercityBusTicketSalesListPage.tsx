@@ -16,7 +16,7 @@ useEffect(() => {
   const fetchTickets = async () => {
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:8080/useradmin-all-tripcar", {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/useradmin-all-tripcar`, {
         headers: {
           "Authorization": `Bearer ${localStorage.getItem("token")}`,
           "Content-Type": "application/json"

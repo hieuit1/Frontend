@@ -13,8 +13,8 @@ import {
   fetchUsers,
   deleteUser,
   updateUser,
-  User,
 } from "../../../api/userSignUpsApi";
+import { User } from "../../../interfaces/User";
 
 const UserSignUps: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
@@ -74,9 +74,30 @@ const filteredUsers = users.filter((user) =>
     }
   };
 
+  const refreshUsers = async () => {
+  setLoading(true);
+  try {
+    const data = await fetchUsers();
+    setUsers(data);
+    message.success("Danh sách người dùng đã được cập nhật!");
+  } catch {
+    message.error("Không thể cập nhật danh sách người dùng.");
+  } finally {
+    setLoading(false);
+  }
+};
+
   return (
     <div>
       <h2>Quản lý Người Dùng</h2>
+      <Button
+  type="primary"
+  onClick={refreshUsers}
+  style={{ marginBottom: 16 }}
+>
+  Cập nhật danh sách
+</Button>
+
       <Input
         placeholder="Tìm kiếm theo tên, email, số điện thoại..."
         value={search}
@@ -98,14 +119,6 @@ const filteredUsers = users.filter((user) =>
             dataIndex: "role",
             key: "role",
             render: (role) => <Tag color={role === "ADMIN" ? "red" : "green"}>{role}</Tag>,
-          },
-          {
-            title: "Trạng thái",
-            dataIndex: "isEnabled",
-            key: "isEnabled",
-            render: (isEnabled) => (
-              <Tag color={isEnabled ? "blue" : "grey"}>{isEnabled ? "Active" : "Inactive"}</Tag>
-            ),
           },
           {
             title: "Thao tác",
