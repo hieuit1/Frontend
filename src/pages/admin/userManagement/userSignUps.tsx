@@ -6,8 +6,8 @@ import {
   fetchUsers,
   deleteUser,
   updateUser,
-  User,
 } from "../../../api/userSignUpsApi";
+import { User } from "../../../interfaces/User";
 
 const UserSignUps: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
