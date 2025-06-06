@@ -30,7 +30,7 @@ const BusDriverListPage: React.FC = () => {
         return;
       }
 
-      const response = await fetch("http://localhost:8080/api/useradmin-all-driver", {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/useradmin-all-driver`, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
@@ -59,7 +59,7 @@ const BusDriverListPage: React.FC = () => {
         formData.append(key, value as any);
       });
 
-      const response = await fetch(`http://localhost:8080/api/api-driver/update-driver/${driverId}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api-driver/update-driver/${driverId}`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -82,7 +82,7 @@ const BusDriverListPage: React.FC = () => {
   const deleteDriver = async (driverId: number) => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`http://localhost:8080/api/api-driver/delete-driver/${driverId}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}}/api-driver/delete-driver/${driverId}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,

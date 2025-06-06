@@ -22,7 +22,7 @@ const BusAddDriver = () => {
 
   const onFinish = async (values: any) => {
     setLoading(true);
-    setResultMessage(null); // Reset trước khi gọi API
+    setResultMessage(null); 
 
     const formData = new FormData();
     formData.append("fullName", values.fullName);
