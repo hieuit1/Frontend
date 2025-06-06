@@ -1,23 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import Navbar from "../../components/navbar/Navbar";
-import Footer from "./components/footer/Footer";
-import { getTripsData } from "../../api/tripsApi"; // Dùng API thật
+import Footer from "./components/footer/footer";
+import { getTripsData } from "../../api/tripsApi";
 import { promotionsData } from "../../data/promotionsData";
 import ChatBox from "../../components/ChatBox/ChatBox";
 import { SectionFour, SectionSeven, SectionFive, SectionSix } from "./components/index";
-
 import HomeHeader from "./components/header/header";
 import "./home_css/home.css";
 
-const Home: React.FC<{ setCurrentPage: (page: string) => void }> = ({
-  setCurrentPage,
-}) => {
+const Home: React.FC<{ setCurrentPage: (page: string) => void }> = () => {
   const navigate = useNavigate();
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
   const [date, setDate] = useState("");
   const [trips, setTrips] = useState<any[]>([]);
+
+  const promotions = promotionsData;
 
   // Lấy dữ liệu chuyến xe từ backend
   useEffect(() => {
@@ -30,13 +29,6 @@ const Home: React.FC<{ setCurrentPage: (page: string) => void }> = ({
       .catch(() => setTrips([]));
   }, []);
 
-  const handleSearch = () => {
-    navigate(
-      `/busTicket?from=${encodeURIComponent(
-        from.trim()
-      )}&to=${encodeURIComponent(to.trim())}&date=${encodeURIComponent(date)}`
-    );
-  };
 
   const handleDestinationClick = (from: string, to: string) => {
     navigate(
@@ -56,7 +48,6 @@ const Home: React.FC<{ setCurrentPage: (page: string) => void }> = ({
     date: trip.departureDate,
   }));
 
-  const promotions = promotionsData;
 
   const scrollSlider = (direction: number) => {
     const slider = document.querySelector(".promotion-slider") as HTMLElement;
@@ -68,11 +59,10 @@ const Home: React.FC<{ setCurrentPage: (page: string) => void }> = ({
 
   return (
     <div className="home-page">
+      {/* */}
       <Navbar />
-
       {/* Header */}
       <HomeHeader />
-
       {/* Chỗ mua vé - Các loại phương tiện */}
       <section
         style={{
@@ -181,18 +171,11 @@ const Home: React.FC<{ setCurrentPage: (page: string) => void }> = ({
           </button>
         </div>
       </section>
-
-
       <SectionFour />
-   
       <SectionFive />
-    
       <SectionSix />
-  
       <SectionSeven />
-
       <ChatBox />
-
       <Footer year={2025} companyName="Ticket Car" />
     </div>
   );

@@ -28,7 +28,7 @@ const BusTicketSalesPage = () => {
 
   const onFinish = async (values: any) => {
   setLoading(true);
-  setSubmitMessage(null); // reset thông báo cũ
+  setSubmitMessage(null); 
 
   const payload = {
     ...values,

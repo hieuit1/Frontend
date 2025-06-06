@@ -9,25 +9,20 @@ const AdminSignInPage: React.FC = () => {
   const [error, setError] = React.useState("");
   const navigate = useNavigate();
 
- // ...existing code...
 const onSubmit = async (data: any) => {
   setError("");
   try {
     const res = await adminSignIn(data.email, data.password);
-    // Sửa đoạn này: kiểm tra trực tiếp res.role
     if (res.role === "ADMIN") {
-      localStorage.setItem("token", res.token);
-      navigate("/admin/dashboard");
-    } else {
-      setError("Bạn không có quyền truy cập trang quản trị.");
-    }
+      localStorage.setItem("token", res.token); navigate("/admin/dashboard");
+    } else { setError("Bạn không có quyền truy cập trang quản trị."); }
   } catch (err: any) {
     setError(
       err.message || "Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin."
     );
   }
 };
-// ...existing code...
+
   return (
     <div className="signin-container-admin">
       <form className="signin-form-admin" onSubmit={handleSubmit(onSubmit)}>

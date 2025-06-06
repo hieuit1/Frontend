@@ -26,12 +26,40 @@ Frontend/
 │   │   │   ├── styles/              # Thư mục chứa các tệp CSS cho Navbar
 │   │   │   │   ├── Navbar.css       # Tệp định dạng giao diện của Navbar
 │   │   │   ├── testing/             # Thư mục chứa các tệp kiểm thử cho Navbar
-│   │   │   │   ├── Navbar.test.tsx  # Tệp kiểm thử cho Navbar
-│   │   │   ├── Navbar.tsx           # Tệp TypeScript định nghĩa thành phần Navbar
-│── public/                          # Tài nguyên tĩnh
-│   ├── favicon.ico                  # Biểu tượng trang web (favicon)
-│   ├── index.html                   # Tệp HTML chính của ứng dụng
-│   ├── logo192.png                  # Hình ảnh logo ứng dụng, có thể dùng làm icon ứng dụng
-│   ├── logo512.png                  # Phiên bản lớn hơn của logo ứng dụng
-│   ├── robots.txt                   # Tệp hướng dẫn các công cụ tìm kiếm cách thu thập dữ liệu trang web
-│   ├── manifest.json                # Tệp cấu hình cho Progressive Web App (PWA)
+│   │   │   │   ├── Navbar.test.tsx  # ✅ Tệp kiểm thử cho Navbar
+│   │   │   ├── Navbar.tsx           # Thành phần TypeScript định nghĩa Navbar
+│   ├── data/                        # Thư mục chứa dữ liệu tĩnh
+│   │   ├── jsons/                   # Thư mục chứa các tệp JSON dùng cho ứng dụng
+│   │   ├── management_intercity.ts  # Tệp quản lý dữ liệu tuyến đường liên tỉnh
+│   ├── interfaces/                   # Thư mục chứa các interface TypeScript
+│   ├── models/                       # Thư mục chứa các mô hình dữ liệu
+│   ├── pages/                        # Thư mục chứa các trang chính của ứng dụng
+│   │   ├── Account/                  # ✅ Thư mục chứa trang Account
+│   │   │   ├── Account.tsx           # ✅ Thành phần chính của trang Account
+│   │   │   ├── AccountPage.module.css # ✅ Định dạng CSS cho trang Account
+│   │   ├── admin/                     # ✅ Thư mục chứa trang quản trị Admin
+│   │   │   ├── aboutAdmin/            # ✅ Thư mục chứa trang About Admin
+│   │   │   │   ├── about.tsx          # ✅ Thành phần chính của About Admin
+│   │   │   │   ├── styles/            # ✅ Thư mục chứa định dạng CSS cho About Admin
+│   │   │   │   │   ├── about.css.tsx  # ✅ Tệp định dạng giao diện của About Admin
+│   │   │   │   ├── testing/           # ✅ Thư mục chứa kiểm thử cho About Admin
+│   │   │   │   │   ├── about.spec.tsx # ✅ Tệp kiểm thử cho About Admin
+│   │   │   ├── contactAdmin/          # ✅ Thư mục chứa trang Contact Admin
+│   │   │   │   ├── contact.tsx        # ✅ Thành phần chính của Contact Admin
+│   │   │   │   ├── testing/           # ✅ Thư mục chứa kiểm thử cho Contact Admin
+│   │   │   │   │   ├── contact.spec.tsx # ✅ Tệp kiểm thử cho Contact Admin
+│   │   ├── home/                      # Trang Home
+│   │   │   ├── components/            # Các thành phần của Home
+│   │   │   │   ├── footer/            # Thành phần Footer
+│   │   │   │   │   ├── footer.tsx     # Thành phần TypeScript cho Footer
+│   │   │   │   │   ├── styles/        # Thư mục chứa định dạng giao diện cho Footer
+│   │   │   │   │   │   ├── footer.css  # Tệp CSS định dạng giao diện của Footer
+│   ├── routers/                       # Thư mục chứa các cấu hình route
+│   ├── types/                         # Thư mục chứa các kiểu dữ liệu TypeScript
+│── public/                            # Tài nguyên tĩnh
+│   ├── favicon.ico                    # Biểu tượng trang web (favicon)
+│   ├── index.html                     # Tệp HTML chính của ứng dụng
+│   ├── logo192.png                     # Hình ảnh logo ứng dụng, có thể dùng làm icon ứng dụng
+│   ├── logo512.png                     # Phiên bản lớn hơn của logo ứng dụng
+│   ├── robots.txt                      # Tệp hướng dẫn các công cụ tìm kiếm cách thu thập dữ liệu trang web
+│   ├── manifest.json                    # Tệp cấu hình cho Progressive Web App (PWA)

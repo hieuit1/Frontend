@@ -18,7 +18,6 @@ export function SignUp({ onAuthSuccess }: SignUpProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     try {
       const data = await signUp(name, phone, email, password);
 
@@ -31,7 +30,6 @@ export function SignUp({ onAuthSuccess }: SignUpProps) {
         draggable: true,
         closeButton: false,
       });
-
       onAuthSuccess();
       console.log("Signup successful:", data);
     } catch (error: any) {
@@ -51,14 +49,11 @@ export function SignUp({ onAuthSuccess }: SignUpProps) {
       );
     }
   };
-
   const handleGoogleSignupSuccess = async (response: any) => {
     try {
       const credential = response.credential;
       if (!credential) throw new Error("Google credential not found");
-
       const data = await googleSignUp(credential);
-
       toast.success("Đăng ký bằng Google thành công!", {
         position: "top-right",
         autoClose: 3000,
@@ -68,18 +63,14 @@ export function SignUp({ onAuthSuccess }: SignUpProps) {
         draggable: true,
         closeButton: false,
       });
-
       onAuthSuccess();
       console.log("Signup with Google successful:", data);
     } catch (error: any) {
       console.error("Google Signup Error:", error);
-
-      // Kiểm tra lỗi từ backend, giả sử backend trả message này khi tài khoản đã tồn tại
       const errorMessage =
         error.message === "Google account already registered"
           ? "Tài khoản Google này đã được đăng ký, vui lòng đăng nhập."
           : error.message || "Lỗi không xác định.";
-
       toast.error(errorMessage, {
         position: "top-right",
         autoClose: 3000,
@@ -91,10 +82,8 @@ export function SignUp({ onAuthSuccess }: SignUpProps) {
       });
     }
   };
-
   const handleGoogleSignupFailure = () => {
     console.error("Google Signup Failed");
-
     toast.error("Đăng ký bằng Google thất bại!", {
       position: "top-right",
       autoClose: 3000,
@@ -110,7 +99,6 @@ export function SignUp({ onAuthSuccess }: SignUpProps) {
     <>
       <form onSubmit={handleSubmit}>
         <h1>Sign Up</h1>
-
         <input
           type="text"
           placeholder="Name"
@@ -140,7 +128,6 @@ export function SignUp({ onAuthSuccess }: SignUpProps) {
           required
         />
         <button type="submit">Sign Up</button>
-
         <div className="social-icons-google">
           <span className="google-signup-label">or sign up with Google</span>
           <GoogleLogin

@@ -1,29 +1,11 @@
 import moment from "moment";
-
-/**
- * Interface định nghĩa dữ liệu người dùng.
- */
-export interface User {
-  id: number;
-  name: string;
-  email: string;
-  numberphone: string;  // 🆕 Thêm số điện thoại
-  role: string;         // 🆕 Thêm vai trò
-  registeredAt: string;
-  method?: "Google" | "Tài khoản";
-  password?: string;
-  updatedAt?: string;
-  isEnabled: boolean;   // 🆕 Thêm trạng thái tài khoản
-}
-
+import { User } from "../interfaces/User";
 
 const API_URL = `${process.env.REACT_APP_API_URL}/manager-user`; 
-
 /**
  * Lấy token từ localStorage
  */
 const getToken = () => localStorage.getItem("token");
-
 /**
  * Lấy danh sách tất cả người dùng.
  */
@@ -90,10 +72,8 @@ export const updateUser = async (
       updatedAt: moment().format("YYYY-MM-DD HH:mm:ss"),
     }),
   });
-
   if (!response.ok) {
     throw new Error("Cập nhật người dùng thất bại");
   }
-
   return await response.json();
 };

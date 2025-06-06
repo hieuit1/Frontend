@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Navbar from "../../components/navbar/Navbar";
-import Footer from "../home/components/footer/Footer";
+import Footer from "../home/components/footer/footer";
 import "./seat_selection.css";
 
 interface Seat {

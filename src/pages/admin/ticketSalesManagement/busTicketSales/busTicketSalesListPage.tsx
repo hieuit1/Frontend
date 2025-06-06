@@ -51,7 +51,7 @@ const [isModalVisible, setIsModalVisible] = useState(false);
         return;
       }
 
-      const response = await fetch("http://localhost:8080/api/useradmin-all-tripcar", {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/useradmin-all-tripcar`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -76,7 +76,7 @@ const [isModalVisible, setIsModalVisible] = useState(false);
 
   const handleEditTicket = async (tripCarId: number, updatedTicket: TripTicket) => {
   try {
-    const response = await fetch(`http://localhost:8080/api/api-tripcar/update-tripcar/${tripCarId}`, {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/api-tripcar/update-tripcar/${tripCarId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -99,7 +99,7 @@ const [isModalVisible, setIsModalVisible] = useState(false);
 
   const handleDeleteTicket = async (tripCarId: number) => {
     try {
-      const response = await fetch(`http://localhost:8080/api/api-tripcar/${tripCarId}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api-tripcar/${tripCarId}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,

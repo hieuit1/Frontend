@@ -23,6 +23,13 @@ const BusCoachListPage: React.FC = () => {
     loadCoaches();
   }, []);
 
+  useEffect(() => {
+  if (editingCoach) {
+    console.log("🛠 Dữ liệu xe khách cần sửa:", editingCoach);
+    setEditModalVisible(true);  // ✅ Đảm bảo mở modal khi có dữ liệu
+  }
+}, [editingCoach]);
+
   const loadCoaches = async () => {
     setLoading(true);
     try {
@@ -146,7 +153,7 @@ const file = fileList && fileList.length > 0 ? fileList[0] : undefined;
   </Form.Item>
   <Form.Item label="Chọn ảnh mới">
     <Input type="file" onChange={(e) => setFileList(e.target.files)} />
-  </Form.Item> {/* ✅ Thêm input chọn ảnh */}
+  </Form.Item> 
   <Button type="primary" htmlType="submit" block>Cập nhật</Button>
 </Form>
 

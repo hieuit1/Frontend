@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { SignUp } from "./SignUp";
 import { SignIn } from "./SignIn";
 import { ToastContainer } from "react-toastify";
@@ -21,7 +21,7 @@ function AuthContainer({ onAuthSuccess }: AuthContainerProps) {
   return (
     <div className="auth-page">
       <ToastContainer
-        position="top-center" // Đặt thông báo ở giữa phía trên
+        position="top-center" 
         autoClose={3000}
         hideProgressBar={false}
         newestOnTop={false}
@@ -30,7 +30,7 @@ function AuthContainer({ onAuthSuccess }: AuthContainerProps) {
         pauseOnFocusLoss
         draggable
         pauseOnHover
-        closeButton={false} // Loại bỏ dấu "X"
+        closeButton={false} 
       />
       <div className={`container ${isSignUp ? "active" : ""}`}>
         <div className="form-container sign-up" aria-hidden={!isSignUp}>

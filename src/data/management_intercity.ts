@@ -1,3 +1,5 @@
+// bán Vé xe liên tỉnh
+//Frontend\src\data\management_intercity.ts
 const columns = [
   { title: "Mã chuyến", dataIndex: "tripCarId", key: "tripCarId" },
   { title: "Tên chuyến", dataIndex: "tripName", key: "tripName" },

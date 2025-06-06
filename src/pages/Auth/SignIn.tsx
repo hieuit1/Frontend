@@ -3,7 +3,7 @@ import "./auth_css/SignIn_SignUp.css";
 import { useNavigate } from "react-router-dom";
 import { GoogleLogin } from "@react-oauth/google"; // Import GoogleLogin component
 import { signIn } from "../../api/indexApi";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { googleSignIn } from "../../api/signinApi";
 
@@ -14,7 +14,6 @@ interface SignInProps {
 export function SignIn({ onAuthSuccess }: SignInProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -22,16 +21,12 @@ export function SignIn({ onAuthSuccess }: SignInProps) {
     try {
       const data = await signIn(email, password);
       console.log("API response:", data);
-
-      // Sửa lại điều kiện kiểm tra
       if (data.token && data.email) {
         console.log("API response:", data);
-
         localStorage.setItem("token", data.token);
         localStorage.setItem("user", data.name);
         localStorage.setItem("name", data.name);
         localStorage.setItem("id", data.id);
-
         toast.success("Đăng nhập thành công!", {
           position: "top-right",
           autoClose: 3000,
@@ -41,7 +36,6 @@ export function SignIn({ onAuthSuccess }: SignInProps) {
           draggable: true,
           closeButton: false,
         });
-
         onAuthSuccess();
         navigate("/");
         window.location.reload();
@@ -68,22 +62,18 @@ export function SignIn({ onAuthSuccess }: SignInProps) {
     try {
       const googleToken = response.credential;
       console.log("Google Token:", googleToken);
-
       const data = await googleSignIn(googleToken);
-
       if (data.token && data.user) {
         localStorage.setItem("token", data.token);
-        localStorage.setItem("user", data.user.name); // <-- sửa key thành 'user'
+        localStorage.setItem("user", data.user.name); 
         localStorage.setItem("id", data.user.id);
-
         toast.success("Đăng nhập bằng Google thành công!", {
           position: "top-center",
           autoClose: 3000,
         });
-
         onAuthSuccess();
         navigate("/");
-        window.location.reload(); // bạn có thể thêm reload để update Navbar luôn
+        window.location.reload(); 
       } else {
         if (
           data.message?.toLowerCase().includes("user not found") ||
@@ -146,7 +136,6 @@ export function SignIn({ onAuthSuccess }: SignInProps) {
           Forget Your Password?
         </a>
         <button type="submit">Sign In</button>
-
         <div className="social-icons-google">
           <span className="google-signin-label">or sign in with Google</span>
           <GoogleLogin
