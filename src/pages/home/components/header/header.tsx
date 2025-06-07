@@ -7,7 +7,6 @@ const POPULAR_LOCATIONS = [
   "Quảng Ninh",
   "Ninh Bình",
   "Đà Nẵng",
-  "Sa Pa",
   "Hà Tĩnh",
   "Nghệ An",
   "Thanh Hóa",
@@ -15,7 +14,6 @@ const POPULAR_LOCATIONS = [
   "Hội An",
   "Quảng Ngãi",
   "Quảng Nam",
-  "Hồ Chí Minh"
 ];
 
 const HomeHeader: React.FC = () => {
