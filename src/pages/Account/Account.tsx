@@ -29,6 +29,9 @@ const Account: React.FC = () => {
   const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
   const [selectedTicketId, setSelectedTicketId] = useState<number | null>(null);
   const [ticketDetails, setTicketDetails] = useState<Ticket | null>(null);
+  const [confirmCancelTicketId, setConfirmCancelTicketId] = useState<
+    number | null
+  >(null);
 
   useEffect(() => {
     const fetchBookingHistory = async () => {
@@ -91,14 +94,13 @@ const Account: React.FC = () => {
     fetchTicketDetails();
   }, [selectedTicketId]);
 
-  const handleRequestCancel = async (ticketId: number) => {
-    const confirm = window.confirm("Bạn có chắc muốn gửi yêu cầu hủy vé?");
-    if (!confirm) return;
+  const handleRequestCancel = async () => {
+    if (confirmCancelTicketId === null) return;
 
     try {
       const token = localStorage.getItem("token");
       await axios.put(
-        `${process.env.REACT_APP_API_URL}/admin-ticket/${ticketId}?status=CHECKED_IN`,
+        `${process.env.REACT_APP_API_URL}/admin-ticket/${confirmCancelTicketId}?status=CHECKED_IN`,
         {},
         {
           headers: {
@@ -107,17 +109,21 @@ const Account: React.FC = () => {
         }
       );
 
-      // Cập nhật trạng thái trong danh sách
+      // Cập nhật trạng thái vé
       setBookingHistory((prev) =>
         prev.map((t) =>
-          t.tickerId === ticketId ? { ...t, status: "CHECKED_IN" } : t
+          t.tickerId === confirmCancelTicketId
+            ? { ...t, status: "CHECKED_IN" }
+            : t
         )
       );
 
-      toast.success(" Yêu cầu hủy vé đã được gửi.");
+      toast.success("Yêu cầu hủy vé đã được gửi.");
     } catch (err) {
       console.error("Lỗi khi gửi yêu cầu hủy:", err);
-      toast.error(" Gửi yêu cầu hủy thất bại.");
+      toast.error("Gửi yêu cầu hủy thất bại.");
+    } finally {
+      setConfirmCancelTicketId(null); // Đóng modal sau khi xử lý
     }
   };
 
@@ -199,7 +205,9 @@ const Account: React.FC = () => {
                             ? styles["status-request-cancel"]
                             : styles["status-request-cancel-disabled"]
                         }
-                        onClick={() => handleRequestCancel(ticket.tickerId)}
+                        onClick={() =>
+                          setConfirmCancelTicketId(ticket.tickerId)
+                        }
                         style={{ marginLeft: 8 }}
                       >
                         Yêu cầu hủy
@@ -210,6 +218,34 @@ const Account: React.FC = () => {
               ))}
             </tbody>
           </table>
+        )}
+        {confirmCancelTicketId !== null && (
+          <div
+            className={styles["cancel-ticket-overlay"]}
+            onClick={() => setConfirmCancelTicketId(null)}
+          >
+            <div
+              className={styles["cancel-ticket-modal"]}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <h3>Xác nhận hủy vé</h3>
+              <p>Bạn có chắc chắn muốn gửi yêu cầu hủy vé này không?</p>
+              <div className={styles["cancel-ticket-actions"]}>
+                <button
+                  className={styles["cancel-ticket-confirm"]}
+                  onClick={handleRequestCancel}
+                >
+                  Có
+                </button>
+                <button
+                  className={styles["cancel-ticket-decline"]}
+                  onClick={() => setConfirmCancelTicketId(null)}
+                >
+                  Không
+                </button>
+              </div>
+            </div>
+          </div>
         )}
 
         {selectedTicket && (
