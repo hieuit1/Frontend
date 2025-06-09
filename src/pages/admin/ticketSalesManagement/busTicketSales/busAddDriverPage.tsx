@@ -1,16 +1,14 @@
 import { useState } from "react";
-import {
-  Form,
-  Input,
-  Button,
-  Upload,
-  InputNumber,
+import { Form, Input, Button, Upload, InputNumber,
   Select,
   message,
   Row,
   Col,
 } from "antd";
+import { DatePicker } from "@mui/x-date-pickers";
+
 import { createDriver } from "../../../../api/bus_add_driverApi"; 
+import dayjs from "dayjs";
 
 const { Option } = Select;
 
@@ -19,6 +17,7 @@ const BusAddDriver = () => {
   const [loading, setLoading] = useState(false);
   const [fileList, setFileList] = useState<any[]>([]);
   const [resultMessage, setResultMessage] = useState<string | null>(null);
+  const [previewImage, setPreviewImage] = useState<string | null>(null); // Thêm state cho ảnh xem trước
 
   const onFinish = async (values: any) => {
     setLoading(true);
@@ -38,6 +37,7 @@ const BusAddDriver = () => {
       setResultMessage("✅ Tạo tài xế thành công!");
       form.resetFields();
       setFileList([]);
+      setPreviewImage(null); 
     } catch (err: any) {
       console.error(err);
       const msg = err.message || "Tạo tài xế thất bại!";
@@ -45,6 +45,19 @@ const BusAddDriver = () => {
       setResultMessage(`❌ ${msg}`);
     } finally {
       setLoading(false);
+    }
+  };
+    const handleImageChange = ({ fileList }: any) => {
+    setFileList(fileList);
+    if (fileList.length > 0) {
+      const file = fileList[0].originFileObj;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setPreviewImage(e.target?.result as string); 
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setPreviewImage(null); 
     }
   };
 
@@ -60,12 +73,28 @@ const BusAddDriver = () => {
           <Upload
             beforeUpload={() => false}
             fileList={fileList}
-            onChange={({ fileList }) => setFileList(fileList)}
+            onChange={handleImageChange}
             maxCount={1}
           >
             <Button>Chọn ảnh</Button>
           </Upload>
         </Form.Item>
+        {previewImage && (
+          <div style={{ marginBottom: "16px" }}>
+            <img
+              src={previewImage}
+              alt="Ảnh xem trước"
+              style={{
+                width: "150px",
+                height: "225px", 
+                objectFit: "cover", 
+                borderRadius: "8px",
+                border: "1px solid #ddd", 
+                marginTop: "10px",
+              }}
+            />
+          </div>
+        )}
         <Form.Item
           label="Họ tên"
           name="fullName"
@@ -84,18 +113,29 @@ const BusAddDriver = () => {
             </Form.Item>
           </Col>
           <Col span={6}>
-            <Form.Item
-              label="Năm sinh"
-              name="yearOfBirth"
-              rules={[{ required: true, message: "Vui lòng nhập năm sinh" }]}
-            >
-              <InputNumber
-                min={1900}
-                max={new Date().getFullYear()}
-                style={{ width: "100%" }}
-              />
-            </Form.Item>
-          </Col>
+  <Form.Item
+    label="Năm sinh"
+    name="yearOfBirth"
+    rules={[{ required: true, message: "Vui lòng nhập hoặc chọn năm sinh" }]}
+  >
+    <DatePicker
+      views={["year"]} // Chỉ hiển thị chế độ chọn năm
+      format="YYYY" // Định dạng hiển thị năm
+      value={form.getFieldValue("yearOfBirth") ? dayjs(`${form.getFieldValue("yearOfBirth")}-01-01`) : null}
+      onChange={(newValue) => {
+        if (newValue) {
+          form.setFieldValue("yearOfBirth", newValue.year()); // Lưu năm vào form
+        }
+      }}
+      slotProps={{
+        textField: {
+          fullWidth: true,
+          placeholder: "Nhập hoặc chọn năm sinh",
+        }
+      }}
+    />
+  </Form.Item>
+</Col>
           <Col span={6}>
             <Form.Item
               label="Giới tính"

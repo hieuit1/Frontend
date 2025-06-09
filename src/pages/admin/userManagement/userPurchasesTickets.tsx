@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Table, Tag, Button, message, Popconfirm } from "antd";
+import { Table, Tag, Button, message, Popconfirm, Modal } from "antd";
 
 interface PurchaseInfo {
   tickerId: number;
@@ -10,7 +10,7 @@ interface PurchaseInfo {
   departureTime: string;
   departureEndTime: string;
   pickupPoint: string;
-  payPoint: string;
+  payPonit: string;
   username: string;
   email: string;
   numberphone: string;
@@ -19,6 +19,7 @@ interface PurchaseInfo {
 const UserPurchasesTickets: React.FC = () => {
   const [data, setData] = useState<PurchaseInfo[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [viewingTicket, setViewingTicket] = useState<PurchaseInfo | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -91,9 +92,6 @@ const UserPurchasesTickets: React.FC = () => {
     { title: "ID", dataIndex: "tickerId", key: "tickerId" },
     { title: "Tên chuyến", dataIndex: "tripName", key: "tripName" },
     { title: "Ngày đi", dataIndex: "departureDate", key: "departureDate" },
-    { title: "Giờ đi", dataIndex: "departureTime", key: "departureTime" },
-    { title: "Giờ đến", dataIndex: "departureEndTime", key: "departureEndTime" },
-    { title: "Ghế", dataIndex: "seatNumber", key: "seatNumber" },
     {
       title: "Trạng thái",
       dataIndex: "status",
@@ -105,27 +103,31 @@ const UserPurchasesTickets: React.FC = () => {
           <Tag color="red">Yêu đặt vé</Tag>
         ),
     },
-    { title: "Người dùng", dataIndex: "username", key: "username" },
-    { title: "Email", dataIndex: "email", key: "email" },
     { title: "Số điện thoại", dataIndex: "numberphone", key: "numberphone" },
-    { title: "Điểm đón", dataIndex: "pickupPoint", key: "pickupPoint" },
-    { title: "Điểm đến", dataIndex: "payPonit", key: "payPonit" },
     {
-      title: "Hành động",
-      key: "action",
-      render: (_: any, record: PurchaseInfo) => (
-        <Popconfirm
-          title="Bạn có chắc chắn muốn xác nhận vé này không?"
-          onConfirm={() => handleConfirmStatus(record.tickerId)}
-          okText="Xác nhận"
-          cancelText="Hủy"
-        >
-          <Button type="primary" disabled={record.status !== "PENDING"}>
-            Xác nhận
-          </Button>
-        </Popconfirm>
-      ),
-    },
+  title: "Hành động",
+  key: "action",
+  render: (_: any, record: PurchaseInfo) => (
+    <>
+      <Popconfirm
+        title="Bạn có chắc chắn muốn xác nhận vé này không?"
+        onConfirm={() => handleConfirmStatus(record.tickerId)}
+        okText="Xác nhận"
+        cancelText="Hủy"
+      >
+        <Button type="primary" disabled={record.status !== "PENDING"}>
+          Xác nhận
+        </Button>
+      </Popconfirm>
+      <Button
+        style={{ marginLeft: 8 }}
+        onClick={() => setViewingTicket(record)}
+      >
+        Xem chi tiết
+      </Button>
+    </>
+  ),
+}
   ];
 
   return (
@@ -142,10 +144,84 @@ const UserPurchasesTickets: React.FC = () => {
           borderRadius: "8px",
           overflow: "hidden",
         }}
-        scroll={{ x: "max-content" }} // Đảm bảo bảng không bị xuống dòng
+        scroll={{ x: "max-content" }} 
       />
+<Modal
+  title="Chi tiết vé"
+  visible={!!viewingTicket}
+  onCancel={() => setViewingTicket(null)}
+  footer={null}
+  centered
+>
+  {viewingTicket && (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: "8px",
+      }}
+    >
+      {[
+        { label: "ID", value: viewingTicket.tickerId },
+        { label: "Tên chuyến", value: viewingTicket.tripName },
+        { label: "Ngày đi", value: viewingTicket.departureDate },
+        { label: "Giờ đi", value: viewingTicket.departureTime },
+        { label: "Giờ đến", value: viewingTicket.departureEndTime },
+        { label: "Ghế", value: viewingTicket.seatNumber },
+        { label: "Trạng thái", value: viewingTicket.status },
+        { label: "Người dùng", value: viewingTicket.username },
+        { label: "Email", value: viewingTicket.email },
+        { label: "Số điện thoại", value: viewingTicket.numberphone },
+        { label: "Điểm đón", value: viewingTicket.pickupPoint },
+        { label: "Điểm đến", value: viewingTicket.payPonit },
+      ].map((item, index) => (
+        <p key={index} style={animatedTextStyle}>
+          <strong>{item.label}:</strong> {item.value}
+          <span className="shine-effect"></span>
+        </p>
+      ))}
+    </div>
+  )}
+</Modal>
     </div>
   );
 };
 
 export { UserPurchasesTickets };
+
+
+const styles = `
+@keyframes shine {
+  0% {
+    left: -100%;
+    color: #FFD700; /* Màu vàng khi hiệu ứng bắt đầu */
+  }
+  50% {
+    color: #FFD700; /* Màu vàng khi hiệu ứng đang chạy */
+  }
+  100% {
+    left: 100%;
+    color: inherit; /* Trở về màu mặc định */
+  }
+}
+
+.shine-effect {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.5), transparent);
+  animation: shine 2s linear forwards;
+}
+`;
+
+const animatedTextStyle: React.CSSProperties = {
+  position: "relative",
+  display: "inline-block",
+  color: "inherit", // Màu mặc định của chữ
+  fontSize: "16px",
+  fontWeight: "bold",
+  overflow: "hidden",
+  whiteSpace: "nowrap",
+};

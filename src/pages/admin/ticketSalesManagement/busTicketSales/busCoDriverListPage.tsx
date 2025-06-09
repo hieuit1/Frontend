@@ -13,7 +13,7 @@ interface CoDriver {
   imageFile?: File; // Optional property for file uploads
 }
 
-const API_URL = process.env.REACT_APP_API_URL || "http://localhost:8080/api";
+const API_URL = process.env.REACT_APP_API_URL;
 
 const BusCoDriverListPage: React.FC = () => {
   const [coDrivers, setCoDrivers] = useState<CoDriver[]>([]);
@@ -31,7 +31,7 @@ const BusCoDriverListPage: React.FC = () => {
   setLoading(true);
   try {
     const token = localStorage.getItem("token");
-    const response = await fetch(`${API_URL}/useradmin-all-rickshaw`, {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/useradmin-all-rickshaw`, {
       headers: { Authorization: `Bearer ${token}` },
     });
 
@@ -67,7 +67,7 @@ const BusCoDriverListPage: React.FC = () => {
 
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`${API_URL}/api-rickshaw/delete-rickshaw/${selectedRickshawId}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api-rickshaw/delete-rickshaw/${selectedRickshawId}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });

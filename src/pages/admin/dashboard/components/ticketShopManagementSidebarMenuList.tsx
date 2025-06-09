@@ -44,27 +44,27 @@ const TicketShopManagementSidebarMenuList: React.FC<Props> = ({
     {openSubMenu && (
       <ul style={{ paddingLeft: 32 }}>
         <li
-          className={selectedMenu === "Vé Đã Bán" ? "active" : ""}
-          onClick={() => setSelectedMenu("Vé Đã Bán")}
-          style={{
-            cursor: "pointer",
-            display: "flex",
-            alignItems: "center",
-            gap: 8,
-            userSelect: "none",
-          }}
-        >
-          <span
-            style={{
-              display: "inline-block",
-              width: 6,
-              height: 6,
-              borderRadius: "50%",
-              background: "#00bcd4",
-            }}
-          ></span>
-          Vé Đã Bán
-        </li>
+  className={selectedMenu === "Vé Đã Bán" ? "active" : ""}
+  onClick={() => setSelectedMenu("Vé Đã Bán")} 
+  style={{
+    cursor: "pointer",
+    display: "flex",
+    alignItems: "center",
+    gap: 8,
+    userSelect: "none",
+  }}
+>
+  <span
+    style={{
+      display: "inline-block",
+      width: 6,
+      height: 6,
+      borderRadius: "50%",
+      background: "#00bcd4",
+    }}
+  ></span>
+  Vé Đã Bán
+</li>
         <li
           className={selectedMenu === "Vé Đã Hủy" ? "active" : ""}
           onClick={() => setSelectedMenu("Vé Đã Hủy")}
@@ -107,7 +107,7 @@ const TicketShopManagementSidebarMenuList: React.FC<Props> = ({
               background: "#00bcd4",
             }}
           ></span>
-          Vé Đã Đặt
+          Người Dùng Đã Mua
         </li>
       </ul>
     )}

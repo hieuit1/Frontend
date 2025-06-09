@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";// ✅ 
-import { Table, message, Button, Modal, Form, Input } from "antd";// ✅ 
+import { Table, message, Button, Modal, Form, Input, ConfigProvider, Space } from "antd";// ✅ 
 import type { ColumnsType } from "antd/es/table";// ✅ 
 import dayjs from "dayjs";// ✅ 
 import { BusDriverListPage } from "../../ticketSalesManagement/busTicketSales/busDriverListPage"; // ✅ 
@@ -20,6 +20,7 @@ const BusTicketSalesListPage: React.FC<BusTicketSalesListPageProps> = ({
   const [showCoachPage, setShowCoachPage] = useState(false); // ✅ 
   const [showCoDriverPage, setShowCoDriverPage] = useState(false);
   const [editingTicket, setEditingTicket] = useState<TripTicket | null>(null);
+  const [viewingTicket, setViewingTicket] = useState<TripTicket | null>(null);
 
   useEffect(() => {
     fetchAllTrips();
@@ -57,7 +58,7 @@ const BusTicketSalesListPage: React.FC<BusTicketSalesListPageProps> = ({
   };
 
 const handleEditTicket = async (tripCarId: number, updatedTicket: TripTicket) => {
-  console.log("Dữ liệu gửi lên API:", JSON.stringify(updatedTicket)); // Kiểm tra dữ liệu trước khi gửi
+  console.log("Dữ liệu gửi lên API:", JSON.stringify(updatedTicket)); 
 
   try {
     const response = await fetch(`${process.env.REACT_APP_API_URL}/api-tripcar/update-tripcar/${tripCarId}`, {
@@ -70,11 +71,11 @@ const handleEditTicket = async (tripCarId: number, updatedTicket: TripTicket) =>
     });
 
     const responseData = await response.json();
-    console.log("Phản hồi từ API:", responseData); // Kiểm tra phản hồi từ API
+    console.log("Phản hồi từ API:", responseData); 
 
     if (!response.ok) throw new Error(responseData.message || "Không thể cập nhật chuyến xe");
     message.success("Đã sửa thành công!");
-    fetchAllTrips(); // Tải lại danh sách chuyến xe sau khi cập nhật
+    fetchAllTrips(); 
   } catch (error) {
     console.error("Lỗi khi cập nhật chuyến xe:", error);
     message.error("Có lỗi xảy ra khi cập nhật chuyến xe.");
@@ -102,14 +103,10 @@ const handleEditTicket = async (tripCarId: number, updatedTicket: TripTicket) =>
    const columns: ColumnsType<TripTicket> = [
     { title: "ID", dataIndex: "tripCarId", key: "tripCarId" },
     { title: "Tên chuyến", dataIndex: "tripName", key: "tripName" },
-    { title: "Điểm đón", dataIndex: "pickupPoint", key: "pickupPoint" },
-    { title: "Điểm trả", dataIndex: "payPonit", key: "payPonit" },
     { title: "Ngày khởi hành", dataIndex: "departureDate", key: "departureDate",
       render: (date: string) => dayjs(date).format("DD-MM-YYYY") 
     },
     { title: "Giờ khởi hành", dataIndex: "departureTime", key: "departureTime" },
-    { title: "Giờ kết thúc", dataIndex: "departureEndTime", key: "departureEndTime" },
-    { title: "Tổng số ghế", dataIndex: "seatNumber", key: "seatNumber" },
     { title: "Ghế trống", dataIndex: "emptySeatNumber", key: "emptySeatNumber" },
     {
       title: "Giá vé (VNĐ)",
@@ -117,26 +114,99 @@ const handleEditTicket = async (tripCarId: number, updatedTicket: TripTicket) =>
       key: "priceSeatNumber",
       render: (price: number) => price?.toLocaleString("vi-VN") || "0",
     },
-    { title: "Tên tài xế", dataIndex: "fullName", key: "fullName" },
-    { title: "SĐT tài xế", dataIndex: "phoneNumber", key: "phoneNumber" },
     {
       title: "Hành động",
       key: "actions",
       render: (_: any, record: TripTicket) => (
-        <>
-          <Button type="primary" onClick={() => setEditingTicket(record)}>
-            Sửa
-          </Button>
-          <Button danger onClick={() => handleDeleteTicket(record.tripCarId)}>
-            Xóa
-          </Button>
-        </>
+  <ConfigProvider
+    theme={{
+      token: {
+        // Seed Token
+        colorPrimary: '#00b96b',
+        borderRadius: 2,
+
+        // Alias Token
+        colorBgContainer: '#f6ffed',
+      },
+    }}
+  >
+  <Button
+    type="primary"
+    onClick={() => setEditingTicket(record)}
+    style={{
+      transition: "all 0.3s ease",
+    }}
+    onMouseEnter={(e) => {
+      e.currentTarget.style.backgroundColor = "#0056b3"; // Màu khi hover
+      e.currentTarget.style.transform = "scale(1.05)"; // Phóng to nhẹ
+    }}
+    onMouseLeave={(e) => {
+      e.currentTarget.style.backgroundColor = ""; // Trở về màu gốc
+      e.currentTarget.style.transform = "scale(1)"; // Trở về kích thước gốc
+    }}
+    onMouseDown={(e) => {
+      e.currentTarget.style.transform = "scale(0.95)"; // Nhấn vào thu nhỏ nhẹ
+    }}
+    onMouseUp={(e) => {
+      e.currentTarget.style.transform = "scale(1.05)"; // Thả chuột trở về trạng thái hover
+    }}
+  >
+    Sửa
+  </Button>
+  <Button
+    danger
+    onClick={() => handleDeleteTicket(record.tripCarId)}
+    style={{
+      transition: "all 0.3s ease",
+    }}
+    onMouseEnter={(e) => {
+      e.currentTarget.style.backgroundColor = "#cf1322"; // Màu khi hover
+      e.currentTarget.style.transform = "scale(1.05)"; // Phóng to nhẹ
+    }}
+    onMouseLeave={(e) => {
+      e.currentTarget.style.backgroundColor = ""; // Trở về màu gốc
+      e.currentTarget.style.transform = "scale(1)"; // Trở về kích thước gốc
+    }}
+    onMouseDown={(e) => {
+      e.currentTarget.style.transform = "scale(0.95)"; // Nhấn vào thu nhỏ nhẹ
+    }}
+    onMouseUp={(e) => {
+      e.currentTarget.style.transform = "scale(1.05)"; // Thả chuột trở về trạng thái hover
+    }}
+  >
+    Xóa
+  </Button>
+  <Button 
+      type="primary"
+    onClick={() => setViewingTicket(record)}
+    style={{
+      marginLeft: 8,
+      transition: "all 0.3s ease",
+    }}
+    onMouseEnter={(e) => {
+      e.currentTarget.style.backgroundColor = "#bae637"; // Màu khi hover
+      e.currentTarget.style.transform = "scale(1.05)"; // Phóng to nhẹ
+    }}
+    onMouseLeave={(e) => {
+      e.currentTarget.style.backgroundColor = ""; // Trở về màu gốc
+      e.currentTarget.style.transform = "scale(1)"; // Trở về kích thước gốc
+    }}
+    onMouseDown={(e) => {
+      e.currentTarget.style.transform = "scale(0.95)"; // Nhấn vào thu nhỏ nhẹ
+    }}
+    onMouseUp={(e) => {
+      e.currentTarget.style.transform = "scale(1.05)"; // Thả chuột trở về trạng thái hover
+    }}
+  >
+    Xem chi tiết
+  </Button>
+  </ConfigProvider>
       ),
     },
   ];
 
   return (
-    <div className="p-8 bg-white max-w-7xl mx-auto shadow rounded">
+    <div>
       {showDriverPage ? (
         <>
           <Button onClick={() => setShowDriverPage(false)} style={{ marginBottom: 16 }}>
@@ -258,7 +328,100 @@ const handleEditTicket = async (tripCarId: number, updatedTicket: TripTicket) =>
     </Form.Item>
   </Form>
 </Modal>
+<Modal
+  title={
+    <div style={{ textAlign: "center", fontWeight: "bold", fontSize: "24px", color: "#1890ff" }}>
+      🚌 Chi Tiết Chuyến Xe 🚌
+    </div>
+  }
+  visible={!!viewingTicket}
+  onCancel={() => setViewingTicket(null)}
+  footer={null}
+  centered
+  width={700}
+  bodyStyle={{
+    padding: "20px",
+    backgroundColor: "#f0f2f5",
+    borderRadius: "8px",
+  }}
+>
+  {viewingTicket && (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: "16px",
+      }}
+    >
+      {/* Ảnh xe */}
+      <img
+        src={viewingTicket.url}
+        alt="Ảnh xe"
+        style={{
+          width: "100%",
+          maxWidth: "300px",
+          borderRadius: "8px",
+          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+        }}
+      />
 
+      {/* Thông tin chi tiết */}
+      <div
+        style={{
+          width: "100%",
+          maxWidth: "500px",
+          backgroundColor: "#fff",
+          padding: "16px",
+          borderRadius: "8px",
+          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+        }}
+      >
+        <p style={{ fontSize: "18px", fontWeight: "bold", color: "#1890ff" }}>
+          {viewingTicket.tripName}
+        </p>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            gap: "8px",
+            fontSize: "14px",
+          }}
+        >
+          <p><strong>ID:</strong> {viewingTicket.tripCarId}</p>
+          <p><strong>Ngày khởi hành:</strong> {dayjs(viewingTicket.departureDate).format("DD-MM-YYYY")}</p>
+          <p><strong>Giờ khởi hành:</strong> {viewingTicket.departureTime}</p>
+          <p><strong>Giờ kết thúc:</strong> {viewingTicket.departureEndTime}</p>
+          <p><strong>Điểm đón:</strong> {viewingTicket.pickupPoint}</p>
+          <p><strong>Điểm trả:</strong> {viewingTicket.payPonit}</p>
+          <p><strong>Tổng số ghế:</strong> {viewingTicket.seatNumber}</p>
+          <p><strong>Ghế trống:</strong> {viewingTicket.emptySeatNumber}</p>
+          <p><strong>Giá vé:</strong> {viewingTicket.priceSeatNumber.toLocaleString("vi-VN")} VNĐ</p>
+          <p><strong>Tên tài xế:</strong> {viewingTicket.fullName}</p>
+          <p><strong>SĐT tài xế:</strong> {viewingTicket.phoneNumber}</p>
+          <p><strong>Tên tài xế phụ:</strong> {viewingTicket.rickShawfullName}</p>
+          <p><strong>SĐT tài xế phụ:</strong> {viewingTicket.rickShawphoneNumber}</p>
+          <p><strong>Biển số xe:</strong> {viewingTicket.licensePlateNumberCoach}</p>
+        </div>
+      </div>
+      <Button
+        type="primary"
+        onClick={() => setViewingTicket(null)}
+        style={{
+          backgroundColor: "#1890ff",
+          borderColor: "#1890ff",
+          color: "#fff",
+          fontWeight: "bold",
+          padding: "8px 16px",
+          borderRadius: "8px",
+          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+        }}
+      >
+        Đóng
+      </Button>
+    </div>
+  )}
+</Modal>
     </div>
   );
 };

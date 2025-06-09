@@ -5,7 +5,10 @@ import SettingPage from "../setting/settingPage";
 import { userSubMenus } from "../../../data/userSubMenus";
 import { ticketRenderHandlers } from "../dashboard/components/renderConditions/ticketConditions";
 import { renderUserManagement } from "../dashboard/components/renderConditions/userManagementCondition";
+import TicketsSoldPage from "../bookingManagement/ticketsSold/ticketsSoldPage";
+
 import "./dashboard.css";
+import TicketCancelledPage from "../bookingManagement/ticketCancelled/ticketCancelledPage";
 
 const Dashboard: React.FC = () => {
   const [selectedMenu, setSelectedMenu] = useState<string>("Trang chủ");
@@ -53,6 +56,12 @@ const Dashboard: React.FC = () => {
     if (selectedMenu === "Cài Đặt") {
       return <SettingPage />;
     }
+
+      if (selectedMenu === "Vé Đã Bán") {
+        return <TicketsSoldPage />; 
+      }else if (selectedMenu === "Vé Đã Hủy") {
+        return <TicketCancelledPage/>;
+      }
 
 if (selectedMenu in ticketRenderHandlers) {
   return ticketRenderHandlers[selectedMenu as keyof typeof ticketRenderHandlers](

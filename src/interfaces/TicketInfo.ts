@@ -12,5 +12,5 @@ export interface TicketInfo {
   email: string;
   numberphone: string;
   pickupPoint: string;
-  payPoint: string;
+  payPonit: string;
 }
