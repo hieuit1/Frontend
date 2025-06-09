@@ -1,21 +1,18 @@
 //Frontend\src\pages\admin\ticketSalesManagement\busTicketSales\busTicketSalesPage.tsx
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Form,
   Input,
   InputNumber,
   DatePicker,
   TimePicker,
-  Select,
   Button,
-  message,
   Row,
   Col,
 } from "antd";
-import dayjs from "dayjs";
 import { createTripCar } from "../../../../api/bus_ticket_salesApi";
 
-const { Option } = Select;
+// const { Option } = Select;
 
 const BusTicketSalesPage = () => {
   const [form] = Form.useForm();
@@ -24,8 +21,6 @@ const BusTicketSalesPage = () => {
   type: "success" | "error";
   text: string;
 } | null>(null);
-
-
   const onFinish = async (values: any) => {
   setLoading(true);
   setSubmitMessage(null); 
@@ -56,75 +51,63 @@ const BusTicketSalesPage = () => {
         <Form.Item name="tripName" label="Tên chuyến" rules={[{ required: true }]}>
           <Input placeholder="VD: Chuyến Hà Nội - Nha Trang" />
         </Form.Item>
-
         <Row gutter={16}>
           <Col span={8}>
             <Form.Item name="departureDate" label="Ngày đi" rules={[{ required: true }]}>
   <DatePicker format="DD-MM-YYYY" style={{ width: "100%" }} />
 </Form.Item>
-
           </Col>
-
           <Col span={8}>
             <Form.Item name="departureTime" label="Giờ đi" rules={[{ required: true }]}>
               <TimePicker format="HH:mm:ss" style={{ width: "100%" }} />
             </Form.Item>
           </Col>
-
           <Col span={8}>
             <Form.Item name="departureEndTime" label="Giờ đến" rules={[{ required: true }]}>
               <TimePicker format="HH:mm:ss" style={{ width: "100%" }} />
             </Form.Item>
           </Col>
         </Row>
-
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item name="pickupPoint" label="Điểm đón" rules={[{ required: true }]}>
               <Input placeholder="VD: Bến xe Miền Trung" />
             </Form.Item>
           </Col>
-
           <Col span={12}>
             <Form.Item name="payPonit" label="Điểm trả" rules={[{ required: true }]}>
               <Input placeholder="VD: Bến xe Nha Trang" />
             </Form.Item>
           </Col>
         </Row>
-
         <Row gutter={16}>
           <Col span={8}>
             <Form.Item name="seatNumber" label="Số ghế" rules={[{ required: true }]}>
               <InputNumber min={1} style={{ width: "100%" }} />
             </Form.Item>
           </Col>
-
           <Col span={8}>
             <Form.Item name="emptySeatNumber" label="Ghế trống" rules={[{ required: true }]}>
               <InputNumber min={0} style={{ width: "100%" }} />
             </Form.Item>
           </Col>
-
           <Col span={8}>
             <Form.Item name="priceSeatNumber" label="Giá ghế" rules={[{ required: true }]}>
               <InputNumber min={1000} style={{ width: "100%" }} />
             </Form.Item>
           </Col>
         </Row>
-
         <Row gutter={16}>
           <Col span={8}>
             <Form.Item name="driverId" label="ID Tài xế" rules={[{ required: true }]}>
               <InputNumber min={1} style={{ width: "100%" }} />
             </Form.Item>
           </Col>
-
           <Col span={8}>
             <Form.Item name="coachId" label="ID Xe khách" rules={[{ required: true }]}>
               <InputNumber min={1} style={{ width: "100%" }} />
             </Form.Item>
           </Col>
-
           <Col span={8}>
             <Form.Item name="rickshawId" label="Biển số xe khách" rules={[{ required: true }]}>
               <InputNumber min={1} style={{ width: "100%" }} />

@@ -40,7 +40,7 @@ const UserSignUps: React.FC = () => {
 
 const filteredUsers = users.filter((user) =>
   [
-    user.name || "",  // 🛠 Nếu null hoặc undefined, thay thế bằng ""
+    user.name || "",  
     user.email || "",
     user.numberphone || "",
     user.role || ""

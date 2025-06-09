@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Form,
   Input,
@@ -10,7 +10,7 @@ import {
   Row,
   Col,
 } from "antd";
-import { createDriver } from "../../../../api/bus_add_driverApi"; // điều chỉnh path nếu cần
+import { createDriver } from "../../../../api/bus_add_driverApi"; 
 
 const { Option } = Select;
 
@@ -23,18 +23,15 @@ const BusAddDriver = () => {
   const onFinish = async (values: any) => {
     setLoading(true);
     setResultMessage(null); 
-
     const formData = new FormData();
     formData.append("fullName", values.fullName);
     formData.append("phoneNumber", values.phoneNumber);
     formData.append("yearOfBirth", values.yearOfBirth);
     formData.append("descriptions", values.descriptions);
     formData.append("gender", values.gender);
-
     if (fileList.length > 0) {
       formData.append("image", fileList[0].originFileObj);
     }
-
     try {
       await createDriver(formData);
       message.success("Tạo tài xế thành công!");
@@ -54,7 +51,6 @@ const BusAddDriver = () => {
   return (
     <div className="p-8 max-w-2xl mx-auto bg-white shadow rounded">
       <h2 className="text-2xl font-semibold mb-6">Thêm tài xế mới</h2>
-
       <Form layout="vertical" form={form} onFinish={onFinish}>
         <Form.Item
           label="Ảnh đại diện"
@@ -70,7 +66,6 @@ const BusAddDriver = () => {
             <Button>Chọn ảnh</Button>
           </Upload>
         </Form.Item>
-
         <Form.Item
           label="Họ tên"
           name="fullName"
@@ -78,7 +73,6 @@ const BusAddDriver = () => {
         >
           <Input />
         </Form.Item>
-
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item
@@ -89,7 +83,6 @@ const BusAddDriver = () => {
               <Input />
             </Form.Item>
           </Col>
-
           <Col span={6}>
             <Form.Item
               label="Năm sinh"
@@ -103,7 +96,6 @@ const BusAddDriver = () => {
               />
             </Form.Item>
           </Col>
-
           <Col span={6}>
             <Form.Item
               label="Giới tính"
@@ -118,7 +110,6 @@ const BusAddDriver = () => {
             </Form.Item>
           </Col>
         </Row>
-
         <Form.Item
           label="Mô tả"
           name="descriptions"
@@ -126,14 +117,12 @@ const BusAddDriver = () => {
         >
           <Input.TextArea rows={4} />
         </Form.Item>
-
         <Form.Item>
           <Button type="primary" htmlType="submit" loading={loading}>
             Tạo tài xế
           </Button>
         </Form.Item>
       </Form>
-
       {resultMessage && (
         <div
           className={`mt-4 text-lg font-semibold text-center ${

@@ -26,6 +26,9 @@ import {
 } from "../pages/ticketSalesPage/indexExport";
 import Account from "../pages/Account/Account";
 
+import PrivateRoute from "./PrivateRoute"; // Import PrivateRoute
+
+
 import TicketAnalytics from "../pages/admin/bookingManagement/ticketsSold/sellTickets";
 
 const AppRouter: React.FC = () => {
@@ -69,7 +72,15 @@ const AppRouter: React.FC = () => {
         {/* Trang admin */}
         <Route path="/admin/signin" element={<AdminSignInPage />} />
         {/* Trang quản trị viên */}
-        <Route path="/admin/dashboard" element={<Dashboard />} />
+        {/* <Route path="/admin/dashboard" element={<Dashboard />} /> */}
+        <Route
+          path="/admin/dashboard"
+          element={
+            <PrivateRoute>
+              <Dashboard />
+            </PrivateRoute>
+          }
+        />
         {/* Trang quản lý người dùng */}
         <Route path="/admin/user-management" element={<UserManagement />} />
 

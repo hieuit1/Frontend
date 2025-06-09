@@ -1,15 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { Table, message, Button, Modal, Form, Input } from "antd";
-import type { ColumnsType } from "antd/es/table";
-import { BusDriverListPage } from "../../ticketSalesManagement/busTicketSales/busDriverListPage"; 
-import { BusCoachListPage } from "../../ticketSalesManagement/busTicketSales/busCoachListPage"; // ✅ Import danh sách xe khách
-import { BusCoDriverListPage } from "../../ticketSalesManagement/busTicketSales/busCoDriverListPage";
-import dayjs from "dayjs";
-import { TripTicket } from "../../../../interfaces/TripTicket";
-import { BusTicketSalesListPageProps } from "../../../../interfaces/BusTicketSalesListPageProps";
-
-
-
+import React, { useEffect, useState } from "react";// ✅ 
+import { Table, message, Button, Modal, Form, Input } from "antd";// ✅ 
+import type { ColumnsType } from "antd/es/table";// ✅ 
+import dayjs from "dayjs";// ✅ 
+import { BusDriverListPage } from "../../ticketSalesManagement/busTicketSales/busDriverListPage"; // ✅ 
+import { BusCoachListPage } from "../../ticketSalesManagement/busTicketSales/busCoachListPage"; // ✅ 
+import { BusCoDriverListPage } from "../../ticketSalesManagement/busTicketSales/busCoDriverListPage";// ✅ 
+import { TripTicket } from "../../../../interfaces/TripTicket";// ✅ 
+import { BusTicketSalesListPageProps } from "../../../../interfaces/BusTicketSalesListPageProps";// ✅ 
 
 const BusTicketSalesListPage: React.FC<BusTicketSalesListPageProps> = ({
   onAddTicket,
@@ -99,9 +96,10 @@ const BusTicketSalesListPage: React.FC<BusTicketSalesListPageProps> = ({
     { title: "Tên chuyến", dataIndex: "tripName", key: "tripName" },
     { title: "Điểm đón", dataIndex: "pickupPoint", key: "pickupPoint" },
     { title: "Điểm trả", dataIndex: "payPoint", key: "payPoint" },
-{ title: "Ngày khởi hành", dataIndex: "departureDate", key: "departureDate",
-  render: (date: string) => dayjs(date).format("DD-MM-YYYY") 
-},     { title: "Giờ khởi hành", dataIndex: "departureTime", key: "departureTime" },
+    { title: "Ngày khởi hành", dataIndex: "departureDate", key: "departureDate",
+      render: (date: string) => dayjs(date).format("DD-MM-YYYY") 
+    },
+    { title: "Giờ khởi hành", dataIndex: "departureTime", key: "departureTime" },
     { title: "Giờ kết thúc", dataIndex: "departureEndTime", key: "departureEndTime" },
     { title: "Tổng số ghế", dataIndex: "seatNumber", key: "seatNumber" },
     { title: "Ghế trống", dataIndex: "emptySeatNumber", key: "emptySeatNumber" },

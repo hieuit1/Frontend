@@ -11,25 +11,19 @@ const BusAddCoDriver: React.FC = () => {
     gender: "",
     image: null as File | null,
   });
-  const [previewImage, setPreviewImage] = useState<string | null>(null); // ✅ Thêm state xem trước ảnh
-
+  const [previewImage, setPreviewImage] = useState<string | null>(null); // ✅
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
   };
-
-
 const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
   if (event.target.files?.length) {
     const file = event.target.files[0];
     setFormData({ ...formData, image: file });
-
-    // ✅ Hiển thị ảnh xem trước
     const imageUrl = URL.createObjectURL(file);
     setPreviewImage(imageUrl);
   }
 };
-
   const handleSubmit = async () => {
     const formDataToSend = new FormData();
     formDataToSend.append("rickShawfullName", formData.fullName);
@@ -40,16 +34,13 @@ const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (formData.image) {
       formDataToSend.append("image", formData.image);
     }
-
     try {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/api-rickshaw/create-rickshaw`, {
         method: "POST",
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         body: formDataToSend,
       });
-
       if (!response.ok) throw new Error("Không thể tạo tài xế phụ xe.");
-
       alert("🎉 Tạo tài xế phụ xe thành công!");
       setFormData({ fullName: "", phoneNumber: "", yearOfBirth: "", descriptions: "", gender: "", image: null });
     } catch (error) {
@@ -91,9 +82,8 @@ const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
               </Button>
             </Grid>
             {previewImage && (
-  <img src={previewImage} alt="Ảnh xem trước" style={{ width: "100%", borderRadius: "8px", marginTop: "10px" }} />
-)}
-
+              <img src={previewImage} alt="Ảnh xem trước" style={{ width: "100%", borderRadius: "8px", marginTop: "10px" }} />
+            )}
             <Grid size={ {xs: 12}}>
               <Button fullWidth variant="contained" color="primary" onClick={handleSubmit}>
                 Tạo Tài Xế Phụ Xe

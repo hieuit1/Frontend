@@ -26,7 +26,7 @@ const BusCoachListPage: React.FC = () => {
   useEffect(() => {
   if (editingCoach) {
     console.log("🛠 Dữ liệu xe khách cần sửa:", editingCoach);
-    setEditModalVisible(true);  // ✅ Đảm bảo mở modal khi có dữ liệu
+    setEditModalVisible(true);  // ✅ 
   }
 }, [editingCoach]);
 
@@ -74,11 +74,9 @@ const BusCoachListPage: React.FC = () => {
   }
 
 const file = fileList && fileList.length > 0 ? fileList[0] : undefined;
-
   console.log("📡 Dữ liệu gửi API:", values, "Ảnh:", file);
-
   try {
-    await updateCoach(editingCoach.coachId, values, file); // ✅ Gửi ảnh kèm dữ liệu cập nhật
+    await updateCoach(editingCoach.coachId, values, file); // ✅ 
     message.success("Cập nhật xe khách thành công!");
     setEditModalVisible(false);
     loadCoaches();
@@ -87,10 +85,6 @@ const file = fileList && fileList.length > 0 ? fileList[0] : undefined;
     message.error("Cập nhật xe khách thất bại!");
   }
 };
-
-
-
-
   const filteredCoaches = coaches.filter((coach) =>
     [coach.coachName, coach.licensePlateNumberCoach].some((field) =>
       field?.toLowerCase().includes(search.toLowerCase())
@@ -136,7 +130,6 @@ const file = fileList && fileList.length > 0 ? fileList[0] : undefined;
           },
         ]}
       />
-
       <Modal
         title="Cập nhật xe khách"
         open={editModalVisible}
@@ -145,7 +138,7 @@ const file = fileList && fileList.length > 0 ? fileList[0] : undefined;
         destroyOnClose
       >
         <Form form={form} onFinish={handleEditOk} layout="vertical">
-  <Form.Item name="coachName" label="Tên xe khách" rules={[{ required: true }]}>
+        <Form.Item name="coachName" label="Tên xe khách" rules={[{ required: true }]}>
     <Input />
   </Form.Item>
   <Form.Item name="licensePlateNumberCoach" label="Biển số xe" rules={[{ required: true }]}>
@@ -156,7 +149,6 @@ const file = fileList && fileList.length > 0 ? fileList[0] : undefined;
   </Form.Item> 
   <Button type="primary" htmlType="submit" block>Cập nhật</Button>
 </Form>
-
       </Modal>
     </div>
   );
