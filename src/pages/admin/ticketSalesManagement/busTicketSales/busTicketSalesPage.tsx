@@ -14,7 +14,7 @@ import { createTripCar } from "../../../../api/bus_ticket_salesApi";
 
 // const { Option } = Select;
 
-const BusTicketSalesPage = () => {
+const BusTicketSalesPage: React.FC = () => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [submitMessage, setSubmitMessage] = useState<{
@@ -109,7 +109,7 @@ const BusTicketSalesPage = () => {
             </Form.Item>
           </Col>
           <Col span={8}>
-            <Form.Item name="rickshawId" label="Biển số xe khách" rules={[{ required: true }]}>
+            <Form.Item name="rickshawId" label="ID tài xế phụ" rules={[{ required: true }]}>
               <InputNumber min={1} style={{ width: "100%" }} />
             </Form.Item>
           </Col>

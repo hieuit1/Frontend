@@ -1,6 +1,6 @@
 # Quản Lý Người Dùng
-
- - Người Dùng Hủy Vé:
- + 
+ - Người Dùng yêu cầu hủy vé: userCancelsTicket
+ - Người dùng đăng ký tài khoản: userSignUps
  - 
-curl -X GET http://localhost:8080/api/manager-user
+
+

@@ -12,5 +12,6 @@ export interface TripTicket {
   priceSeatNumber: number;
   fullName?: string;
   phoneNumber?: string;
+  rickshawId?: number;
 }
 

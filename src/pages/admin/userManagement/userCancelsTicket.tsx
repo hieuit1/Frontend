@@ -1,143 +1,134 @@
 import React, { useState, useEffect } from "react";
-import { Table, Input, Button, Popconfirm, message, Tag } from "antd";
-import { fetchCancels, deleteCancel, confirmCancel } from "../../../api/userCancelsTicketApi";
-
-
-interface CancelInfo {
-  id: number;
-  user: string;
-  ticketId: string;
-  reason: string;
-  cancelDate: string;
-  cancelTime?: string;
-  cancelStatus?: "Đã hủy vé" | "Chờ xác nhận";
-}
+import { Table, message, Tag, Button, Popconfirm } from "antd";
+import { TicketInfo } from "../../../interfaces/TicketInfo";
 
 const UserCancelsTicket: React.FC = () => {
-  const [search, setSearch] = useState("");
-  const [data, setData] = useState<CancelInfo[]>([]);
-  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+  const [data, setData] = useState<TicketInfo[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-  const fetchData = async () => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const token = localStorage.getItem("token"); // Lấy token từ localStorage
+        if (!token) {
+          message.error("Bạn chưa đăng nhập. Vui lòng đăng nhập để tiếp tục.");
+          return;
+        }
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/admin-ticket/get-all-tickets`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // Thêm token vào header
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Không thể lấy dữ liệu. Vui lòng kiểm tra quyền truy cập.");
+        }
+
+        const result = await response.json();
+
+        // Lọc danh sách vé có trạng thái "PENDING" (đã hủy)
+        const canceledTickets = result.filter((ticket: TicketInfo) => ticket.status === "CHECKED_IN");
+        setData(canceledTickets);
+      } catch (error: any) {
+        message.error(error.message || "Lỗi khi lấy danh sách vé đã hủy.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const handleConfirmCancel = async (tickerId: number) => {
     try {
-      const result = await fetchCancels();
-      setData(result);
-    } catch (error) {
-      message.error((error as Error).message);
-    } finally {
-      setLoading(false);
+      const token = localStorage.getItem("token");
+      if (!token) {
+        message.error("Bạn chưa đăng nhập. Vui lòng đăng nhập để tiếp tục.");
+        return;
+      }
+
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/admin-ticket/${tickerId}?status=CANCELLED`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Không thể xác nhận hủy vé. Vui lòng thử lại.");
+      }
+
+      message.success("Hủy vé thành công.");
+      // Cập nhật trạng thái vé trong danh sách
+      setData((prevData) =>
+        prevData.map((ticket) =>
+          ticket.tickerId === tickerId ? { ...ticket, status: "CANCELLED" } : ticket
+        )
+      );
+    } catch (error: any) {
+      message.error(error.message || "Lỗi khi xác nhận hủy vé.");
     }
   };
-  fetchData();
-}, []);
-
-
-  const handleDelete = async (id: number) => {
-  try {
-    await deleteCancel(id);
-    setData((prev) => prev.filter((item) => item.id !== id));
-    message.success("Đã xóa thành công");
-  } catch (error) {
-    message.error((error as Error).message);
-  }
-};
-
-
- const handleConfirmCancel = async (id: number) => {
-  try {
-    await confirmCancel(id);
-    setData((prev) =>
-      prev.map((item) =>
-        item.id === id && item.cancelStatus === "Chờ xác nhận"
-          ? { ...item, cancelStatus: "Đã hủy vé" }
-          : item
-      )
-    );
-    message.success("Đã xác nhận hủy vé!");
-  } catch (error) {
-    message.error((error as Error).message);
-  }
-};
-
 
   const columns = [
-    { title: "ID", dataIndex: "id", key: "id" },
-    { title: "Người dùng", dataIndex: "user", key: "user" },
-    { title: "Mã vé", dataIndex: "ticketId", key: "ticketId" },
-    { title: "Lý do", dataIndex: "reason", key: "reason" },
-    { title: "Ngày hủy", dataIndex: "cancelDate", key: "cancelDate" },
-    { title: "Giờ hủy", dataIndex: "cancelTime", key: "cancelTime" },
+    { title: "ID", dataIndex: "tickerId", key: "tickerId" },
+    { title: "Tên chuyến", dataIndex: "tripName", key: "tripName" },
+    { title: "Ngày đi", dataIndex: "departureDate", key: "departureDate" },
+    { title: "Giờ đi", dataIndex: "departureTime", key: "departureTime" },
+    { title: "Giờ đến", dataIndex: "departureEndTime", key: "departureEndTime" },
+    { title: "Ghế", dataIndex: "seatNumber", key: "seatNumber" },
     {
-      title: "Trạng thái hủy",
-      dataIndex: "cancelStatus",
-      key: "cancelStatus",
-      render: (status: CancelInfo["cancelStatus"]) =>
-        status === "Đã hủy vé" ? (
-          <Tag color="red">Đã hủy vé</Tag>
+      title: "Trạng thái",
+      dataIndex: "status",
+      key: "status",
+      render: (status: string) =>
+        status === "PENDING" ? (
+         <Tag color="green">Hủy vé thành công</Tag>
         ) : (
-          <Tag color="orange">Chờ xác nhận</Tag>
+          <Tag color="red">Yêu cầu hủy</Tag>
         ),
     },
+    { title: "Người dùng", dataIndex: "username", key: "username" },
+    { title: "Email", dataIndex: "email", key: "email" },
+    { title: "Số điện thoại", dataIndex: "numberphone", key: "numberphone" },
+    { title: "Điểm đón", dataIndex: "pickupPoint", key: "pickupPoint" },
+    { title: "Điểm đến", dataIndex: "payPonit", key: "payPonit" },
     {
-      title: "Thao tác",
+      title: "Hành động",
       key: "action",
-      render: (_: any, record: CancelInfo) => (
-        <div style={{ display: "flex", gap: 8 }}>
-          {record.cancelStatus === "Chờ xác nhận" && (
-            <Button
-              size="small"
-              type="primary"
-              onClick={() => handleConfirmCancel(record.id)}
-            >
-              Xác nhận hủy
-            </Button>
-          )}
-          <Popconfirm
-            title="Bạn có chắc muốn xóa?"
-            onConfirm={() => handleDelete(record.id)}
-            okText="Xóa"
-            cancelText="Hủy"
-          >
-            <Button danger size="small">Xóa</Button>
-          </Popconfirm>
-        </div>
+      render: (_: any, record: TicketInfo) => (
+        <Popconfirm
+          title="Bạn có chắc chắn muốn xác nhận hủy vé này không?"
+          onConfirm={() => handleConfirmCancel(record.tickerId)}
+          okText="Xác nhận"
+          cancelText="Hủy"
+        >
+          <Button type="primary" danger disabled={record.status === "CANCELLED"}>
+            Xác nhận hủy
+          </Button>
+        </Popconfirm>
       ),
     },
   ];
 
   return (
-    <div>
-      <h2>Người Dùng Hủy Vé</h2>
-      <Input
-        placeholder="Tìm kiếm theo tên, mã vé, lý do, ngày, giờ, trạng thái..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        style={{ width: 300, marginBottom: 16 }}
-      />
+    <div style={{ padding: "20px" }}>
+      <h2 style={{ textAlign: "center", whiteSpace: "nowrap" }}>Danh sách vé yêu cầu hủy</h2>
       <Table
-        rowKey="id"
+        rowKey="tickerId"
         loading={loading}
-        dataSource={data.filter(
-          (item) =>
-            item.user.toLowerCase().includes(search.toLowerCase()) ||
-            item.ticketId.toLowerCase().includes(search.toLowerCase()) ||
-            item.reason.toLowerCase().includes(search.toLowerCase()) ||
-            item.cancelDate.includes(search) ||
-            (item.cancelTime && item.cancelTime.includes(search)) ||
-            (item.cancelStatus && item.cancelStatus.includes(search))
-        )}
+        dataSource={data}
         columns={columns}
-        rowSelection={{
-          selectedRowKeys,
-          onChange: setSelectedRowKeys,
-          selections: [
-            Table.SELECTION_ALL,
-            Table.SELECTION_INVERT,
-            Table.SELECTION_NONE,
-          ],
+        pagination={{ pageSize: 10 }}
+        style={{
+          border: "1px solid #ddd",
+          borderRadius: "8px",
+          overflow: "hidden",
         }}
+        scroll={{ x: "max-content" }} // Đảm bảo bảng không bị xuống dòng
       />
     </div>
   );

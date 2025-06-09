@@ -56,7 +56,9 @@ const BusTicketSalesListPage: React.FC<BusTicketSalesListPageProps> = ({
     }
   };
 
-  const handleEditTicket = async (tripCarId: number, updatedTicket: TripTicket) => {
+const handleEditTicket = async (tripCarId: number, updatedTicket: TripTicket) => {
+  console.log("Dữ liệu gửi lên API:", JSON.stringify(updatedTicket)); // Kiểm tra dữ liệu trước khi gửi
+
   try {
     const response = await fetch(`${process.env.REACT_APP_API_URL}/api-tripcar/update-tripcar/${tripCarId}`, {
       method: "PUT",
@@ -66,15 +68,20 @@ const BusTicketSalesListPage: React.FC<BusTicketSalesListPageProps> = ({
       },
       body: JSON.stringify(updatedTicket),
     });
-    if (!response.ok) throw new Error("Không thể cập nhật chuyến xe");
+
+    const responseData = await response.json();
+    console.log("Phản hồi từ API:", responseData); // Kiểm tra phản hồi từ API
+
+    if (!response.ok) throw new Error(responseData.message || "Không thể cập nhật chuyến xe");
     message.success("Đã sửa thành công!");
-    setEditingTicket(null); 
-    fetchAllTrips(); 
+    fetchAllTrips(); // Tải lại danh sách chuyến xe sau khi cập nhật
   } catch (error) {
     console.error("Lỗi khi cập nhật chuyến xe:", error);
-    message.error("Có lỗi xảy ra khi cập nhật vé xe.");
+    message.error("Có lỗi xảy ra khi cập nhật chuyến xe.");
   }
 };
+
+
   const handleDeleteTicket = async (tripCarId: number) => {
     try {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/api-tripcar/${tripCarId}`, {
@@ -93,9 +100,10 @@ const BusTicketSalesListPage: React.FC<BusTicketSalesListPageProps> = ({
   };
 
    const columns: ColumnsType<TripTicket> = [
+    { title: "ID", dataIndex: "tripCarId", key: "tripCarId" },
     { title: "Tên chuyến", dataIndex: "tripName", key: "tripName" },
     { title: "Điểm đón", dataIndex: "pickupPoint", key: "pickupPoint" },
-    { title: "Điểm trả", dataIndex: "payPoint", key: "payPoint" },
+    { title: "Điểm trả", dataIndex: "payPonit", key: "payPonit" },
     { title: "Ngày khởi hành", dataIndex: "departureDate", key: "departureDate",
       render: (date: string) => dayjs(date).format("DD-MM-YYYY") 
     },
@@ -198,7 +206,7 @@ const BusTicketSalesListPage: React.FC<BusTicketSalesListPageProps> = ({
       <Button type="primary" onClick={() => setShowCoachPage(true)} style={{ backgroundColor: "#5F9EA0", color: "#fff" }}>
         Danh sách biển số xe
       </Button>
-      <Button type="primary" onClick={() => setShowCoDriverPage(true)} style={{ backgroundColor: "#5F9EA0", color: "#fff" }}>
+      <Button type="primary" onClick={() => setShowCoDriverPage(true)} style={{ backgroundColor: "#008B8B", color: "#fff" }}>
         Danh sách tài xế phụ
       </Button>
     </div>
@@ -235,8 +243,22 @@ const BusTicketSalesListPage: React.FC<BusTicketSalesListPageProps> = ({
         onChange={(e) => setEditingTicket({ ...editingTicket!, pickupPoint: e.target.value })} 
       />
     </Form.Item>
+    <Form.Item label="Điểm trả">
+      <Input 
+        value={editingTicket?.payPonit} 
+        onChange={(e) => setEditingTicket({ ...editingTicket!, payPonit: e.target.value })} 
+      />
+    </Form.Item>
+    <Form.Item label="ID tài xế phụ">
+      <Input 
+        type="number"
+        value={editingTicket?.rickshawId || ""}
+        onChange={(e) => setEditingTicket({ ...editingTicket!, rickshawId: Number(e.target.value) })}
+      />
+    </Form.Item>
   </Form>
 </Modal>
+
     </div>
   );
 };
