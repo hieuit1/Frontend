@@ -19,7 +19,7 @@ interface Ticket {
   id: number;
   email: string;
   numberphone: number;
-  username: string;
+  name: string;
 }
 
 const Account: React.FC = () => {
@@ -100,7 +100,7 @@ const Account: React.FC = () => {
     try {
       const token = localStorage.getItem("token");
       await axios.put(
-        `${process.env.REACT_APP_API_URL}/admin-ticket/${confirmCancelTicketId}?status=CHECKED_IN`,
+        `${process.env.REACT_APP_API_URL}/update-status-ticket/${confirmCancelTicketId}?status=CHECKED_IN`,
         {},
         {
           headers: {
@@ -158,7 +158,7 @@ const Account: React.FC = () => {
             <tbody>
               {bookingHistory.map((ticket, idx) => (
                 <tr key={idx}>
-                  <td>{ticket.username}</td>
+                  <td>{ticket.name}</td>
                   <td>{ticket.email}</td>
                   <td>{ticket.numberphone}</td>
                   <td>
@@ -270,7 +270,7 @@ const Account: React.FC = () => {
             >
               <h3>Chi tiết vé</h3>
               <p>
-                <b>Họ tên:</b> {selectedTicket.username}
+                <b>Họ tên:</b> {selectedTicket.name}
               </p>
               <p>
                 <b>Email:</b> {selectedTicket.email}
