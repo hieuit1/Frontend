@@ -1,14 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
-  Table,
-  Tag,
-  Input,
-  Button,
-  Popconfirm,
-  message,
-  Modal,
-  Form,
-} from "antd";
+  Table, Tag, Input, Button, Popconfirm, message, Modal, Form, } from "antd";
 import {
   fetchUsers,
   deleteUser,
@@ -40,10 +32,10 @@ const UserSignUps: React.FC = () => {
 
 const filteredUsers = users.filter((user) =>
   [
-    user.name || "",  
-    user.email || "",
-    user.numberphone || "",
-    user.role || ""
+    String(user.name || ""),  
+    String(user.email || ""),
+    String(user.numberphone || ""),
+    String(user.role || "")
   ].some((field) => field.toLowerCase().includes(search.toLowerCase()))
 );
 

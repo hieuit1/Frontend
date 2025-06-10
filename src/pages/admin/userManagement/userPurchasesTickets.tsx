@@ -147,18 +147,35 @@ const UserPurchasesTickets: React.FC = () => {
         scroll={{ x: "max-content" }} 
       />
 <Modal
-  title="Chi tiết vé"
+  title={
+    <div style={{ textAlign: "center", fontWeight: "bold", fontSize: "24px", color: "#ff4d4f" }}>
+      🚀 Chi Tiết Vé 🚀
+    </div>
+  }
   visible={!!viewingTicket}
   onCancel={() => setViewingTicket(null)}
   footer={null}
   centered
+  width={700}
+  bodyStyle={{
+    padding: "20px",
+    background: "linear-gradient(135deg, #2c3e50, #4e73df)",
+    borderRadius: "16px",
+    boxShadow: "0 8px 16px rgba(0, 0, 0, 0.5)",
+    color: "#fff",
+  }}
 >
   {viewingTicket && (
     <div
       style={{
         display: "flex",
         flexDirection: "column",
-        gap: "8px",
+        gap: "12px",
+        padding: "16px",
+        backgroundColor: "rgba(255, 255, 255, 0.1)",
+        borderRadius: "12px",
+        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.3)",
+        animation: "fadeIn 0.5s ease-in-out",
       }}
     >
       {[
@@ -175,9 +192,33 @@ const UserPurchasesTickets: React.FC = () => {
         { label: "Điểm đón", value: viewingTicket.pickupPoint },
         { label: "Điểm đến", value: viewingTicket.payPonit },
       ].map((item, index) => (
-        <p key={index} style={animatedTextStyle}>
+        <p
+          key={index}
+          style={{
+            position: "relative",
+            fontSize: "18px",
+            fontWeight: "bold",
+            color: "#fff",
+            padding: "8px",
+            background: "linear-gradient(90deg, #4e73df, #2c3e50)",
+            borderRadius: "8px",
+            boxShadow: "0 2px 4px rgba(0, 0, 0, 0.3)",
+            overflow: "hidden",
+          }}
+        >
           <strong>{item.label}:</strong> {item.value}
-          <span className="shine-effect"></span>
+          <span
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              background: "rgba(255, 255, 255, 0.2)",
+              transform: "translateX(-100%)",
+              animation: "shine 1.5s infinite",
+            }}
+          ></span>
         </p>
       ))}
     </div>
@@ -190,38 +231,27 @@ const UserPurchasesTickets: React.FC = () => {
 export { UserPurchasesTickets };
 
 
-const styles = `
-@keyframes shine {
-  0% {
-    left: -100%;
-    color: #FFD700; /* Màu vàng khi hiệu ứng bắt đầu */
-  }
-  50% {
-    color: #FFD700; /* Màu vàng khi hiệu ứng đang chạy */
-  }
-  100% {
-    left: 100%;
-    color: inherit; /* Trở về màu mặc định */
-  }
-}
-
-.shine-effect {
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.5), transparent);
-  animation: shine 2s linear forwards;
-}
-`;
-
 const animatedTextStyle: React.CSSProperties = {
   position: "relative",
   display: "inline-block",
-  color: "inherit", // Màu mặc định của chữ
+  color: "inherit",
   fontSize: "16px",
   fontWeight: "bold",
   overflow: "hidden",
   whiteSpace: "nowrap",
+  animation: "shine 1.5s infinite",
 };
+
+const shineEffect = `
+@keyframes shine {
+  0% {
+    transform: translateX(-100%);
+  }
+  50% {
+    transform: translateX(50%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+`;

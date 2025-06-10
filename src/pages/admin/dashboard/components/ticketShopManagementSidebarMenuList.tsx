@@ -88,8 +88,8 @@ const TicketShopManagementSidebarMenuList: React.FC<Props> = ({
           Vé Đã Hủy
         </li>
         <li
-          className={selectedMenu === "Vé Đã Đặt" ? "active" : ""}
-          onClick={() => setSelectedMenu("Vé Đã Đặt")}
+          className={selectedMenu === "Người Dùng Đã Mua" ? "active" : ""}
+          onClick={() => setSelectedMenu("Người Dùng Đã Mua")}
           style={{
             cursor: "pointer",
             display: "flex",

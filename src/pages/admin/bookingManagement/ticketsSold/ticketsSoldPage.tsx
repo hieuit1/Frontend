@@ -1,20 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Table, Tag, message, Modal } from "antd";
-
-interface Ticket {
-  tickerId: number;
-  seatNumber: string;
-  tripName: string;
-  departureDate: string;
-  departureTime: string;
-  departureEndTime: string;
-  pickupPoint: string;
-  payPonit: string;
-  email: string;
-  numberphone: number;
-  username: string;
-  status: string;
-}
+import { Ticket } from '../../../../interfaces/Ticket';
 
 const TicketsSoldPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
@@ -70,7 +56,7 @@ const TicketsSoldPage: React.FC = () => {
 
   return (
     <div style={{ padding: "20px" }}>
-      <h2 style={{ textAlign: "center", marginBottom: "20px", color: "#1890ff" }}>Danh sách vé đã bán</h2>
+      <h2 style={{ textAlign: "center", marginBottom: "20px", color: "#00000" }}>Danh sách vé đã bán</h2>
       <Table
         rowKey="tickerId"
         loading={loading}
@@ -90,7 +76,7 @@ const TicketsSoldPage: React.FC = () => {
           },
           style: {
             cursor: "pointer",
-            backgroundColor: selectedRowKey === record.tickerId ? "#e6f7ff" : "transparent",
+            backgroundColor: selectedRowKey === record.tickerId ? "#32CD32" : "transparent",
           },
         })}
       />
@@ -125,7 +111,6 @@ const TicketsSoldPage: React.FC = () => {
         boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
       }}
     >
-      {/* Thông tin chi tiết */}
       {[
         { label: "ID Vé", value: viewingTicket.tickerId },
         { label: "Tên chuyến", value: viewingTicket.tripName },

@@ -77,15 +77,25 @@ const onFinish = async (values: any) => {
           <Input.TextArea rows={3} />
         </Form.Item>
         <Form.Item label="Ảnh xe buýt" name="image">
-          <Upload
-            beforeUpload={() => false}
-            fileList={fileList}
-            onChange={({ fileList }) => setFileList(fileList as UploadFile[])}
-            maxCount={1}
-          >
-            <Button>Chọn ảnh</Button>
-          </Upload>
-        </Form.Item>
+  <Upload
+    beforeUpload={() => false}
+    fileList={fileList}
+    onChange={({ fileList }) => setFileList(fileList as UploadFile[])}
+    maxCount={1}
+    listType="picture-card" // Hiển thị hình ảnh xem trước
+  >
+    {fileList.length < 1 && <Button>Chọn ảnh</Button>}
+  </Upload>
+  {fileList.length > 0 && fileList[0].thumbUrl && (
+    <div style={{ marginTop: 16 }}>
+      <img
+        src={fileList[0].thumbUrl}
+        alt="Ảnh xem trước"
+        style={{ width: "100%", borderRadius: "8px", boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)" }}
+      />
+    </div>
+  )}
+</Form.Item>
         <Form.Item>
           <Button type="primary" htmlType="submit" loading={loading}>Tạo xe buýt</Button>
         </Form.Item>

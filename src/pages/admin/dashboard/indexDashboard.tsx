@@ -9,6 +9,7 @@ import TicketsSoldPage from "../bookingManagement/ticketsSold/ticketsSoldPage";
 
 import "./dashboard.css";
 import TicketCancelledPage from "../bookingManagement/ticketCancelled/ticketCancelledPage";
+import UsersHavePurchasedPage from "../bookingManagement/usersHavePurchased/usersHavePurchasedPage";
 
 const Dashboard: React.FC = () => {
   const [selectedMenu, setSelectedMenu] = useState<string>("Trang chủ");
@@ -61,6 +62,8 @@ const Dashboard: React.FC = () => {
         return <TicketsSoldPage />; 
       }else if (selectedMenu === "Vé Đã Hủy") {
         return <TicketCancelledPage/>;
+      }else if(selectedMenu === "Người Dùng Đã Mua"){
+        return <UsersHavePurchasedPage/>
       }
 
 if (selectedMenu in ticketRenderHandlers) {
@@ -69,8 +72,8 @@ if (selectedMenu in ticketRenderHandlers) {
     setShowBusTicketForm,
     showDriverForm,
     setShowDriverForm,
-    showCoachForm, // ✅ Đã thêm tham số thiếu
-    setShowCoachForm, // ✅ Đã thêm tham số thiếu
+    showCoachForm, // ✅
+    setShowCoachForm, // ✅ 
     showCoDriverForm,
     setShowCoDriverForm,
   );

@@ -1,14 +1,14 @@
-﻿// import { Car } from './Car';
-// import { Buyer } from './Buyer';
-
-// export interface Ticket {
-//     ticketId: number;
-//     passengerName: string;
-//     travelDate: Date;
-//     departure: string;
-//     destination: string;
-//     price: number;
-//     car: Car; // Thêm thuộc tính car
-//     buyer: Buyer; // Thêm thuộc tính buyer
-// }
-export {}
+﻿export interface Ticket {
+  tickerId: number;
+  seatNumber: string;
+  tripName: string;
+  departureDate: string;
+  departureTime: string;
+  departureEndTime: string;
+  pickupPoint: string;
+  payPonit: string;
+  email: string;
+  numberphone: number;
+  username: string;
+  status: string;
+}
