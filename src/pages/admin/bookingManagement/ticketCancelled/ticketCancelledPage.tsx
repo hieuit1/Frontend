@@ -5,7 +5,6 @@ import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Toolti
 import { Ticket } from "../../../../interfaces/Ticket";
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement);
 
-
 const TicketCancelledPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<Ticket[]>([]);
@@ -38,11 +37,9 @@ const TicketCancelledPage: React.FC = () => {
       setLoading(false);
     }
   };
-
   useEffect(() => {
     fetchCancelledTickets();
   }, []);
-
 const calculateCancelledTicketsByDay = () => {
   const counts: Record<string, number> = {};
   data.forEach((ticket) => {
@@ -53,9 +50,7 @@ const calculateCancelledTicketsByDay = () => {
   });
   return counts;
 };
-
 const cancelledTicketsByDay = calculateCancelledTicketsByDay();
-
 const calculateMostCancelledEmail = () => {
   const emailCounts: Record<string, number> = {};
   data.forEach((ticket) => {
