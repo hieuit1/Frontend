@@ -31,7 +31,6 @@ const TicketCancelledPage: React.FC = () => {
       const cancelledTickets = tickets.filter((ticket: Ticket) => ticket.status === "CANCELLED");
       setData(cancelledTickets);
     } catch (error) {
-      console.error("Lỗi khi lấy dữ liệu:", error);
       message.error("Không thể lấy danh sách vé đã hủy!");
     } finally {
       setLoading(false);
@@ -58,17 +57,12 @@ const calculateMostCancelledEmail = () => {
       emailCounts[ticket.email] = (emailCounts[ticket.email] || 0) + 1;
     }
   });
-
   const mostCancelledEmail = Object.keys(emailCounts).reduce((maxEmail, email) => {
     return emailCounts[email] > (emailCounts[maxEmail] || 0) ? email : maxEmail;
   }, "");
-
   return { email: mostCancelledEmail, count: emailCounts[mostCancelledEmail] || 0 };
 };
-
 const { email: mostCancelledEmail, count: mostCancelledCount } = calculateMostCancelledEmail();
-
-
 const pieChartData = {
   labels: ["Tổng vé đã hủy trong tháng", `Vé đã hủy của ${mostCancelledEmail}`],
   datasets: [
@@ -191,7 +185,7 @@ const pieChartOptions = {
               { label: "Ghế", value: viewingTicket.seatNumber },
               { label: "Điểm đón", value: viewingTicket.pickupPoint },
               { label: "Điểm đến", value: viewingTicket.payPonit },
-              { label: "Người dùng", value: viewingTicket.username },
+              { label: "Người dùng", value: viewingTicket.name },
               { label: "Email", value: viewingTicket.email },
               { label: "Số điện thoại", value: viewingTicket.numberphone },
             ].map((item, index) => (

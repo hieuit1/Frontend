@@ -2,17 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Table, message, Button, Avatar, Popconfirm, Modal, Form, Input, Upload, Select } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { UploadOutlined } from "@ant-design/icons";
-
-interface Driver {
-  driverId: number;
-  fullName: string;
-  phoneNumber: string;
-  yearOfBirth: number;
-  descriptions: string;
-  gender: string;
-  url: string;
-  publicId: string;
-}
+import { Driver } from "../../../../interfaces/Driver";
 
 const BusDriverListPage: React.FC = () => {
   const [drivers, setDrivers] = useState<Driver[]>([]);
@@ -24,7 +14,6 @@ const BusDriverListPage: React.FC = () => {
   useEffect(() => {
     fetchDrivers();
   }, []);
-
   const fetchDrivers = async () => {
     setLoading(true);
     try {
@@ -32,10 +21,8 @@ const BusDriverListPage: React.FC = () => {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/useradmin-all-driver`, {
         headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
       });
-
       const data = await response.json();
       if (!response.ok) throw new Error(data.message || "Không thể lấy dữ liệu tài xế.");
-
       setDrivers(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error("❌ Lỗi khi lấy danh sách tài xế:", error);
@@ -47,7 +34,7 @@ const BusDriverListPage: React.FC = () => {
 
   const showEditModal = (driver: Driver) => {
     setSelectedDriver(driver);
-    setSelectedImage(null); // Reset ảnh đã chọn
+    setSelectedImage(null);
     setIsModalOpen(true);
   };
 
@@ -71,9 +58,7 @@ const BusDriverListPage: React.FC = () => {
         headers: { Authorization: `Bearer ${token}` },
         body: formData,
       });
-
       if (!response.ok) throw new Error("Không thể cập nhật tài xế.");
-
       message.success("Cập nhật tài xế thành công!");
       setIsModalOpen(false);
       fetchDrivers();
@@ -90,9 +75,7 @@ const BusDriverListPage: React.FC = () => {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
-
       if (!response.ok) throw new Error("Không thể xóa tài xế.");
-
       message.success("Xóa tài xế thành công!");
       fetchDrivers();
     } catch (error) {
@@ -102,7 +85,7 @@ const BusDriverListPage: React.FC = () => {
   };
 
 const columns: ColumnsType<Driver> = [
-    { title: "ID Tài Xế", dataIndex: "driverId", key: "driverId" }, // Thêm ID tài xế
+    { title: "ID Tài Xế", dataIndex: "driverId", key: "driverId" }, 
     {
       title: "Ảnh",
       dataIndex: "url",
@@ -128,7 +111,6 @@ const columns: ColumnsType<Driver> = [
     },
   ];
 
-
   return (
     <div className="p-6 bg-white shadow rounded max-w-7xl mx-auto">
       <div className="flex justify-between items-center mb-6">
@@ -137,10 +119,7 @@ const columns: ColumnsType<Driver> = [
           Tải lại danh sách tài xế
         </Button>
       </div>
-
       <Table columns={columns} dataSource={drivers} rowKey="driverId" loading={loading} pagination={{ pageSize: 10 }} />
-
-      {/* Modal chỉnh sửa tài xế */}
 <Modal title="Chỉnh sửa tài xế" open={isModalOpen} onOk={handleUpdate} onCancel={() => setIsModalOpen(false)}>
   <Form layout="vertical">
     <Form.Item label="ID Tài Xế">
@@ -171,7 +150,6 @@ const columns: ColumnsType<Driver> = [
     </Form.Item>
   </Form>
 </Modal>
-
     </div>
   );
 };

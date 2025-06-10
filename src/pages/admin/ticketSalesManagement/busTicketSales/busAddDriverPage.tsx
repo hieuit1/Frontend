@@ -1,12 +1,6 @@
 import { useState } from "react";
-import { Form, Input, Button, Upload, InputNumber,
-  Select,
-  message,
-  Row,
-  Col,
-} from "antd";
+import { Form, Input, Button, Upload, Select, message, Row, Col } from "antd";
 import { DatePicker } from "@mui/x-date-pickers";
-
 import { createDriver } from "../../../../api/bus_add_driverApi"; 
 import dayjs from "dayjs";
 
@@ -119,12 +113,12 @@ const BusAddDriver = () => {
     rules={[{ required: true, message: "Vui lòng nhập hoặc chọn năm sinh" }]}
   >
     <DatePicker
-      views={["year"]} // Chỉ hiển thị chế độ chọn năm
-      format="YYYY" // Định dạng hiển thị năm
+      views={["year"]} 
+      format="YYYY" 
       value={form.getFieldValue("yearOfBirth") ? dayjs(`${form.getFieldValue("yearOfBirth")}-01-01`) : null}
       onChange={(newValue) => {
         if (newValue) {
-          form.setFieldValue("yearOfBirth", newValue.year()); // Lưu năm vào form
+          form.setFieldValue("yearOfBirth", newValue.year());
         }
       }}
       slotProps={{

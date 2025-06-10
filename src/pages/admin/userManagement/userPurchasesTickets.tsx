@@ -11,7 +11,7 @@ interface PurchaseInfo {
   departureEndTime: string;
   pickupPoint: string;
   payPonit: string;
-  username: string;
+  name: string;
   email: string;
   numberphone: string;
 }
@@ -64,7 +64,7 @@ const UserPurchasesTickets: React.FC = () => {
         return;
       }
 
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/admin-ticket/${tickerId}?status=CONFIRMED`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/update-status-ticket/${tickerId}?status=CONFIRMED`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -186,7 +186,7 @@ const UserPurchasesTickets: React.FC = () => {
         { label: "Giờ đến", value: viewingTicket.departureEndTime },
         { label: "Ghế", value: viewingTicket.seatNumber },
         { label: "Trạng thái", value: viewingTicket.status },
-        { label: "Người dùng", value: viewingTicket.username },
+        { label: "Người dùng", value: viewingTicket.name },
         { label: "Email", value: viewingTicket.email },
         { label: "Số điện thoại", value: viewingTicket.numberphone },
         { label: "Điểm đón", value: viewingTicket.pickupPoint },

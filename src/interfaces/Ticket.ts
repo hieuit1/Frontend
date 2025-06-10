@@ -9,6 +9,6 @@
   payPonit: string;
   email: string;
   numberphone: number;
-  username: string;
+  name: string;
   status: string;
 }

@@ -19,11 +19,7 @@ const TicketsSoldPage: React.FC = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-
-      if (!response.ok) {
-        throw new Error("Không thể lấy dữ liệu từ API");
-      }
-
+      if (!response.ok) {  throw new Error("Không thể lấy dữ liệu từ API"); }
       const tickets = await response.json();
       const confirmedTickets = tickets.filter((ticket: Ticket) => ticket.status === "CONFIRMED");
       setData(confirmedTickets);
@@ -43,7 +39,7 @@ const TicketsSoldPage: React.FC = () => {
     { title: "ID Vé", dataIndex: "tickerId", key: "tickerId" },
     { title: "Tên chuyến", dataIndex: "tripName", key: "tripName" },
     { title: "Ngày đi", dataIndex: "departureDate", key: "departureDate" },
-    { title: "Người dùng", dataIndex: "username", key: "username" },
+    { title: "Người dùng", dataIndex: "name", key: "name" },
     { title: "Email", dataIndex: "email", key: "email" },
     { title: "Số điện thoại", dataIndex: "numberphone", key: "numberphone" },
     {
@@ -120,7 +116,7 @@ const TicketsSoldPage: React.FC = () => {
         { label: "Ghế", value: viewingTicket.seatNumber },
         { label: "Điểm đón", value: viewingTicket.pickupPoint },
         { label: "Điểm đến", value: viewingTicket.payPonit },
-        { label: "Người dùng", value: viewingTicket.username },
+        { label: "Người dùng", value: viewingTicket.name },
         { label: "Email", value: viewingTicket.email },
         { label: "Số điện thoại", value: viewingTicket.numberphone },
       ].map((item, index) => (

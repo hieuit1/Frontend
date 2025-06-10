@@ -11,7 +11,6 @@ const ContactAdmin: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitted(true);
-    // Xử lý gửi thông tin ở đây nếu cần
   };
 
   return (

@@ -82,7 +82,7 @@ const onFinish = async (values: any) => {
     fileList={fileList}
     onChange={({ fileList }) => setFileList(fileList as UploadFile[])}
     maxCount={1}
-    listType="picture-card" // Hiển thị hình ảnh xem trước
+    listType="picture-card" 
   >
     {fileList.length < 1 && <Button>Chọn ảnh</Button>}
   </Upload>
@@ -91,7 +91,7 @@ const onFinish = async (values: any) => {
       <img
         src={fileList[0].thumbUrl}
         alt="Ảnh xem trước"
-        style={{ width: "100%", borderRadius: "8px", boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)" }}
+        style={{ width: "20%", borderRadius: "8px", boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)" }}
       />
     </div>
   )}

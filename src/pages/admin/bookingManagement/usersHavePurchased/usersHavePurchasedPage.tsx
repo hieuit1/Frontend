@@ -19,9 +19,7 @@ const UsersHavePurchasedPage: React.FC = () => {
         },
       });
 
-      if (!response.ok) {
-        throw new Error("Không thể lấy dữ liệu từ API");
-      }
+      if (!response.ok) {  throw new Error("Không thể lấy dữ liệu từ API");  }
 
       const tickets: Ticket[] = await response.json();
       const userMap: Record<string, UserDetail> = {};
@@ -43,7 +41,6 @@ const UsersHavePurchasedPage: React.FC = () => {
 
       setData(Object.values(userMap));
     } catch (error) {
-      console.error("Lỗi khi lấy dữ liệu:", error);
       message.error("Không thể lấy danh sách người mua!");
     } finally {
       setLoading(false);

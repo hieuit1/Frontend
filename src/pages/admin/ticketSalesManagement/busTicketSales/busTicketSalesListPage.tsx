@@ -58,8 +58,6 @@ const BusTicketSalesListPage: React.FC<BusTicketSalesListPageProps> = ({
   };
 
 const handleEditTicket = async (tripCarId: number, updatedTicket: TripTicket) => {
-  console.log("Dữ liệu gửi lên API:", JSON.stringify(updatedTicket)); 
-
   try {
     const response = await fetch(`${process.env.REACT_APP_API_URL}/api-tripcar/update-tripcar/${tripCarId}`, {
       method: "PUT",
@@ -71,8 +69,6 @@ const handleEditTicket = async (tripCarId: number, updatedTicket: TripTicket) =>
     });
 
     const responseData = await response.json();
-    console.log("Phản hồi từ API:", responseData); 
-
     if (!response.ok) throw new Error(responseData.message || "Không thể cập nhật chuyến xe");
     message.success("Đã sửa thành công!");
     fetchAllTrips(); 
@@ -81,8 +77,6 @@ const handleEditTicket = async (tripCarId: number, updatedTicket: TripTicket) =>
     message.error("Có lỗi xảy ra khi cập nhật chuyến xe.");
   }
 };
-
-
   const handleDeleteTicket = async (tripCarId: number) => {
     try {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/api-tripcar/${tripCarId}`, {
@@ -121,11 +115,8 @@ const handleEditTicket = async (tripCarId: number, updatedTicket: TripTicket) =>
   <ConfigProvider
     theme={{
       token: {
-        // Seed Token
         colorPrimary: '#00b96b',
         borderRadius: 2,
-
-        // Alias Token
         colorBgContainer: '#f6ffed',
       },
     }}
@@ -137,18 +128,18 @@ const handleEditTicket = async (tripCarId: number, updatedTicket: TripTicket) =>
       transition: "all 0.3s ease",
     }}
     onMouseEnter={(e) => {
-      e.currentTarget.style.backgroundColor = "#0056b3"; // Màu khi hover
-      e.currentTarget.style.transform = "scale(1.05)"; // Phóng to nhẹ
+      e.currentTarget.style.backgroundColor = "#0056b3"; 
+      e.currentTarget.style.transform = "scale(1.05)"; 
     }}
     onMouseLeave={(e) => {
-      e.currentTarget.style.backgroundColor = ""; // Trở về màu gốc
-      e.currentTarget.style.transform = "scale(1)"; // Trở về kích thước gốc
+      e.currentTarget.style.backgroundColor = ""; 
+      e.currentTarget.style.transform = "scale(1)"; 
     }}
     onMouseDown={(e) => {
-      e.currentTarget.style.transform = "scale(0.95)"; // Nhấn vào thu nhỏ nhẹ
+      e.currentTarget.style.transform = "scale(0.95)"; 
     }}
     onMouseUp={(e) => {
-      e.currentTarget.style.transform = "scale(1.05)"; // Thả chuột trở về trạng thái hover
+      e.currentTarget.style.transform = "scale(1.05)"; 
     }}
   >
     Sửa
@@ -160,18 +151,18 @@ const handleEditTicket = async (tripCarId: number, updatedTicket: TripTicket) =>
       transition: "all 0.3s ease",
     }}
     onMouseEnter={(e) => {
-      e.currentTarget.style.backgroundColor = "#cf1322"; // Màu khi hover
-      e.currentTarget.style.transform = "scale(1.05)"; // Phóng to nhẹ
+      e.currentTarget.style.backgroundColor = "#cf1322"; 
+      e.currentTarget.style.transform = "scale(1.05)"; 
     }}
     onMouseLeave={(e) => {
-      e.currentTarget.style.backgroundColor = ""; // Trở về màu gốc
-      e.currentTarget.style.transform = "scale(1)"; // Trở về kích thước gốc
+      e.currentTarget.style.backgroundColor = ""; 
+      e.currentTarget.style.transform = "scale(1)"; 
     }}
     onMouseDown={(e) => {
-      e.currentTarget.style.transform = "scale(0.95)"; // Nhấn vào thu nhỏ nhẹ
+      e.currentTarget.style.transform = "scale(0.95)"; 
     }}
     onMouseUp={(e) => {
-      e.currentTarget.style.transform = "scale(1.05)"; // Thả chuột trở về trạng thái hover
+      e.currentTarget.style.transform = "scale(1.05)"; 
     }}
   >
     Xóa
@@ -184,18 +175,18 @@ const handleEditTicket = async (tripCarId: number, updatedTicket: TripTicket) =>
       transition: "all 0.3s ease",
     }}
     onMouseEnter={(e) => {
-      e.currentTarget.style.backgroundColor = "#bae637"; // Màu khi hover
-      e.currentTarget.style.transform = "scale(1.05)"; // Phóng to nhẹ
+      e.currentTarget.style.backgroundColor = "#bae637"; 
+      e.currentTarget.style.transform = "scale(1.05)"; 
     }}
     onMouseLeave={(e) => {
-      e.currentTarget.style.backgroundColor = ""; // Trở về màu gốc
-      e.currentTarget.style.transform = "scale(1)"; // Trở về kích thước gốc
+      e.currentTarget.style.backgroundColor = ""; 
+      e.currentTarget.style.transform = "scale(1)"; 
     }}
     onMouseDown={(e) => {
-      e.currentTarget.style.transform = "scale(0.95)"; // Nhấn vào thu nhỏ nhẹ
+      e.currentTarget.style.transform = "scale(0.95)"; 
     }}
     onMouseUp={(e) => {
-      e.currentTarget.style.transform = "scale(1.05)"; // Thả chuột trở về trạng thái hover
+      e.currentTarget.style.transform = "scale(1.05)"; 
     }}
   >
     Xem chi tiết
@@ -234,7 +225,6 @@ const handleEditTicket = async (tripCarId: number, updatedTicket: TripTicket) =>
       padding: "20px",
       backgroundColor: "#fff",
       margin: "auto",
-      // borderRadius: "8px",
       boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
     }}
   >
@@ -354,7 +344,6 @@ const handleEditTicket = async (tripCarId: number, updatedTicket: TripTicket) =>
         gap: "16px",
       }}
     >
-      {/* Ảnh xe */}
       <img
         src={viewingTicket.url}
         alt="Ảnh xe"
@@ -365,8 +354,6 @@ const handleEditTicket = async (tripCarId: number, updatedTicket: TripTicket) =>
           boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
         }}
       />
-
-      {/* Thông tin chi tiết */}
       <div
         style={{
           width: "100%",

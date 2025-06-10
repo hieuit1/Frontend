@@ -37,7 +37,6 @@ const PromotionDetail: React.FC = () => {
               <strong>Mã khuyến mãi:</strong> <span>{promotion.code}</span>
             </div>
           )}
-
           {promotion.validFrom && promotion.validTo && (
             <div className="promotion-date">
               Áp dụng từ{" "}

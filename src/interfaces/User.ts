@@ -2,8 +2,8 @@ export interface User {
   id: number;
   name: string;
   email: string;
-  numberphone: string;  // 🆕 Thêm số điện thoại
-  role: string;         // 🆕 Thêm vai trò
+  numberphone: string;  // 🆕 
+  role: string;         // 🆕 
   registeredAt: string;
   method?: "Google" | "Tài khoản";
   password?: string;

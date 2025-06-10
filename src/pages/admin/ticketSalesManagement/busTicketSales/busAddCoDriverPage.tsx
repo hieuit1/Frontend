@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import { Container, Typography, TextField, Button, Card, CardContent, Grid, MenuItem, InputAdornment } from "@mui/material";
+import { Container, Typography, TextField, Button, Card, CardContent, Grid, MenuItem } from "@mui/material";
 import { Upload } from "@mui/icons-material";
 import { DatePicker } from "@mui/x-date-pickers";
 import dayjs, { Dayjs } from "dayjs";
-
 
 const BusAddCoDriver: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -69,7 +68,7 @@ const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
 <Grid size={ {xs:6}}>
   <DatePicker
     views={["year"]}
-    value={formData.yearOfBirth ? dayjs(`${formData.yearOfBirth}-01-01`) : null} // Hiển thị năm nếu có
+    value={formData.yearOfBirth ? dayjs(`${formData.yearOfBirth}-01-01`) : null} 
     onChange={(newValue: Dayjs | null) => {
       if (newValue) {
         setFormData({ ...formData, yearOfBirth: newValue.year().toString() });

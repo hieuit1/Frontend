@@ -1,19 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Container, Typography, Button, Table, TableHead, TableRow, TableCell, TableBody, IconButton, Dialog, DialogTitle, DialogContent, DialogActions, CircularProgress, Card, CardContent, Modal, TextField, MenuItem } from "@mui/material";
+import { Container, Typography, Button, Table, TableHead, TableRow, TableCell, TableBody, IconButton, Dialog, DialogTitle, DialogContent, DialogActions, CircularProgress, TextField, MenuItem } from "@mui/material";
 import { Edit, Delete } from "@mui/icons-material";
-
-interface CoDriver {
-  rickshawId: number;
-  fullName: string;
-  phoneNumber: string;
-  yearOfBirth: number;
-  descriptions: string;
-  gender: string;
-  imageUrl: string;
-  imageFile?: File; // Optional property for file uploads
-}
-
-const API_URL = process.env.REACT_APP_API_URL;
+import { CoDriver } from "../../../../interfaces/CoDriver";
 
 const BusCoDriverListPage: React.FC = () => {
   const [coDrivers, setCoDrivers] = useState<CoDriver[]>([]);
@@ -36,13 +24,10 @@ const BusCoDriverListPage: React.FC = () => {
     });
 
     if (!response.ok) throw new Error("Không thể tải danh sách tài xế phụ xe.");
-
     const data = await response.json();
-    console.log("🚀 Dữ liệu từ API:", data); // ✅ Kiểm tra dữ liệu API
-
     setCoDrivers(Array.isArray(data) ? data.map((driver) => ({
       rickshawId: driver.rickShawId, 
-      fullName: driver.rickShawfullName, // ✅ Đổi tên thuộc tính cho đúng
+      fullName: driver.rickShawfullName, // ✅ 
       phoneNumber: driver.rickShawphoneNumber,
       yearOfBirth: driver.rickShawyearOfBirth,
       descriptions: driver.rickShawdescriptions,
@@ -71,71 +56,52 @@ const BusCoDriverListPage: React.FC = () => {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
-
       if (!response.ok) throw new Error("Không thể xóa tài xế phụ xe.");
-
       setCoDrivers((prev) => prev.filter((driver) => driver.rickshawId !== selectedRickshawId));
       alert("✅ Xóa tài xế phụ xe thành công!");
     } catch (error) {
       console.error("❌ Lỗi khi xóa tài xế:", error);
     }
-
     setConfirmDeleteOpen(false);
   };
-
   const handleEditDriver = (driver: CoDriver) => {
     setSelectedDriver(driver);
     setEditModalOpen(true);
   };
-
  const handleUpdateDriver = async () => {
   if (!selectedDriver) return;
-
   try {
     const token = localStorage.getItem("token");
-    const formData = new FormData(); // ✅ Dùng FormData thay vì JSON
-    
+    const formData = new FormData(); // ✅ 
     formData.append("rickShawfullName", selectedDriver.fullName);
     formData.append("rickShawphoneNumber", selectedDriver.phoneNumber.toString());
     formData.append("rickShawyearOfBirth", selectedDriver.yearOfBirth.toString());
     formData.append("rickShawdescriptions", selectedDriver.descriptions);
     formData.append("rickShawgender", selectedDriver.gender);
-    
-    // ✅ Nếu có ảnh, thêm ảnh vào FormData
-    if (selectedDriver.imageFile) {
-      formData.append("image", selectedDriver.imageFile);
-    }
-
-    console.log("🔄 Dữ liệu gửi lên API:", formData); // ✅ Kiểm tra dữ liệu
-
-    const response = await fetch(`${API_URL}/api-rickshaw/update-rickshaw/${selectedDriver.rickshawId}`, {
+    // ✅ 
+    if (selectedDriver.imageFile) {  formData.append("image", selectedDriver.imageFile); }
+    console.log("🔄 Dữ liệu gửi lên API:", formData); // ✅ 
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/api-rickshaw/update-rickshaw/${selectedDriver.rickshawId}`, {
       method: "PUT",
       headers: { Authorization: `Bearer ${token}` },
-      body: formData, // ✅ Gửi dưới dạng FormData
+      body: formData, // ✅ 
     });
-
     if (!response.ok) throw new Error("❌ Không thể cập nhật tài xế phụ xe.");
-
     setEditModalOpen(false);
-    fetchCoDrivers(); // ✅ Tải lại danh sách sau khi cập nhật
+    fetchCoDrivers(); // ✅ 
     alert("✅ Cập nhật tài xế phụ xe thành công!");
   } catch (error) {
     console.error("❌ Lỗi khi cập nhật tài xế:", error);
   }
 };
-
-
-
   return (
     <Container maxWidth="lg">
       <Typography variant="h4" fontWeight="bold" textAlign="center" mt={4} mb={2}>
         Danh Sách Tài Xế Phụ Xe
       </Typography>
-
       <Button variant="contained" color="primary" onClick={() => alert("🛠 Chức năng đang được phát triển!")}>
         Thêm tài xế phụ xe
       </Button>
-
       {loading ? (
         <CircularProgress sx={{ mt: 4 }} />
       ) : (
@@ -177,7 +143,6 @@ const BusCoDriverListPage: React.FC = () => {
           </TableBody>
         </Table>
       )}
-
       <Dialog open={confirmDeleteOpen} onClose={() => setConfirmDeleteOpen(false)}>
         <DialogTitle>Xác nhận xóa</DialogTitle>
         <DialogContent>
@@ -193,9 +158,7 @@ const BusCoDriverListPage: React.FC = () => {
   <DialogContent>
     {selectedDriver && (
       <form>
-        {/* ✅ Hiển thị ảnh hiện tại */}
         <img src={selectedDriver.imageUrl || "https://via.placeholder.com/150"} alt="Driver" width={100} height={100} style={{ borderRadius: "8px", marginBottom: "10px" }} />
-
         <input 
           type="file" 
           accept="image/*" 
@@ -251,7 +214,6 @@ const BusCoDriverListPage: React.FC = () => {
     <Button onClick={handleUpdateDriver} color="primary">Lưu</Button>
   </DialogActions>
 </Dialog>
-
     </Container>
   );
 };

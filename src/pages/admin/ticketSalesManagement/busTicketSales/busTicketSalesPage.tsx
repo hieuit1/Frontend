@@ -3,8 +3,6 @@ import { useState } from "react";
 import { Form, Input, InputNumber, DatePicker, TimePicker, Button, Row, Col, Select } from "antd";
 import { createTripCar } from "../../../../api/bus_ticket_salesApi";
 
-// const { Option } = Select;
-
 const BusTicketSalesPage: React.FC = () => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);

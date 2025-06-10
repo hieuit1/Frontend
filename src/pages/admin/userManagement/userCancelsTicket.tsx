@@ -49,7 +49,7 @@ const [viewingTicket, setViewingTicket] = useState<TicketInfo | null>(null);
         return;
       }
 
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/admin-ticket/${tickerId}?status=CANCELLED`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/update-status-ticket/${tickerId}?status=CANCELLED`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

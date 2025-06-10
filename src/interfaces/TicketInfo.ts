@@ -1,7 +1,5 @@
-
-
 export interface TicketInfo {
-  tickerId: number; // Thêm thuộc tính này
+  tickerId: number;
   tripName: string;
   departureDate: string;
   departureTime: string;

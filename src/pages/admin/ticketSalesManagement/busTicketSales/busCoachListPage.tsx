@@ -1,14 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Table, Input, Button, Popconfirm, message, Modal, Form } from "antd";
 import { fetchCoaches, fetchCoachById, updateCoach, deleteCoach } from "../../../../api/busCoachApi";
-
-// Định nghĩa kiểu dữ liệu cho xe khách
-type Coach = {
-  coachId: number;
-  coachName: string;
-  licensePlateNumberCoach: string;
-  url?: string;
-};
+import { Coach } from "../../../../types/coach";
 
 const BusCoachListPage: React.FC = () => {
   const [coaches, setCoaches] = useState<Coach[]>([]);
@@ -74,14 +67,12 @@ const BusCoachListPage: React.FC = () => {
   }
 
 const file = fileList && fileList.length > 0 ? fileList[0] : undefined;
-  console.log("📡 Dữ liệu gửi API:", values, "Ảnh:", file);
   try {
     await updateCoach(editingCoach.coachId, values, file); // ✅ 
     message.success("Cập nhật xe khách thành công!");
     setEditModalVisible(false);
     loadCoaches();
   } catch (error) {
-    console.error("❌ Lỗi khi cập nhật:", error);
     message.error("Cập nhật xe khách thất bại!");
   }
 };
